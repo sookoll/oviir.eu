@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  {% include 'parts/header.twig' %}
+
+</head>
+
+<body>
+  <!--/ Nav Start /-->
+  {% include 'parts/menu.twig' %}
+  <!--/ Nav End /-->
+
+  <!--/ Intro Skew Star /-->
+  <div class="intro intro-single route bg-image" style="background-image: url({{ meta.image }})">
+    <div class="overlay-mf"></div>
+    <div class="intro-content display-table">
+      <div class="table-cell">
+        <div class="container">
+          <h2 class="intro-title mb-4">{{ meta.date|date('Y') }}</h2>
+          <ol class="breadcrumb d-flex justify-content-center">
+            <li class="breadcrumb-item">
+              <a href="/">Avaleht</a>
+            </li>
+            <li class="breadcrumb-item">
+              <a href="/kokkutulekud">Kokkutulekud</a>
+            </li>
+            <li class="breadcrumb-item active">{{ meta.title }}</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--/ Intro Skew End /-->
+
+  <!--/ Section Blog-Single Star /-->
+  <section class="blog-wrapper sect-pt4" id="blog">
+    <div class="container">
+      {% if meta.image %}
+      <div class="image-tags mb-4">
+        <img src="{{ meta.image }}" class="img-fluid" alt="">
+      </div>
+      {% endif %}
+      <div class="row">
+        <div class="col-md-8">
+          <div class="post-box">
+            <h1 class="article-title mb-4">{{ meta.title }}</h1>
+            <div class="article-content lead">
+              <table class="table table-bordered mb-5">
+                <tr>
+                  <th scope="row">Jrk.</th>
+                  <td>{{ meta.number }}</td>
+                </tr>
+                <tr>
+                  <th scope="row">Korraldas</th>
+                  <td>{{ meta.organizer }}</td>
+                </tr>
+                <tr>
+                  <th scope="row">Aeg</th>
+                  <td>{{ meta.event_date }}</td>
+                </tr>
+                <tr>
+                  <th scope="row">Koht</th>
+                  <td>{{ meta.place }}</td>
+                </tr>
+                <tr>
+                  <th scope="row">Osalejaid</th>
+                  <td>{{ meta.people_count }}</td>
+                </tr>
+              </table>
+
+              {{ content }}
+
+            </div>
+          </div>
+
+          {% set prev_event = {} %}
+          {% set next_event = {} %}
+          {% set lastwascurrent = false %}
+          {% set lastpage = {} %}
+          {% for page in pages if page.meta.category == "kokkutulek" %}
+            {% if lastwascurrent %}
+              {% set next_event = page %}
+              {% set lastwascurrent = false %}
+            {% endif %}
+            {% if page.id == current_page.id %}
+              {% set lastwascurrent = true %}
+              {% set prev_event = lastpage %}
+            {% endif %}
+            {% set lastpage = page %}
+          {% endfor %}
+
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              {% if next_event %}
+              <div class="work-box">
+                <a href="{{ next_event.url }}">
+                  <div class="work-img">
+                    <img src="{{ next_event.meta.thumbnail }}" alt="" class="img-fluid">
+                  </div>
+                  <div class="work-content">
+                    <h2 class="w-title">{{ next_event.meta.number }}. {{ next_event.meta.title }}</h2>
+                  </div>
+                  <span class="index">{{ next_event.meta.date|date('Y') }}</span>
+                </a>
+              </div>
+              {% endif %}
+            </div>
+            <div class="col-md-6 mb-3">
+              {% if prev_event and prev_event.meta.category == 'kokkutulek' %}
+              <div class="work-box">
+                <a href="{{ prev_event.url }}">
+                  <div class="work-img">
+                    <img src="{{ prev_event.meta.thumbnail }}" alt="" class="img-fluid">
+                  </div>
+                  <div class="work-content">
+                    <h2 class="w-title">{{ prev_event.meta.number }}. {{ prev_event.meta.title }}</h2>
+                  </div>
+                  <span class="index">{{ prev_event.meta.date|date('Y') }}</span>
+                </a>
+              </div>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          {% set videos = [] %}
+          {% set albums = [] %}
+          {% for page in pages if meta.date|date('Y') in page.meta.tags %}
+            {% if page.meta.category == 'video' %}
+              {% set videos = videos|merge([page]) %}
+            {% elseif page.meta.category == 'pildialbum' %}
+              {% set albums = albums|merge([page]) %}
+            {% endif %}
+          {% endfor %}
+
+          {% for page in albums %}
+          {% include 'parts/album.twig' with { grid: 'blah' } %}
+          {% endfor %}
+
+          {% for page in videos %}
+          {% include 'parts/document.twig' with { doc: page, grid: 'blah', icon: 'ion-md-videocam' } %}
+          {% endfor %}
+          <div class="widget-sidebar">
+            <h5 class="sidebar-title">Tulemas</h5>
+            <div class="sidebar-content">
+              {{ "kokkutulekud"|content }}
+            </div>
+          </div>
+          {% include 'parts/tags-widget.twig' %}
+        </div>
+      </div>
+    </div>
+  </section>
+  <!--/ Section Blog-Single End /-->
+
+  {% include 'parts/footer.twig' %}
+
+  {% include 'parts/scripts.twig' %}
+
+</body>
+</html>

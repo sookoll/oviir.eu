@@ -1,0 +1,177 @@
+#oviirid img {
+	vertical-align:middle
+}
+
+#oviirid .notes {
+	width:330px;
+	min-height:400px
+}
+
+#oviirid .tablewrapper {
+	width:776px
+}
+
+#oviirid h2 {
+	color:#00bafe
+}
+
+#oviirid h3 {
+	margin-top:0;
+	color:#00bafe
+}
+
+#oviirid .notes h3 {
+	color:#ef5d9b
+}
+
+#oviirid .notes a:hover {
+	text-decoration:none
+}
+
+#oviirid .notes a.active {
+	font-weight:bold;
+	text-decoration:none
+}
+
+.grey {
+	color:#888
+}
+
+.small {
+	font-size:small
+}
+
+#oviirid .pager {
+	text-align:center;
+	margin:10px 0;
+	font-size:13px
+}
+
+#oviirid .pager a {
+	font-family:'Times';
+	font-weight:bold;
+	text-decoration:none;
+	margin:0 2px;
+	color:#f6b92e;
+	display:inline-block;
+	padding:2px 7px;
+	background:#eee;
+	border-radius:12px
+}
+
+#oviirid .pager a.active,#oviirid .pager a:hover {
+	color:#fff;
+	background:#f6b92e
+}
+
+#oviirid table {
+	border-collapse:collapse;
+	width:100%;
+	font-size:14px
+}
+
+#oviirid table a {
+	text-decoration:none;
+}
+
+#oviirid table tr.header th.sortby a {
+	color:#f6b92e;
+	padding-left:10px
+}
+
+#oviirid table tr.header th.sortby.asc a {
+	background:url('images/asc.png') no-repeat left;
+}
+
+#oviirid table tr.header th.sortby.desc a {
+	background:url('images/desc.png') no-repeat left;
+}
+
+#oviirid table tr.header th a {
+	text-decoration:none;
+	color:#000
+}
+
+#oviirid table tr.header th a:hover {
+	color:#f6b92e
+}
+
+#oviirid table tr:hover {
+	background-color:#f6f6f6
+}
+
+#oviirid table tr.header:hover {
+	background-color:#fff
+}
+
+#oviirid table td {
+	border-bottom: 1px solid #eee;
+	padding:4px
+}
+
+#oviirid .align-left {
+	text-align:left
+}
+
+#oviirid .align-right {
+	text-align:right
+}
+
+#oviirid .align-center {
+	text-align:center
+}
+
+#oviirid input.text,#frame textarea {
+	font-size:16px;
+	border:1px solid #bbb;
+	padding:8px;
+	background: #f9f9f9;
+	box-shadow:0 0 4px #ccc inset;
+	width:300px
+}
+
+#oviirid input.text:focus,#frame textarea:focus {
+	border-color:#999;
+	outline:none
+}
+
+#oviirid .selectBox-dropdown .selectBox-label {
+    display: block;
+}
+
+/* modals */
+
+#frame {
+	position:fixed;
+	top:80px;
+	left:50%;
+	width:600px;
+	margin-left:-300px;
+	min-height:400px;
+	background:#fff;
+	z-index:1234;
+	padding:10px
+}
+
+#frame h4 {
+	margin-top:0
+}
+
+#frame textarea {
+	 resize:none;
+	 width:580px;
+	 height:400px
+}
+
+#frame .buttons {
+	position:absolute;
+	top:10px;
+	right:10px;
+	font-size:.8em;
+	color:#fff
+}
+
+#frame .buttons a {
+	text-decoration:none;
+	color:#fff
+}

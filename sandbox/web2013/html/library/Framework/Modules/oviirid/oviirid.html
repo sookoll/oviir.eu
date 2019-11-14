@@ -1,0 +1,43 @@
+<div id="oviirid">
+	<div class="notes float-left">
+		<h3>{_h3_2_}</h3>
+		<a class="{_members_active_}" href="{_members_list_}">{_members_title_}</a><br>
+		<a class="{_contacts_active_}" href="{_contacts_list_}">{_contacts_title_}</a>
+		<div style="height:34px"></div>
+		
+		<h3>{_h3_5_}</h3>
+		<div>
+			<form method="get" action="{_filter_url_}" name="filter">
+				<input type="text" class="text" name="first_name" placeholder="{_ph_first_name_}" value="{_first_name_}" style="width:200px" >
+				<div style="height:4px"></div>
+				<input type="text" class="text" name="last_name" placeholder="{_ph_last_name_}" value="{_last_name_}" style="width:200px" >
+				<div style="height:4px"></div>
+				<select name="ancestor" style="width:215px" tabindex="0">
+					<option value="*">{_choose_ancestor_}</option>
+					{_ancestors_}
+				</select>
+				<div style="height:14px"></div>
+				<input type="hidden" name="{_modul-param_}" value="oviirid">
+				{_sort_}
+				<a href="{_reset_href_}" class="btn">{_reset_}</a>
+				<a href="" class="btn btn-inverse" onclick="$(this).closest('form').submit(); return false;">{_submit_}</a>
+				<input type="submit" style="visibility:hidden">
+			</form>
+		</div>
+		<div style="height:34px"></div>
+		<h3>{_h3_4_}</h3>
+		<a href="{_print_href_}" class="btn" target="_blank">{_print_}</a>
+		<a href="#" class="btn copy_emails" >{_copy_emails_}</a>
+		<div style="height:14px"></div>
+		{_actions_}
+	</div>
+	<div class="tablewrapper float-left">
+		<h2 class="align-center">{_h3_3_}</h2>
+		<div class="pager">{_pages_}</div>
+		<table>
+			{_table_}
+		</table>
+		<div class="pager">{_pages_}</div>
+	</div>
+	<div class="clear"></div>
+</div>

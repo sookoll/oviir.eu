@@ -1,0 +1,26 @@
+<form class="px-3 login-form" method="post" action="">
+{% if user %}
+
+  {% include 'parts/document.twig'
+    with { doc: { title: username, url: '/sugupuu/'~username, description: 'Sisse logitud kasutaja' }, grid: 'x', icon: 'ion-ios-contact' } %}
+
+  <div class="form-group">
+    <button type="submit" name="logout" class="btn btn-primary btn-block">Välju</button>
+  </div>
+
+{% else %}
+
+  <div class="form-group">
+    <label for="username">Kasutaja</label>
+    <input type="text" class="form-control" id="username" name="login" placeholder="">
+  </div>
+  <div class="form-group">
+    <label for="password">Password</label>
+    <input type="password" class="form-control" id="password" name="pass" placeholder="">
+  </div>
+  <div class="form-group">
+    <button type="submit" class="btn btn-primary">Sisene</button>
+  </div>
+
+{% endif %}
+</form>

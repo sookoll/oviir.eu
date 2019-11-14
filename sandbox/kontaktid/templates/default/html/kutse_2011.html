@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=100"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" />
+	<title>Oviiride kokkutulek</title>
+	<link rel="stylesheet" type="text/css" href="{_def_tmpl_}css/kutse_2011.css"/>
+	<script type="text/javascript" src="http://maps.google.com/maps/api/js?v=3.5&amp;sensor=false"></script>
+	<!--<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;sensor=false&amp;key=ABQIAAAASSXVvRp2Lle4CdE2wdJaIRRwOkjnswUES1bEUfx2mltp_JR9IhRtDM_FNpgZYhZSKwYmeAVDLAYxgw" type="text/javascript"></script>
+-->	<script type="text/javascript" src="{_def_openlayers_}"></script>
+	<script type="text/javascript" src="{_def_proj_}/proj4js-compressed.js"></script>
+	<script type="text/javascript" src="{_def_proj_}/defs/EPSG3301.js"></script>
+	<script type="text/javascript" src="{_def_jquery_}"></script>
+	<script type="text/javascript">
+		var reqURL='{_def_requrl_}';
+	</script>
+	<script type="text/javascript" src="jscript/kutse_2011.js"></script>
+</head>
+<body onload="init();">
+<div id="container">
+	<div id="header">
+		<h1>KUTSE</h1>
+	</div>
+	<div id="text">
+		Oviiride suguvõsa 48. kokkutulek toimub 10.juulil 2011.a Põlvamaal, Krootuse koolimaja hoovis.
+		<p>Lipu heiskamine kell 12.00</p>
+		<p>Aino ja Mihkel</p>
+	</div>
+	<div id="map">
+		<div id="search">
+			<div id="searchbox" class="search">
+				Leia teekond: 
+				
+					<label for="addressStr">Sisesta siia oma aadress...</label>
+					<input name="addressStr" id="addressStr" type="text">
+				
+				 - <input name="addressStr" id="addressStr" type="text" readonly="readonly" value="Krootuse koolimajja">
+				<button onclick="clickedAddAddress();">Otsi</button>
+			</div>
+			<div id="searchresult" class="search hide">
+				Leitud teekond: <span class="start"></span> - <span>Krootuse koolimaja</span>. Teekonna pikkus: <span id="pikkus"></span> km ja hinnanguline sõiduaeg: <span id="aeg"></span> tundi
+				<button onclick="resetSearch();">Lähtesta</button>
+			</div>
+			<div id="searchfailed" class="search hide">
+				Teekonda <span class="start"></span> - <span>Krootuse koolimaja</span> ei leitud! Täpsusta aadressi!
+				<button onclick="resetSearch();">Lähtesta</button>
+			</div>
+		</div>
+		<div id="mapbox"></div>
+	</div>
+	<div id="footer">
+		<p><b>Juhised kohalejõudmiseks:</b> Tartu poolt tulles sõida Võru suunas. Enne Savernat on ristmik, sildiga "Krootuse 9 km". Sealt keera vasakule ja sõida 8km kuni Krootuse ristmikuni, pööra paremale, külapoest mööda ja esimesest ristmikust vasakule. Bussipeatuse juurest saad mööda vasakpoolsemat teed otse Koolimaja ette.<br><i>Ristmikud on tähistatud õhupallidega.</i></p>
+		<p><b>Juhised kaardi kasutamiseks:</b> Kaardi avavaates on vaikimisi Krootuse külakeskus ja koolimaja, kus kokkutulek ka toimub. Kaarti saab hiirega nihutada ja hiirerullikuga suurendada-vähendada. Samamoodi toimivad üleval vasakul olevad sinised navigeerimise nupud. Teekonna otsimiseks näiteks oma kodust Krootusele, sisesta palun aadressilahtrisse oma kodune aadress, leitakse teekond sinu kodust Krootuse koolimajja ja kuvatakse see kaardile. Kaardi kohale ilmub kirjeldav info teekonna pikkuse ja hinnangulise sõiduaja kohta. Lähtesta nupp taastab teekonnaotsingu lahtrid ja eemaldab teekonna kaardilt.</p>
+		<a href="login" id="openlogin">Kontaktide leht</a>
+		<div id="login" class="hide">
+			<div class="input">Salasõna:<br><input type="password" name="Password" id="Password"></div>
+			<input type="button" id="goin" value="Sisene">
+		</div>	
+	</div>
+	<div id="wrapper"></div>
+</div>
+</body>
+</html>

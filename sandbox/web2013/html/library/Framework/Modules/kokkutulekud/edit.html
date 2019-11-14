@@ -1,0 +1,61 @@
+<div id="kokkutulekud">
+	<div class="notes float-left">
+		<h3>{_h3_1_}</h3>
+		{_texts_}
+		<div style="height:34px">&nbsp;</div>
+		<h3>{_h3_2_}</h3>
+		<a href="{_cancel_href_}" class="btn" style="width:60px">{_cancel_}</a>
+		<div style="height:4px">&nbsp;</div>
+		<a href="save" class="btn btn-success save" style="width:60px">{_save_}</a>
+		{_actions_}
+		<div style="height:34px">&nbsp;</div>
+		<div class="loading" style="display:none">
+			<img src="{_loading_}"> <em class="grey">{_wait_}</em>
+		</div>
+		
+	</div>
+	<div class="tablewrapper float-left">
+		<h3>{_h3_3_}</h3>
+		<b>Täida lahtrid</b><br>
+		<div>
+			<input type="text" class="text" name="event_id" placeholder="{_ph_event_id_}" value="{_event_id_}" style="width:99px">
+			<input type="text" class="text" name="year" placeholder="{_ph_year_}" value="{_year_}" {_readonly_} style="width:180px">
+		</div>
+		<div style="height:4px">&nbsp;</div>
+		<div>
+			<input type="text" class="text" name="title" placeholder="{_ph_title_}" value="{_title_}">
+		</div>
+		<div style="height:4px">&nbsp;</div>
+		<div>
+			<input type="text" class="text" name="event_organizer" placeholder="{_ph_event_organizer_}" value="{_event_organizer_}">
+		</div>
+		<div style="height:4px">&nbsp;</div>
+		<div>
+			<input type="text" class="text" name="event_time" placeholder="{_ph_event_time_}" value="{_event_time_}">
+		</div>
+		<div style="height:4px">&nbsp;</div>
+		<div>
+			<input type="text" class="text" name="event_location" placeholder="{_ph_event_location_}" value="{_event_location_}">
+		</div>
+		<div style="height:24px">&nbsp;</div>
+		<b>Vali staatus</b><br>
+		<select name="status" style="width:260px;" tabindex="0">
+			<option value="done" {_done_selected_}>{_1972_}</option>
+			<option value="deal" {_deal_selected_}>{_2015_}</option>
+			<option value="wish" {_wish_selected_}>{_2022_}</option>
+		</select>
+		<div style="height:4px">&nbsp;</div>
+		<b>Vali pilt</b><br>
+		<select name="picture" style="width:460px;" tabindex="0">
+			<option value="">...</option>
+			{_pictures_}
+		</select>
+		
+		<div style="height:24px">&nbsp;</div>
+		<b>{_ph_content_}</b><br>
+		<textarea name="content" id="editor1" style="width:460px;height:100px">{_content_}</textarea>
+		<input type="hidden" name="type" value="{_type_}">
+		<input type="hidden" name="id" value="{_id_}">
+	</div>
+	<div class="clear"></div>
+</div>

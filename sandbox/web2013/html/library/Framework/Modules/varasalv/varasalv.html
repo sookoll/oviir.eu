@@ -1,0 +1,35 @@
+<div id="varasalv">
+	<div class="notes float-left">
+		<h3>{_h3_2_}</h3>
+		{_table_links_}
+		<div style="height:34px">&nbsp;</div>
+		<h3>{_h3_5_}</h3>
+		<div>
+			<form method="get" action="{_filter_url_}" name="filter">
+				<input type="text" class="text" name="title" placeholder="{_ph_title_}" value="{_title_}" style="width:200px" >
+				<div style="height:4px"></div>
+				<input type="text" class="text" name="related_with" placeholder="{_ph_related_with_}" value="{_related_with_}" style="width:200px" >
+				<div style="height:4px"></div>
+				<select name="type" style="width:215px" tabindex="0">
+					<option value="">{_choose_type_}</option>
+					{_types_}
+				</select>
+				<div style="height:14px"></div>
+				<input type="hidden" name="{_modul-param_}" value="varasalv">
+				{_sort_}
+				<a href="{_reset_href_}" class="btn">{_reset_}</a>
+				<a href="" class="btn btn-inverse" onclick="$(this).closest('form').submit(); return false;">{_submit_}</a>
+				<input type="submit" style="visibility:hidden">
+			</form>
+		</div>
+		<div style="height:34px"></div>
+		{_actions_}
+	</div>
+	<div class="tablewrapper float-left">
+		<h2 class="align-center">{_h3_3_}</h2>
+		<table>
+			{_table_}
+		</table>
+	</div>
+	<div class="clear"></div>
+</div>

@@ -1,0 +1,41 @@
+<div id="varasalv">
+	<div class="notes float-left">
+		<h3>{_h3_1_}</h3>
+		<div class="grey">{_texts_}</div>
+		<div style="height:34px">&nbsp;</div>
+		<h3>{_h3_2_}</h3>
+		<a href="{_cancel_href_}" class="btn" style="width:60px">{_cancel_}</a>
+		<div style="height:4px">&nbsp;</div>
+		<a href="save" class="btn btn-success save" style="width:60px">{_save_}</a>
+		{_actions_}
+		<div style="height:34px">&nbsp;</div>
+		<div class="loading" style="display:none">
+			<img src="{_loading_}"> <em class="grey">{_wait_}</em>
+		</div>
+	</div>
+	<div class="tablewrapper float-left">
+		<h3>{_h3_3_}: {_filename_}</h3>
+		{_extra_field_}
+		<h4>{_item_title_}</h4>
+		<div>
+			<input type="text" class="text" name="title" placeholder="{_ph_title_}" value="{_title_}">
+		</div>
+		<h4>Seos sugulasega</h4>
+		<div>
+			<input type="text" class="text" name="related_name" placeholder="{_ph_related_name_}" value="{_related_name_}">
+			<input type="hidden" name="related_with" value="{_related_with_}">
+			<ul class="memberslist" style="display:none"></ul>
+		</div>
+		<em class="small grey">{_relation_note_}</em>
+		<div style="height:14px">&nbsp;</div>
+		<h4>{_ph_description_}</h4>
+		<div>
+			<textarea name="description" id="editor1" style="width:560px;height:200px">{_description_}</textarea>
+		</div>
+		<div style="height:24px">&nbsp;</div>
+		
+		<input type="hidden" name="type" value="{_type_}">
+		<input type="hidden" name="id" value="{_id_}">
+	</div>
+	<div class="clear"></div>
+</div>

@@ -1,0 +1,195 @@
+#varasalv img {
+	vertical-align:middle
+}
+
+#varasalv .notes {
+	width:320px;
+	margin-right:10px;
+	min-height:400px
+}
+
+#varasalv .tablewrapper {
+	width:776px
+}
+
+#varasalv h2 {
+	color:#00bafe
+}
+
+#varasalv h3 {
+	margin-top:0;
+	color:#00bafe
+}
+
+#varasalv h4{
+	margin-bottom:2px
+}
+
+#varasalv .notes h3 {
+	color:#ef5d9b
+}
+
+#varasalv .notes a:hover {
+	text-decoration:none
+}
+
+#varasalv .notes a.active {
+	font-weight:bold;
+	text-decoration:none
+}
+
+.grey {
+	color:#888
+}
+
+.small {
+	font-size:small
+}
+
+#varasalv .pager {
+	text-align:center;
+	margin:10px 0;
+	font-size:13px
+}
+
+#varasalv .pager a {
+	font-family:'Times';
+	font-weight:bold;
+	text-decoration:none;
+	margin:0 2px;
+	color:#f6b92e;
+	display:inline-block;
+	padding:2px 7px;
+	background:#eee;
+	border-radius:12px
+}
+
+#varasalv .pager a.active,#varasalv .pager a:hover {
+	color:#fff;
+	background:#f6b92e
+}
+
+#varasalv table {
+	border-collapse:collapse;
+	width:100%;
+	font-size:14px
+}
+
+#varasalv table a {
+	text-decoration:none;
+}
+
+#varasalv table tr.header th.sortby a {
+	color:#f6b92e;
+	padding-left:10px
+}
+
+#varasalv table tr.header th.sortby.asc a {
+	background:url('images/asc.png') no-repeat left;
+}
+
+#varasalv table tr.header th.sortby.desc a {
+	background:url('images/desc.png') no-repeat left;
+}
+
+#varasalv table tr.header th a {
+	text-decoration:none;
+	color:#000
+}
+
+#varasalv table tr.header th a:hover {
+	color:#f6b92e
+}
+
+#varasalv table tr:hover {
+	background-color:#f6f6f6
+}
+
+#varasalv table tr.header:hover {
+	background-color:#fff
+}
+
+#varasalv table td {
+	border-bottom: 1px solid #eee;
+	padding:4px
+}
+
+#varasalv .align-left {
+	text-align:left
+}
+
+#varasalv .align-right {
+	text-align:right
+}
+
+#varasalv .align-center {
+	text-align:center
+}
+
+#varasalv input.text,#varasalv textarea {
+	font-size:16px;
+	border:1px solid #bbb;
+	padding:8px;
+	background: #f9f9f9;
+	box-shadow:0 0 4px #ccc inset;
+	width:300px
+}
+
+#varasalv input.text:focus,#varasalv textarea:focus {
+	border-color:#999;
+	outline:none
+}
+
+#varasalv .selectBox-dropdown .selectBox-label {
+    display: block;
+}
+
+#varasalv .upload .info {
+	line-height:30px;
+}
+
+#varasalv .upload .progress {
+    height: 8px;
+    background: #eee;
+}
+
+#varasalv .upload .bar {
+    height: 8px;
+    background: #ddd;
+}
+
+#varasalv .drop-zone {
+	height:350px;
+	border: 4px solid #ddd;
+	background-color:#eee
+}
+
+#varasalv em.tip {
+	color:#f6b92e
+}
+
+#varasalv blockquote {
+	min-height:100px;
+	background:#f8f8f8
+}
+
+#varasalv .picture {
+	border:1px solid #ddd;
+	background:#eee;
+	padding:8px;
+	width:720px;
+	min-height:400px;
+	box-shadow:3px 3px 5px #666
+}
+
+#varasalv .category-view h3 {
+	margin:20px 0;
+}
+
+#varasalv .category-view h4 {
+	margin:20px 40px;
+}
+
+#varasalv .category-view ul {
+	margin:20px 40px;
+}

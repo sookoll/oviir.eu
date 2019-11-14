@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  {% include 'parts/header.twig' %}
+
+</head>
+
+<body>
+  <!--/ Nav Start /-->
+  {% include 'parts/menu.twig' %}
+  <!--/ Nav End /-->
+
+  <!--/ Intro Skew Star /-->
+  <div class="intro intro-single route bg-image" style="background-image: url({{ meta.image }})">
+    <div class="overlay-mf"></div>
+    <div class="intro-content display-table">
+      <div class="table-cell">
+        <div class="container">
+          <h2 class="intro-title mb-4">{{ meta.title }}</h2>
+          <ol class="breadcrumb d-flex justify-content-center">
+            <li class="breadcrumb-item">
+              <a href="/">Avaleht</a>
+            </li>
+            <li class="breadcrumb-item active">{{ meta.title }}</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--/ Intro Skew End /-->
+
+  <!--/ Section Blog-Single Star /-->
+  <section class="sect-pt4">
+    <div class="container">
+      <div class="row">
+        {% for page in pages if page.id starts with 'varasalv/' and 'sugupuu' in page.meta.tags %}
+          {% if page.meta.category == 'video' %}
+            {% include 'parts/document.twig' with { 'doc': page, grid: 'col-md-4 col-sm-6', icon: 'ion-ios-videocam' } %}
+          {% else %}
+            {% include 'parts/document.twig' with { 'doc': page, grid: 'col-md-4 col-sm-6' } %}
+          {% endif %}
+        {% endfor %}
+      </div>
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="title-box text-center">
+            <h3 class="title-a">
+              Inimesed
+            </h3>
+            <p class="subtitle-a">
+              Igale Oviirile oma lehekülg!
+            </p>
+            <div class="line-mf"></div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        {% for page in pages|reverse if page.meta.category == "inimesed" %}
+        <div class="col-md-4">
+          <div class="service-box profile">
+            <div class="service-ico">
+              <a href="{{ page.url }}" class="ico-circle">
+                <img class="img-fluid rounded-circle b-shadow-a"
+                  src="{{ page.meta.thumbnail }}"
+                  alt="{{ page.meta.title }}">
+              </a>
+            </div>
+            <div class="service-content">
+              <h2 class="s-title line-clamp-1">
+                <a href="{{ page.url }}">{{ page.meta.title }}</a>
+              </h2>
+              <p class="s-description text-center line-clamp-3">
+                {{ page.excerpt|slice(0, 230) }}
+              </p>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+  <!--/ Section Blog-Single End /-->
+
+  {% include 'parts/footer.twig' %}
+
+  {% include 'parts/scripts.twig' %}
+
+</body>
+</html>

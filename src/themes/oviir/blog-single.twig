@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  {% include 'parts/header.twig' %}
+
+</head>
+
+<body>
+  <!--/ Nav Start /-->
+  {% include 'parts/menu.twig' %}
+  <!--/ Nav End /-->
+
+  <!--/ Intro Skew Star /-->
+  <div class="intro intro-single route bg-image" style="background-image: url({{ meta.image }})">
+    <div class="overlay-mf"></div>
+    <div class="intro-content display-table">
+      <div class="table-cell">
+        <div class="container">
+          <h2 class="intro-title mb-4">Uudised</h2>
+          <ol class="breadcrumb d-flex justify-content-center">
+            <li class="breadcrumb-item">
+              <a href="/">Avaleht</a>
+            </li>
+            <li class="breadcrumb-item">
+              <a href="/uudised">Uudised</a>
+            </li>
+            <li class="breadcrumb-item active">{{ meta.title }}</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--/ Intro Skew End /-->
+
+  <!--/ Section Blog-Single Star /-->
+  <section class="blog-wrapper sect-pt4" id="blog">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-8">
+          <div class="post-box">
+            <div class="post-thumb">
+              <img src="{{ meta.image }}" class="img-fluid" alt="">
+            </div>
+            <div class="post-meta">
+              <h1 class="article-title">{{ meta.title }}</h1>
+              <ul>
+                <li>
+                  <i class="icon ion-ios-person"></i>
+                  <a href="#">{{ meta.author ? meta.author : 'Kasutaja' }}</a>
+                </li>
+                <li>
+                  <i class="icon ion-md-time"></i>
+                  <a href="#">{{ meta.date_formatted }}</a>
+                </li>
+              </ul>
+            </div>
+            <div class="article-content lead">
+              {{ content }}
+            </div>
+          </div>
+
+          {% set prev_event = {} %}
+          {% set next_event = {} %}
+          {% set lastwascurrent = false %}
+          {% set lastpage = {} %}
+          {% for page in pages if page.meta.category == "uudis" %}
+            {% if lastwascurrent %}
+              {% set next_event = page %}
+              {% set lastwascurrent = false %}
+            {% endif %}
+            {% if page.id == current_page.id %}
+              {% set lastwascurrent = true %}
+              {% set prev_event = lastpage %}
+            {% endif %}
+            {% set lastpage = page %}
+          {% endfor %}
+
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              {% if prev_event and prev_event.meta.category == 'uudis' %}
+              <div class="work-box">
+                <a href="{{ prev_event.url }}">
+                  <div class="work-img">
+                    <img src="{{ prev_event.meta.thumbnail }}" alt="" class="img-fluid">
+                  </div>
+                  <div class="work-content">
+                    <div class="row">
+                      <div class="col-sm-10">
+                        <h2 class="w-title">{{ prev_event.meta.title }}</h2>
+                        <div class="w-more">
+                          <span class="w-ctegory">
+                            <i class="icon ion-ios-person"></i>
+                            {{ prev_event.meta.author ? prev_event.meta.author : 'Kasutaja' }}
+                          </span> /
+                          <span class="w-date">
+                            <i class="icon ion-md-time"></i>
+                            {{ prev_event.meta.date_formatted }}
+                          </span>
+                        </div>
+                      </div>
+                      <div class="col-sm-2">
+                        <div class="w-like">
+                          <i class="icon ion-ios-arrow-round-back"></i>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </a>
+              </div>
+              {% endif %}
+            </div>
+            <div class="col-md-6 mb-3">
+              {% if next_event and next_event.meta.category == 'uudis' %}
+              <div class="work-box">
+                <a href="{{ next_event.url }}">
+                  <div class="work-img">
+                    <img src="{{ next_event.meta.thumbnail }}" alt="" class="img-fluid">
+                  </div>
+                  <div class="work-content">
+                    <div class="row">
+                      <div class="col-sm-10">
+                        <h2 class="w-title">{{ next_event.meta.title }}</h2>
+                        <div class="w-more">
+                          <span class="w-ctegory">
+                            <i class="icon ion-ios-person"></i>
+                            {{ next_event.meta.author ? next_event.meta.author : 'Kasutaja' }}
+                          </span> /
+                          <span class="w-date">
+                            <i class="icon ion-md-time"></i>
+                            {{ next_event.meta.date_formatted }}
+                          </span>
+                        </div>
+                      </div>
+                      <div class="col-sm-2">
+                        <div class="w-like">
+                          <i class="icon ion-ios-arrow-round-forward"></i>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </a>
+              </div>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+
+          {% include 'parts/news-widget.twig' %}
+          
+        </div>
+      </div>
+    </div>
+  </section>
+  <!--/ Section Blog-Single End /-->
+
+  {% include 'parts/footer.twig' %}
+
+  {% include 'parts/scripts.twig' %}
+
+</body>
+</html>

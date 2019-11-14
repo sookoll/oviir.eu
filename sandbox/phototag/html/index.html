@@ -1,0 +1,297 @@
+<!DOCTYPE>
+<html>
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=100"/>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<title>Tags</title>
+		<style>
+			html, body {margin:0;padding:0;}
+			img {border:none}
+			.float-left {
+				float:left
+			}
+			.float-right {
+				float:right;
+			}
+			.hidden {
+				display:none;
+			}
+			#image, #panel {
+				position:relative;
+				margin:20px;
+			}
+			#photomap {
+				position:absolute;
+				width:100%;
+				height:100%;
+				top:0px;
+				left:0px;
+			}
+			#photomap div {
+				position:absolute;
+				cursor:pointer
+			}
+			.active {
+				border:1px dashed #fff;
+				box-shadow:0 0 4px #000;
+			}
+			.tagger {
+				position:absolute;
+				top:0px;
+				left:0px;
+				background:#fff;
+				padding:10px;
+				z-index:10;
+				border:1px solid #ddd;
+				border-radius:0 4px 4px 4px;
+				box-shadow:3px 3px 3px #333;
+			}
+			.tagger input {width:150px;}
+			.tagger ul {
+				position:absolute;
+				width:140px;
+				max-height:150px;
+				overflow-y:auto;
+				background:#fff;
+				font-size:11px;
+				margin:0;
+				padding:0;
+			}
+			.tagger ul li {
+				list-style-type: none;
+				margin:0;
+				padding:2px 5px;
+				cursor:pointer
+			}
+			.tagger ul li:hover {background:#eee;}
+			#overlay {position:fixed;top:0;left:0;width:100%;height:100%;display:none}
+
+		</style>
+	</head>
+	<body>
+		<div id="image">
+			<img src="http://oviir.eu/miuview-api/?request=getimage&album=kokkutulekud&item=oviirid10.07.2011.jpg&mode=longest&size=1000" usemap="#photomap" class="mapimg"/>
+			<div id="photomap">
+			</div>
+		</div>
+		<div id="panel">
+			<button id="activate">Alusta</button> <button id="deactivate" disabled="true">Lõpeta</button>
+			<div class="tags"></div>
+		</div>
+		<ul id="helper" class="hidden"></ul>
+		<div id="overlay"></div>
+		<script type="text/javascript" src="http://oviir.eu/libs/jquery/jquery-1.7.1.min.js"></script>
+		<script type="text/javascript">
+			$.expr[":"].containsNoCase = function(el, i, m) {
+				var search = m[3];
+				if (!search)
+					return false;
+				return eval("/" + search + "/i").test($(el).text());
+			};
+			
+			var tagger = false;
+			var ii = 0;
+			var click = [];
+			var paint;
+			var canvas;
+			var ctx;
+			
+			function addClick(x, y, dragging){
+				if(dragging){
+					click[ii].xii = x;
+					click[ii].yii = y;
+				}else{
+					click[ii] = {'id':'id_'+ii,'xi':x,'yi':y,'xii':x,'yii':y,'name':null};
+				}
+			}
+			function redraw(){
+				canvas = $('#image').find('.tagCanvas')[0];
+				context = canvas.getContext("2d");
+				canvas.width = canvas.width; // Clears the canvas
+				context.strokeStyle = "#fff";
+				context.lineJoin = "round";
+				context.lineWidth = 3;
+				context.globalAlpha = 0.7;
+				for(var i in click)
+					context.strokeRect(click[i].xi,click[i].yi,click[i].xii-click[i].xi,click[i].yii-click[i].yi);
+			}
+			function addATagger(){
+				var html = '<div class="tagger"><input type="text"><ul></ul><button class="done">Lisa</button><button class="cancel">Tühista</button></div>';
+				$('#image').append(html);
+				var x = click[ii].xi + (click[ii].xii-click[ii].xi)/2;
+				var y = click[ii].yi + (click[ii].yii-click[ii].yi)/2;
+				$('#image .tagger').css({top:y+'px',left:x+'px'});
+				$('#image .tagger input').focus();
+				$('#overlay').show();
+				paint = false;
+			}
+			
+			function changeATagger(id){
+				var html = '<div class="tagger"><input type="text"><ul></ul><button class="change" rel="'+id+'">Muuda</button><button class="remove" rel="'+id+'">Kustuta</button><button class="cancel">Tühista</button></div>';
+				$('#image').append(html);
+				for(var i in click){
+					if(id==click[i].id){
+						$('#image .tagger input').val(click[i].name);
+						var x = click[i].xi + (click[i].xii-click[i].xi)/2;
+						var y = click[i].yi + (click[i].yii-click[i].yi)/2;
+						$('#image .tagger').css({top:y+'px',left:x+'px'});
+					}
+				}
+				$('#overlay').show();
+				paint = false;
+			}
+			
+			$( function() {
+				$.getJSON('request.php', function(d) {
+					if(d.status == 1) {
+						var html = '';
+						for(var i in d.data){
+							html += '<li>'+d.data[i]+'</li>';
+						}
+						$('#helper').html(html);
+					}
+				});
+				
+				$('#activate').click(function(){
+					tagger = true;
+					var w = $('#image img').width();
+					var h = $('#image img').height();
+					$('#image').append('<canvas class="tagCanvas" width="'+w+'" height="'+h+'" style="position:absolute;top:0px;left:0px;"></canvas>');
+					$('#image .tagCanvas').css('cursor','crosshair');
+					$('#photomap>div').each(function(i){
+						var name = $(this).attr('title');
+						var id = $(this).attr('id');
+						var xi = $(this).position().left;
+						var yi = $(this).position().top;
+						var xii = xi + $(this).width();
+						var yii = yi + $(this).height();
+						click[ii] = {'id':id,'xi':xi,'yi':yi,'xii':xii,'yii':yii,'name':name};
+						ii++;
+					});
+					redraw();
+					$(this).attr('disabled','true');
+					$('#deactivate').removeAttr('disabled');
+				});
+				$('#deactivate').click(function(){
+					tagger = false;
+					$('#image .tagCanvas').css('cursor','default');
+					$('#image .tagCanvas').remove();
+					var map ='';
+					var tags = '';
+					for(var i in click){
+						var x = click[i].xi<click[i].xii?click[i].xi:click[i].xii;
+						var y = click[i].yi<click[i].yii?click[i].yi:click[i].yii;
+						map += '<div id="id_'+i+'" style="top:'+y+'px;left:'+x+'px;width:'+Math.abs(click[i].xii-click[i].xi)+'px;height:'+Math.abs(click[i].yii-click[i].yi)+'px;" title="'+click[i].name+'"></div>';
+						tags += '<a rel="id_'+i+'" href="#">'+click[i].name+'</a> | ';
+					}
+					$('#photomap').html(map);
+					$('.tags').html(tags);
+					
+					ii = 0;
+					click = [];
+					$(this).attr('disabled','true');
+					$('#activate').removeAttr('disabled');
+				});
+				
+				$('#image').delegate('.tagCanvas','mousedown',function(e){
+					if(tagger){
+						paint = true;
+						addClick(e.pageX - $('#image').offset().left, e.pageY - $('#image').offset().top);
+						//redraw();
+					}
+				});
+				$('#image').delegate('.tagCanvas','mousemove',function(e){
+					if(paint){
+						addClick(e.pageX - $('#image').offset().left, e.pageY - $('#image').offset().top, true);
+						redraw();
+					}
+				});
+				$('#image').delegate('.tagCanvas','mouseup',function(e){
+					if(paint)
+						addATagger();
+				});
+				$('#image').delegate('.tagCanvas','mouseleave',function(e){
+					if(paint)
+						addATagger();
+				});
+				$('#image .tagger .done').live('click',function(){
+					if($('#image .tagger input').val()!=''){
+						click[ii].name = $('#image .tagger input').val();
+						$('.tags').append('<span>'+click[ii].name+'</span> | ');
+						$('#image .tagger').remove();
+						$('#overlay').hide();
+						ii++;
+					}
+				});
+				$('#image .tagger .change').live('click',function(){
+					if($('#image .tagger input').val()!=''){
+						for(var i in click){
+							if($(this).attr('rel')==click[i].id){
+								click[i].name = $('#image .tagger input').val();
+								$('.tags a[rel='+click[i].id+']').attr('title',click[i].name).html(click[i].name);
+							}
+						}
+						$('#image .tagger').remove();
+						$('#overlay').hide();
+					}
+				});
+				$('#image .tagger .cancel').live('click',function(){
+					click.splice(ii,1);
+					$('#image .tagger').remove();
+					$('#overlay').hide();
+					redraw();
+				});
+				$('#image .tagger .remove').live('click',function(){
+					for(var i in click){
+						if($(this).attr('rel')==click[i].id){
+							$('.tags a[rel='+click[i].id+']').remove();
+							click.splice(i,1);
+						}
+					}
+					$('#image .tagger').remove();
+					$('#overlay').hide();
+					redraw();
+				});
+				
+				$('.tags').delegate('a','mouseover',function(e) {
+					$('#'+$(this).attr('rel')).mouseover();
+				}).delegate('a','mouseout',function(e) {
+					$('#'+$(this).attr('rel')).mouseout();
+				}).delegate('a','click',function(e) {
+					e.preventDefault();
+					if(tagger){
+						changeATagger($(this).attr('rel'));
+					}
+				});
+				
+				$('#photomap').delegate('div','mouseover',function(e){
+					$(this).addClass('active');
+				}).delegate('div','mouseout',function(e){
+					$(this).removeClass('active');
+				});
+				
+				$('.tagger input').live('keyup',function(e) {
+					var keycode = (e.keyCode ? e.keyCode : e.which);
+					$('.tagger ul').html('');
+					if($(this).val().length>1) {
+						var s = $(this).val();
+						var vals = [];
+						$('#helper li:containsNoCase("' + s + '")').each( function() {
+							vals.push('<li>'+$(this).html()+'</li>');
+						});
+						if(vals.length>0) {
+							for(var i in vals) {
+								$('.tagger ul').append(vals[i]);
+							}
+						}
+					}
+				});
+				$('.tagger ul li').live('click',function(){
+					$('.tagger input').val($(this).html());
+					$('.tagger ul').html('');
+				})
+				
+			});
+		</script>
+	</body>
+</html>

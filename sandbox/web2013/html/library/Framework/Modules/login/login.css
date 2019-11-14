@@ -1,0 +1,28 @@
+#login {
+	width:500px;
+	margin:100px auto 0 auto;
+	text-align:center;
+}
+
+#login hr {
+	margin:20px 0 60px 0
+}
+
+#login input.text {
+	font-size:16px;
+	border:1px solid #bbb;
+	padding:8px;
+	background: #f9f9f9;
+	box-shadow:0 0 4px #ccc inset;
+	margin-bottom:6px;
+	width:300px
+}
+
+#login input.text:focus {
+	border-color:#999;
+	outline:none
+}
+
+#login input.btn {
+	
+}

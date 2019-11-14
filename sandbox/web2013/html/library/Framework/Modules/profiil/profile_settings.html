@@ -1,0 +1,51 @@
+<div id="profile">
+	<div class="notes float-left">
+		<h3>{_h3_1_}</h3>
+		<div class="warning">{_warning_}</div>
+		<div style="height:30px"></div>
+		<h3>{_h3_4_}</h3>
+		<a href="{_cancel_href_}" class="btn" style="width:60px">{_cancel_}</a>
+		<div style="height:4px">&nbsp;</div>
+		<a href="save" class="btn btn-success save" style="width:60px">{_save_}</a>
+		<div style="height:34px">&nbsp;</div>
+		<div class="loading" style="display:none">
+			<img src="{_loading_}"> <em class="grey">{_wait_}</em>
+		</div>
+	</div>
+	<div class="tablewrapper float-left">
+		<h2 style="text-align:center;">{_h2_}</h2>
+		<h4>{_username_}</h4>
+		<div>
+			<input type="hidden" name="settings" value="1">
+			<input type="hidden" name="id" value="{_id_}">
+			<input type="text" class="text" name="uname" placeholder="{_ph_uname_}" value="{_uname_}">
+		</div>
+		<div style="height:14px"></div>
+		<h4>{_passwoord_}</h4>
+		<div>
+			<input type="password" class="text" name="passwoord" placeholder="{_ph_passwoord_}" value="">
+		</div>
+		<div>
+			<input type="password" class="text" name="passwoord2" placeholder="{_ph_passwoord2_}" value="">
+		</div>
+		<em class="grey small">{_passwoord_note_}</em>
+		<div style="height:14px"></div>
+		<h4>{_invitation_note_}</h4>
+		<div>
+			<select name="invitation" tabindex="0" style="width:200px">
+				{_invitations_}
+			</select>
+		</div>
+		<div style="height:14px"></div>
+		<h4>{_notification_note_}</h4>
+		<div>
+			<select name="notification" disabled="disabled" tabindex="0" style="width:200px">
+				{_notifications_}
+			</select>
+		</div>
+		<div style="height:14px"></div>
+		{_admin_}
+		<div style="height:34px"></div>
+	</div>
+	<div class="clear"></div>
+</div>

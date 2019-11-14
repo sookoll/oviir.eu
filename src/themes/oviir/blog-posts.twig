@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  {% include 'parts/header.twig' %}
+
+</head>
+
+<body>
+  <!--/ Nav Start /-->
+  {% include 'parts/menu.twig' %}
+  <!--/ Nav End /-->
+
+  <!--/ Intro Skew Star /-->
+  <div class="intro intro-single route bg-image" style="background-image: url({{ meta.image }})">
+    <div class="overlay-mf"></div>
+    <div class="intro-content display-table">
+      <div class="table-cell">
+        <div class="container">
+          <h2 class="intro-title mb-4">Uudised</h2>
+          <p class="subtitle-a text-light">
+            {{ meta.description }}
+          </p>
+          <ol class="breadcrumb d-flex justify-content-center">
+            <li class="breadcrumb-item">
+              <a href="/">Avaleht</a>
+            </li>
+            <li class="breadcrumb-item active">{{ meta.title }}</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--/ Intro Skew End /-->
+
+  <!--/ Section Blog-Single Star /-->
+  <section class="blog-wrapper sect-pt4" id="blog">
+    <div class="container">
+      <ul class="list-unstyled">
+        {% for page in pages if page.meta.category == "uudis" %}
+        <li class="media mb-3">
+          <a href="{{ page.url }}">
+            <img class="img-fluid lazy mr-3"
+              src="{{ theme_url }}/img/placeholder.png"
+              data-src="{{ page.meta.thumbnail ? page.meta.thumbnail : theme_url ~ '/img/placeholder.png' }}"
+              alt="{{ page.meta.title }}"
+              style="width: 200px">
+          </a>
+          <div class="media-body">
+            <h5 class="mt-0 mb-1">
+              <a href="{{ page.url }}">{{ page.meta.title }}</a>
+            </h5>
+            <div class="post-author my-3">
+              <a href="#">
+                <i class="icon ion-ios-person"></i>
+                <span class="author">{{ page.meta.author ? page.meta.author : 'Kasutaja' }}</span>
+              </a>
+              <i class="icon ion-md-time"></i> {{ page.date_formatted }}
+            </div>
+            {{ page.excerpt }}...
+          </div>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </section>
+  <!--/ Section Blog-Single End /-->
+
+  {% include 'parts/footer.twig' %}
+
+  {% include 'parts/scripts.twig' %}
+
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>{_title_}</title>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta charset="utf-8">
+		<link rel="image_src" href="{_image-path_}" />
+		<link rel="stylesheet" href="{_tmpl-path_}/css/style.css">
+		{_modul-styles_}
+	</head>
+	<body>
+		<div id="zero">
+			<div id="wrapper">
+				<div id="header">
+					{_user_}
+					<span class="time">{_time_}</span><br>
+					<div class="title"><strong>{_title_}</strong></div>
+					{_quotes_}
+				</div>
+				<div id="menu">{_menu_}</div>
+				<div id="content">{_content_}</div>
+				<div id="footer">
+					Soovid lehte täiendada? Omad kasulikku infot? Võta kindlasti <a href="{_url_}">ühendust</a>!<br>
+					&copy; Oviiride suguvõsa
+				</div>
+			</div>
+		</div>
+			
+		<ul id="helper" class="hide"></ul>
+		{_modal-content_}
+		<script type="text/javascript" src="{_libs-path_}/jquery/jquery-1.8.3.min.js"></script>
+		<script type="text/javascript">
+			var Conf = {
+				Url:'{_url_}',
+				requestUrl:'{_ajax-handler_}',
+				modulParam:'{_modul-param_}',
+				modul:'{_modul_}'
+			};
+		</script>
+		{_modul-scripts_}
+	</body>
+</html>

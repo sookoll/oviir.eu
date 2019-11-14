@@ -1,0 +1,35 @@
+<meta charset="utf-8">
+<title>{{ meta.title }} - {{ site_title }}</title>
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<meta content="" name="keywords">
+<meta content="{{ meta.description|striptags }}" name="description">
+
+<!-- Favicons -->
+<link href="img/favicon.png" rel="icon">
+<link href="img/apple-touch-icon.png" rel="apple-touch-icon">
+
+<!-- Facebook and Twitter integration -->
+<meta property="og:title" content="{{ meta.title }}"/>
+<meta property="og:image" content="{{ meta.image }}"/>
+<meta property="og:url" content="{{ current_page.url }}"/>
+<meta property="og:site_name" content="{{ site_title }}"/>
+<meta property="og:description" content="{{ meta.description|striptags }}"/>
+<meta name="twitter:title" content="{{ meta.title }}" />
+<meta name="twitter:image" content="{{ meta.image }}" />
+<meta name="twitter:url" content="{{ current_page.url }}" />
+<meta name="twitter:card" content="summary_large_image" />
+
+<!-- Bootstrap CSS File -->
+<link href="{{ theme_url }}/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Libraries CSS Files -->
+<link href="https://unpkg.com/ionicons@4.5.10-0/dist/css/ionicons.min.css" rel="stylesheet">
+<link href="{{ theme_url }}/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+<link href="{{ theme_url }}/lib/animate/animate.min.css" rel="stylesheet">
+<link href="{{ theme_url }}/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+<link href="{{ theme_url }}/lib/lightbox/css/lightbox.min.css" rel="stylesheet">
+<link href="{{ theme_url }}/lib/photoswipe/photoswipe.css" rel="stylesheet">
+<link href="{{ theme_url }}/lib/photoswipe/default-skin/default-skin.css" rel="stylesheet">
+
+<!-- Main Stylesheet File -->
+<link href="{{ theme_url }}/css/style.css" rel="stylesheet">

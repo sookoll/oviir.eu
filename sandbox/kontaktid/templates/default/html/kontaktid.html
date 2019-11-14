@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=100"/>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" />
+		<title>OVIIRIDE KONTAKTID</title>
+		<link rel="shortcut icon" href="{_def-tmpl_}images/favicon.png">
+		<link rel="stylesheet" type="text/css" href="{_def-libs_}flexigrid-1.1/css/flexigrid.pack.css" />
+		<link rel="stylesheet" type="text/css" href="{_def-tmpl_}css/kontaktid.css"/>
+		<script type="text/javascript" src="{_def-libs_}jquery/jquery-1.6.2.min.js"></script>
+		<script type="text/javascript" src="{_def-libs_}flexigrid-1.1/js/flexigrid.pack.js"></script>
+		<script type="text/javascript" src="jscript/kontaktid.js"></script>
+	</head>
+	<body>
+		<div id="container">
+			<div id="filter_container" class="hide">
+				<div id="filter_wrapper">
+					<div class="floatleft">
+						<h2 class="floatleft">
+						OVIIRIDE
+						<br>
+						KONTAKTID
+						</h2>
+					</div>
+					<div class="floatright">
+						<div>
+							<h3 class="floatleft">Filter:</h3>
+							<h3 class="floatright">
+							<a href="logout" id="logout">Logi välja</a>
+							</h3>
+							<div class="clear">
+							</div>
+						</div>
+						<div>
+							<form action="" id="filter" method="post">
+								<div class="input floatleft">
+									<label for="firstname">
+										Eesnimi sisaldab:
+									</label>
+									<br>
+									<input type="text" name="firstname" id="firstname">
+								</div>
+								<div class="input floatleft marginleft3px">
+									<label for="lastname">
+										Perenimi sisaldab:
+									</label>
+									<br>
+									<input type="text" name="lastname" id="lastname">
+								</div>
+								<div class="input floatleft marginleft3px">
+									<label for="address">
+										Aadress sisaldab:
+									</label>
+									<br>
+									<input type="text" name="address" id="address">
+								</div>
+								<div class="input floatleft marginleft3px">
+									<label for="ancestor">
+										Esivanem:
+									</label>
+									<br>
+									<select name="ancestor" id="ancestor">
+										<option value="*">*</option>
+										{_data_ancestors_}
+									</select>
+								</div>
+								<div class="input floatleft marginleft3px">
+									<label for="active">
+										Kutse:
+									</label>
+									<br>
+									<select name="active" id="active">
+										<option value="*">*</option>
+										<option value="ei">Ei</option>
+										<option value="email">E-post</option>
+										<option value="post">Post</option>
+									</select>
+								</div>
+								<div class="clear">
+								</div>
+							</form>
+						</div>
+						<div>
+							<button class="floatright" onclick="doReset();return false;" style="color:#1e90ff;">
+								Taasta algseis
+							</button>
+							<button class="floatright" onclick="doCopy('email');return false;">
+								Kopeeri e-posti aadressid
+							</button>
+							<button class="floatright" onclick="doPrint();return false;">
+								Prindi
+							</button>
+							<button class="floatright" onclick="doFilter();return false;" style="color:#ff4500;">
+								Otsi
+							</button>
+							<button class="floatleft" onclick="doDetail(-1);return false;" style="color:#228b22;">
+								Lisa uus
+							</button>
+							<div class="clear">
+							</div>
+						</div>
+					</div>
+					<div class="clear">
+					</div>
+				</div>
+			</div>
+			<div class="wrapper">
+				<div id="contacts" style="display:none">
+				</div>
+			</div>
+			<!-- modal -->
+			<div id="overlaymask" class="overlays">
+			</div>
+			<div id="copy" class="modal overlays hide shadow">
+				<textarea rows="20" cols="60" readonly="readonly">
+				</textarea>
+				<p>
+					<input type="button" onclick="doCancel();return false;" value="Tagasi">
+				</p>
+			</div>
+			<div id="contact_details" class="modal overlays hide shadow">
+				<form action="" method="post" id="detailform">
+					<div class="input">
+						<label for="firstname">
+							Eesnimi:
+						</label>
+						<br>
+						<input type="text" name="firstname" id="firstname">
+					</div>
+					<div class="input">
+						<label for="lastname">
+							Perenimi:
+						</label>
+						<br>
+						<input type="text" name="lastname" id="lastname">
+					</div>
+					<div class="input">
+						<label for="address">
+							Aadress:
+						</label>
+						<br>
+						<input type="text" name="address" id="address">
+					</div>
+					<div class="input">
+						<label for="email">
+							E-post:
+						</label>
+						<br>
+						<input type="text" name="email" id="email">
+					</div>
+					<div class="input">
+						<label for="phone">
+							Telefon:
+						</label>
+						<br>
+						<input type="text" name="phone" id="phone">
+					</div>
+					<div class="input">
+						<label for="ancestor">
+							Esivanem:
+						</label>
+						<br>
+						<select name="ancestor" id="ancestor">
+							{_data_ancestors_}
+						</select>
+					</div>
+					<div class="input">
+						<label for="active">
+							Kokkutuleku kutse:
+						</label>
+						<br>
+						<select name="active" id="active">
+							<option value="0">Ei</option>
+							<option value="1">Jah</option>
+						</select>
+					</div>
+					<input type="hidden" name="id">
+				</form>
+				<input type="button" onclick="doSave();return false;" value="Salvesta">
+				<input type="button" onclick="doCancel();return false;" value="Tühista">
+			</div>
+			<!-- modal -->
+		</div>
+	</body>
+</html>

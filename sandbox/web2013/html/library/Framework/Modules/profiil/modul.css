@@ -1,0 +1,87 @@
+#profile img {
+	vertical-align:middle
+}
+
+#profile .notes {
+	width:330px;
+	min-height:400px
+}
+
+#profile .tablewrapper {
+	width:776px
+}
+
+#profile h2 {
+	color:#00bafe
+}
+
+#profile h3 {
+	margin-top:0;
+	color:#00bafe
+}
+
+#profile .notes h3 {
+	color:#ef5d9b
+}
+
+#profile .notes a:hover {
+	text-decoration:none
+}
+
+.grey {
+	color:#888
+}
+
+.small {
+	font-size:small
+}
+
+#profile table {
+	border-collapse:collapse;
+	width:100%
+}
+
+#profile table tr:hover {
+	background-color:#f6f6f6
+}
+
+#profile table td {
+	border: 1px solid #eee;
+	padding:4px
+}
+
+#profile .align-left {
+	text-align:left
+}
+
+#profile .align-right {
+	text-align:right
+}
+
+#profile .align-center {
+	text-align:center
+}
+
+/* add/edit profile */
+#profile input.text, #profile textarea {
+	font-size:16px;
+	border:1px solid #bbb;
+	padding:8px;
+	background: #f9f9f9;
+	box-shadow:0 0 4px #ccc inset;
+	margin-bottom:6px;
+	width:300px
+}
+
+#profile input.text:focus, #profile textarea:focus {
+	border-color:#999;
+	outline:none
+}
+
+#profile .selectBox-dropdown .selectBox-label {
+    display: block;
+}
+
+#profile em.tip {
+	color:#f6b92e
+}

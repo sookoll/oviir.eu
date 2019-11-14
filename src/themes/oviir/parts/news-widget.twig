@@ -1,0 +1,16 @@
+<div class="widget-sidebar">
+  <h5 class="sidebar-title">Viimased uudised</h5>
+  <div class="sidebar-content">
+    <ul class="list-sidebar">
+      {% set i = 1 %}
+      {% for page in pages if page.meta.category == "uudis" %}
+      {% if i < 6 %}
+      <li>
+        <a href="{{ page.url }}">{{ page.meta.title }}</a>
+      </li>
+      {% set i = i + 1 %}
+      {% endif %}
+      {% endfor %}
+    </ul>
+  </div>
+</div>

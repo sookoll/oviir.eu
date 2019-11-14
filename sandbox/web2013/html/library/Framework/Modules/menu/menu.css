@@ -1,0 +1,33 @@
+/* main menu */
+#menu {
+	margin-bottom:20px;
+	margin-left:14px
+}
+#menu ul {
+	list-style-type:none;
+	padding:0;
+	margin:0
+}
+#menu li {
+	display:inline;
+	padding:0 10px 0 0
+}
+#menu li a {
+	font-size:24px;
+	text-decoration:none;
+	padding:6px 10px;
+	background:#eee;
+	border-radius:4px;
+	box-shadow:0 0 4px #666
+}
+#menu li a:hover {
+	background:#fafafa;
+}
+#menu li a:active {
+	position:relative;
+	top:2px;
+}
+#menu li.active a {
+	color:#000;
+	background:#fafafa;
+}

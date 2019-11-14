@@ -1,0 +1,88 @@
+#kokkutulekud img {
+	vertical-align:middle
+}
+
+#kokkutulekud .notes {
+	width:330px;
+	min-height:400px
+}
+
+#kokkutulekud .tablewrapper {
+	width:776px
+}
+
+#kokkutulekud h2 {
+	color:#00bafe
+}
+
+#kokkutulekud h3 {
+	margin-top:0;
+	color:#00bafe
+}
+
+#kokkutulekud .notes h3 {
+	color:#ef5d9b
+}
+
+.grey {
+	color:#888
+}
+
+.small {
+	font-size:small
+}
+
+#kokkutulekud table {
+	border-collapse:collapse;
+	width:100%
+}
+
+#kokkutulekud table tr:hover {
+	/*background-color:#f0ffff*/
+	background-color:#f6f6f6
+}
+
+#kokkutulekud table td {
+	border-bottom: 1px solid #eee;
+	padding:4px
+}
+
+#kokkutulekud .align-right {
+	text-align:right
+}
+
+#kokkutulekud .align-center {
+	text-align:center
+}
+
+#kokkutulekud input.text, #kokkutulekud textarea {
+	font-size:16px;
+	border:1px solid #bbb;
+	padding:8px;
+	background: #f9f9f9;
+	box-shadow:0 0 4px #ccc inset;
+	margin-bottom:6px;
+	width:300px
+}
+
+#kokkutulekud input.text:focus, #kokkutulekud textarea:focus {
+	border-color:#999;
+	outline:none
+}
+
+#kokkutulekud .selectBox-dropdown .selectBox-label {
+    display: block;
+}
+
+#kokkutulekud em.tip {
+	color:#f6b92e
+}
+
+#kokkutulekud .picture {
+	border:1px solid #ddd;
+	background:#eee;
+	padding:8px;
+	width:720px;
+	min-height:400px;
+	box-shadow:3px 3px 5px #666
+}

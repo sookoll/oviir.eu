@@ -1,0 +1,17 @@
+<div class="{{ grid ? grid : 'col-md-6' }}" data-tags="{{ doc.meta.tags }}">
+  <div class="service-box">
+    <div class="service-ico">
+      <a href="{{ doc.url }}" class="ico-circle">
+        <i class="icon {{icon ? icon : 'ion-md-document' }}"></i>
+      </a>
+    </div>
+    <div class="service-content">
+      <h2 class="s-title line-clamp-2">
+        <a href="{{ doc.url }}" data-toggle="tooltip" data-placement="top" title="{{ doc.title }}">{{ doc.title }}</a>
+      </h2>
+      <p class="s-description text-center">
+        {{ doc.description }}
+      </p>
+    </div>
+  </div>
+</div>

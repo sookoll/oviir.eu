@@ -1,0 +1,67 @@
+<div id="profile">
+	<div class="notes float-left">
+		<h3>{_h3_1_}</h3>
+		<div class="warning">{_warning_}</div>
+		<div style="height:30px"></div>
+		<h3>{_h3_4_}</h3>
+		<a href="{_cancel_href_}" class="btn" style="width:60px">{_cancel_}</a>
+		<div style="height:4px">&nbsp;</div>
+		<a href="save" class="btn btn-success save" style="width:60px">{_save_}</a>
+		<div style="height:34px">&nbsp;</div>
+		{_actions_}
+		<div style="height:34px">&nbsp;</div>
+		<div class="loading" style="display:none">
+			<img src="{_loading_}"> <em class="grey">{_wait_}</em>
+		</div>
+	</div>
+	<div class="tablewrapper float-left">
+		<h2 style="text-align:center;">{_h2_}</h2>
+		<h4>{_information_}</h4>
+		<div>
+			<input type="hidden" name="id" value="{_id_}">
+			<input type="text" class="text" name="first_name" placeholder="{_ph_first_name_}" value="{_first_name_}">
+		</div>
+		<div>
+			<input type="text" class="text" name="last_name" placeholder="{_ph_last_name_}" value="{_last_name_}">
+		</div>
+		<div>
+			<input type="text" class="text" name="birth" placeholder="{_ph_birth_}" value="{_birth_}">
+		</div>
+		<div>
+			<input type="text" class="text" name="death" placeholder="{_ph_death_}" value="{_death_}">
+		</div>
+		<em class="grey small">{_death_note_}</em>
+		<div style="height:14px"></div>
+		<em class="">{_relation_note_}</em>
+		<div>
+			<select name="relation" tabindex="0" style="width:200px">
+				{_relations_}
+			</select>
+		</div>
+		<div style="height:14px"></div>
+		<em class="">{_ancestor_note_}</em>
+		<div>
+			<select name="ancestor" tabindex="0" style="width:200px">
+				{_ancestors_}
+			</select>
+		</div>
+		<div style="height:6px"></div>
+		<div>
+			<input type="text" class="text" name="related_name" placeholder="{_ph_related_name_}" value="{_related_name_}">
+			<input type="hidden" name="related_with" value="{_related_with_}">
+			<ul class="memberslist" style="display:none"></ul>
+		</div>
+		<em class="grey small">{_related_name_note_}</em>
+		<h4>{_contacts_}</h4>
+		<div>
+			<input type="text" class="text" name="address" placeholder="{_ph_address_}" value="{_address_}">
+		</div>
+		<div>
+			<input type="text" class="text" name="email" placeholder="{_ph_email_}" value="{_email_}">
+		</div>
+		<div>
+			<input type="text" class="text" name="phone" placeholder="{_ph_phone_}" value="{_phone_}">
+		</div>
+	</div>
+	<div class="clear"></div>
+</div>

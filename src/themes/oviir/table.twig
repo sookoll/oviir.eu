@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  {% include 'parts/header.twig' %}
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css">
+
+  <style>
+    table.dataTable th:first-letter {
+      text-transform: capitalize;
+    }
+    table.dataTable span.highlight {
+      background-color: #FFFF88;
+    }
+  </style>
+
+</head>
+
+<body>
+  <!--/ Nav Start /-->
+  {% include 'parts/menu.twig' %}
+  <!--/ Nav End /-->
+
+  <!--/ Intro Skew Star /-->
+  <div class="intro intro-single route bg-image" style="background-image: url({{ meta.image }})">
+    <div class="overlay-mf"></div>
+    <div class="intro-content display-table">
+      <div class="table-cell">
+        <div class="container">
+          <h2 class="intro-title mb-4">{{ meta.title }}</h2>
+          <ol class="breadcrumb d-flex justify-content-center">
+            <li class="breadcrumb-item">
+              <a href="/">Avaleht</a>
+            </li>
+            <li class="breadcrumb-item active">{{ meta.title }}</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--/ Intro Skew End /-->
+
+  <!--/ Section Blog-Single Star /-->
+  <section class="blog-wrapper sect-pt4" id="blog">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="article-content lead">
+            {{ content }}
+          </div>
+          <div id="toolbar" class="mb-3 text-right">
+            <button class="btn btn-secondary copy"
+                role="button"
+                data-toggle="modal"
+                data-target="#copy"
+                data-row="">
+                <i class="icon ion-md-copy"></i> Kõik e-posti aadressid
+              </button>
+            <button class="btn btn-primary add"
+                role="button"
+                data-toggle="modal"
+                data-target="#rowEdit"
+                data-row=""
+                disabled>
+                <i class="icon ion-md-add"></i> Lisa uus
+              </button>
+          </div>
+          <table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered small display table-responsive-md" id="datatable" width="100%"></table>
+        </div>
+
+      </div>
+    </div>
+  </section>
+  <!--/ Section Blog-Single End /-->
+
+  {% include 'parts/footer.twig' %}
+
+  <!-- MODAL -->
+  <div class="modal fade" id="rowEdit" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-body">
+          <form>
+
+          </form>
+        </div>
+        <div class="modal-footer">
+          {% if meta.table.deleteColumn %}
+          <button type="button" class="btn btn-light mr-auto delete" data-action="confirm" disabled>
+            <i class="icon ion-md-trash"></i>
+            <span>Kustuta</span>
+          </button>
+          {% endif %}
+          <button type="button" class="btn btn-primary save"><i class="icon ion-ios-save"></i> Salvesta</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Sulge</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% if meta.table.copyColumn %}
+  <!-- MODAL -->
+  <div class="modal fade" id="copy" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-body">
+          <form>
+            <div class="form-group">
+              <label for="copybox" class="col-form-label">Kopeeri tekstikasti sisu <span></span></label>
+              <textarea id="copybox" class="form-control" rows="6"></textarea>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Sulge</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
+  {% include 'parts/scripts.twig' %}
+
+  <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>
+  <script src="http://bartaz.github.io/sandbox.js/jquery.highlight.js"></script>
+
+  <script type="text/javascript">
+
+    let table = null
+    let empty = {}
+
+    const config = {
+      url: '{{ meta.table.dataUrl }}',
+      params: '{{ meta.table.params }}',
+      primary: '{{ meta.table.primaryColumn }}',
+      delete: '{{ meta.table.deleteColumn }}',
+      copy: '{{ meta.table.copyColumn }}',
+      col: {{ meta.table.columns|json_encode() }},
+      dom: '{{ meta.table.dom }}',
+      editable: {{ meta.table.editable }},
+    }
+
+    function booleanCellRenderer (data, type, row) {
+      return data ? 'Jah' : 'Ei'
+    }
+
+    function createTable (data) {
+      store = data.records
+      const columns = Object.keys(data.records[0]).map(key => {
+        empty[key] = ''
+        let cell = { title: key, data: key }
+        if (key in config.col) {
+          cell = Object.assign(cell, config.col[key])
+          if (config.col[key].dataType === 'boolean') {
+            cell.render = booleanCellRenderer
+          }
+        }
+        return cell
+      })
+
+      if (config.editable) {
+        columns.push({
+          title: '',
+          data: '__editable',
+          searchable: false,
+          orderable: false
+        })
+      }
+      const settings = {
+        data: data.records.map(item => {
+          return formatRow(Object.assign({}, item))
+        }),
+        rowId: config.primary,
+        columns: columns,
+        lengthMenu: [[25, 50, 100, -1], [25, 50, 100, "Kõik"]],
+        sPaginationType : 'full_numbers',
+        iDisplayLength : 50,
+        language: {
+          processing: "Laeb ...",
+          sLengthMenu: "N&auml;ita kirjeid _MENU_ kaupa",
+          sZeroRecords: '',
+          sInfo: "_START_-_END_ / _TOTAL_",
+          sInfoEmpty: "Otsinguvasteid ei leitud",
+          sInfoFiltered: '',
+          sInfoPostFix: '',
+          sSearch: '',
+          thousands: '',
+          paginate: {
+            first: '<i class="icon ion-ios-skip-backward"></i>',
+            previous: '<i class="icon ion-ios-arrow-back"></i>',
+            next: '<i class="icon ion-ios-arrow-forward"></i>',
+            last: '<i class="icon ion-ios-skip-forward"></i>'
+          }
+        },
+        initComplete : function (settings, json) {
+          $('#datatable_filter input')
+              .attr('placeholder', 'Otsi...')
+              .removeClass('form-control-sm')
+
+        }
+      }
+      if (config.dom) {
+        settings.sDom = config.dom
+      }
+
+      table = $('#datatable').DataTable(settings)
+
+      table.on('draw', () => {
+        const body = $(table.table().body())
+        body.unhighlight()
+        if (table.rows({ filter: 'applied' }).data().length) {
+          body.highlight(table.search())
+        }
+      })
+      // add button
+      $('#toolbar .add').prop('disabled', false)
+    }
+
+    function getEditButton (row) {
+      return `<button
+          class="btn btn-sm btn-primary edit"
+          role="button"
+          data-toggle="modal"
+          data-target="#rowEdit"
+          data-row="${row[config.primary]}">
+          <i class="icon ion-md-create"></i>
+        </button>`
+    }
+
+    function formatRow (row) {
+      if (config.editable) {
+        row.__editable = getEditButton(row)
+      }
+      return row
+    }
+
+    function deFormatRow (row) {
+      if (config.editable) {
+        delete row.__editable
+      }
+      return row
+    }
+
+    function updateRow (primary, data) {
+      return new Promise((resolve, reject) => {
+        fetch(primary ? config.url + '/' + primary : config.url, {
+          method: primary ? 'PUT' : 'POST',
+          body: JSON.stringify(data),
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Basic {{ config.api.grant|base64_encode }}'
+          }
+        })
+          .then(response => response.text())
+          .then(response => {
+            if (config.primary) {
+              data[config.primary] = primary || response
+            }
+            if (config.delete in data) {
+              table.row('#' + primary).remove().draw(false)
+            } else if (primary) {
+              table.row('#' + primary).data(formatRow(data)).draw(false)
+            } else {
+              table.row.add(formatRow(data)).draw(false)
+            }
+
+            resolve(response)
+          })
+          .catch(reject)
+      })
+    }
+
+    (function($) {
+
+      // modal
+      $('#rowEdit').on('show.bs.modal', e => {
+        const primary = $(e.relatedTarget).data('row')
+        const row = primary ? deFormatRow(Object.assign({}, table.row('#' + primary).data())) : empty
+        $(e.target).find('form').append(Object.keys(row).map(key => {
+          if (key === config.primary) {
+            return `<input type="hidden" name="${key}" value="${row[key]}">`
+          }
+          if (config.col[key].dataType === 'boolean') {
+            return `<div class="form-group">
+              <label class="col-form-label">
+                ${(key in config.col && config.col[key].title) ? config.col[key].title : key}
+              </label>
+            </div>
+            <label class="switch">
+              <input type="checkbox" name="${key}" id="${key}" ${row[key] ? 'checked' : ''} value="true">
+              <span class="slider round"></span>
+            </label>`
+          }
+          return `<div class="form-group">
+            <label for="${key}" class="col-form-label">${(key in config.col && config.col[key].title) ? config.col[key].title : key}:</label>
+            <input type="text" class="form-control" id="${key}" name="${key}" value="${row[key]}">
+          </div>`
+        }).join(''))
+        if (primary) {
+          $(e.target).find('.delete').prop('disabled', false)
+        }
+      }).on('hide.bs.modal', e => {
+        $(e.target).find('form').html('')
+        $(e.target).find('.save').removeClass('btn-success').addClass('btn-primary')
+        $(e.target).find('.delete').prop('disabled', true)
+      })
+      if (config.copy) {
+        $('#copy').on('show.bs.modal', e => {
+          const data = table.rows({ search: 'applied' }).data().filter(row => row[config.copy].length > 5).map(row => row[config.copy])
+          $(e.target).find('label span').text(`(${data.length})`)
+          $(e.target).find('textarea').text(data.join(', '))
+        }).on('hide.bs.modal', e => {
+          $(e.target).find('textarea').text('')
+        })
+      }
+
+      // save row
+      $('#rowEdit').on('click', '.save', e => {
+        const data = $('#rowEdit').find('form').serializeObject()
+        const primary = data[config.primary]
+        delete data[config.primary]
+        updateRow(primary, data)
+          .then(response => {
+            $('#rowEdit').find('.save').toggleClass('btn-primary btn-success')
+            setTimeout(() => {
+              $('#rowEdit').modal('hide')
+            }, 900)
+          })
+          .then()
+          .catch(error => console.error(error))
+      })
+
+      // delete row
+      $('#rowEdit').on('click', '.delete', e => {
+        const action = $(e.currentTarget).data('action')
+        switch (action) {
+          case 'confirm':
+            $(e.currentTarget)
+              .toggleClass('btn-light btn-danger')
+              .data('action', 'confirmed')
+              .find('span').text('Kinnita kustutamine')
+            break;
+          case 'confirmed':
+            $(e.currentTarget)
+              .toggleClass('btn-light btn-danger')
+              .data('action', 'confirm')
+              .prop('disabled', true)
+              .find('span').text('Kustuta')
+            let data = $('#rowEdit').find('form').serializeObject()
+            const primary = data[config.primary]
+            data = {}
+            data[config.delete] = true
+            updateRow(primary, data)
+              .then(response => {
+                $('#rowEdit').find('.save').toggleClass('btn-primary btn-success')
+                setTimeout(() => {
+                  $('#rowEdit').modal('hide')
+                }, 900)
+              })
+              .then()
+              .catch(error => console.error(error))
+            break
+          default:
+        }
+      })
+
+      $('#copy').on('focus', 'textarea', function () {
+        this.select()
+      }).on('mouseup', 'textarea', function () {
+        return false
+      })
+
+      setTimeout(() => {
+        if (!config.url) {
+          return false;
+        }
+        fetch(config.url + '?' + config.params, {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Basic {{ config.api.grant|base64_encode }}'
+          }
+        })
+          .then(response => response.json())
+          .then(createTable)
+          .catch(e => {
+            console.error(e)
+          })
+      }, 200)
+
+    })(jQuery);
+
+  </script>
+
+
+</body>
+</html>

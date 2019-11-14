@@ -1,0 +1,488 @@
+<!DOCTYPE>
+<html>
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=100"/>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<title>Tree</title>
+		<style>
+			.float-left {
+				float:left
+			}
+			.float-right {
+				float:right
+			}
+			a {text-decoration:none;color:#000;}
+			label.over {
+				color:#ccc;
+				font-size:13pt;
+				position:absolute;
+				margin-left:10px;
+				margin-top:10px;
+				z-index:2;
+				line-height:18px;
+			}
+			#map {
+				background:#eee;
+				overflow:hidden;
+				position:relative;
+				width:800px;
+				height:600px;
+			}
+			.ftElement {
+				border:2px solid #fff;
+				background:#ddd;
+				cursor:auto;
+				position:relative;
+			}
+			.ftElement:hover, .active {
+				border:2px solid #ddd;
+				background:#efefef;
+			}
+			.ftElement > div {
+				padding:5px;
+			}
+			.ftElement .move {
+				padding:0;
+				margin:5px;
+				cursor:pointer;
+				width:16px;
+				height:16px;
+				background:url('move.png') no-repeat;
+			}
+			.ftElement .join {
+				position: absolute;
+				width: 16px;
+				height: 16px;
+				top:50%;
+				margin-top:-10px;
+				padding:0;
+				background:#fff;
+				opacity:.6;
+				display:none;
+				cursor: pointer;
+			}
+			.ftElement .join.parent {
+				left:-20px;
+			}
+			.ftElement .join.partner {
+				right:-20px;
+			}
+			.ftElement.partner .join.partner {
+				left:-20px;
+			}
+			.ftElement .join.child {
+				top:100%;
+				margin-top:4px;
+				left:50%;
+				margin-left:-10px;
+			}
+			#panel {
+				width:300px;
+				height:580px;
+				margin-left:10px;
+				padding:10px;
+				background:#eee;
+				position:relative;
+			}
+			#panel input {
+				font-size:13pt;
+				line-height:18px;
+				padding:10px;
+				border:1px solid #ddd;
+				width:298px;
+			}
+			#panel .load {position:absolute;bottom:10px;padding:3px 5px;background:#ddd;border-radius:4px;}
+			#panel .results li {cursor:pointer}
+		</style>
+		<script type="text/javascript" src="http://oviir.eu/libs/jquery/jquery-1.6.2.min.js"></script>
+		<script type="text/javascript" src="http://oviir.eu/libs/jquery/jquery-ui-1.8.15.custom.min.js"></script>
+		<script type="text/javascript" src="http://oviir.eu/libs/jquery/jquery.labelover.js"></script>
+		<script type="text/javascript">
+
+			//		(function($){
+			$.expr[":"].containsNoCase = function(el, i, m) {
+				var search = m[3];
+				if (!search)
+					return false;
+				return eval("/" + search + "/i").test($(el).text());
+			};
+			
+			function FamilyTree(div,o) {
+
+				var _this = this;
+				
+				// Defaults
+				if( !o )
+					var o = {};
+				if( o.url == undefined )
+					o.url = 'request.php';
+				if( o.itemW == undefined )
+					o.itemW = 100;
+				if( o.itemH == undefined )
+					o.itemH = 50;
+				if(o.activeClass == undefined)
+					o.activeClass = 'active';
+				
+				this.o = o;
+				this.data = {};
+				this.padding = 50
+				this.x = this.padding;
+				this.y = this.padding;
+				this.xi = this.x;
+				this.yi = this.y;
+				this.xm = this.x;
+				this.ym = this.y;
+				this.canvas;
+				this.ctx;
+				this.data = [];
+				this.lines = [];
+				this.div=div;
+				this.joining = false;
+				this.join = {};
+				
+				this.init = function(){
+					$.getJSON(_this.o.url, function(d) {
+						if(d.status == 1) {
+							_this.data = d.data;
+							_this.builder();
+						}
+					});
+				}
+				
+				this.organize = function(){
+					var cx = $('.ftContent').position().left;
+					var cy = $('.ftContent').position().top;
+					
+					_this.init();
+					
+					$('.ftContent').animate({
+						left:cx,
+						top:cy
+					},1000);
+				}
+
+				this.panTo = function(el) {
+					var divw = $(_this.div).width();
+					var divh = $(_this.div).height();
+					var ccx = $(_this.div).find('.ftContainer').position().left;
+					var ccy = $(_this.div).find('.ftContainer').position().top;
+					var ccw = $(_this.div).find('.ftContainer').width();
+					var cch = $(_this.div).find('.ftContainer').height();
+					var cx = $(_this.div).find('.ftContent').position().left;
+					var cy = $(_this.div).find('.ftContent').position().top;
+					var cw = $(_this.div).find('.ftContent').width();
+					var ch = $(_this.div).find('.ftContent').height();
+					var ex = $(_this.div).find('#'+el).position().left;
+					var ey = $(_this.div).find('#'+el).position().top;
+
+					var x = (ccw/2-divw/2)-cx;
+					var y = (cch/2-divh/2)-cy;
+
+					x = x - ex + cx<0?0:x - ex + cx + _this.padding;
+					y = y - ey + cy<0?0:y - ey + cy + _this.padding;
+
+					//var x = $(el).position().left>$('.ftContent').position().left?$('.ftContent').position().left:$(el).position().left;
+					//var y = $(el).position().top>$('.ftContent').position().top?$('.ftContent').position().top:$(el).position().top;
+
+					$('.ftContent').animate({
+						left:x,
+						top:y
+					},1000);
+				}
+				this.select = function(el){
+					//$('.ftElement').not('#'+el).removeClass(_this.o.activeClass);
+					//$('#'+el).toggleClass(_this.o.activeClass);
+					
+					$('.ftElement').removeClass(_this.o.activeClass);
+					if(el)
+						$('#'+el).addClass(_this.o.activeClass);
+				}
+				this.unselectAll = function(){
+					$('.ftElement').removeClass(_this.o.activeClass);
+				}
+				this.builder = function() {
+					var html = '<div class="ftContainer" style="position:relative">';
+					html+='<div class="ftContent" style="cursor:move;">';
+					html+='<canvas class="ftCanvas" width="2400" height="2300"></canvas></div></div>';
+					$(_this.div).html(html);
+					var ry = _this.y;
+					if(_this.data.bounded){
+						for(var i in _this.data.bounded){
+							ry = _this.drawItem(_this.data.bounded[i],_this.x,ry);
+							ry += _this.o.itemH + _this.padding;
+						}
+					}else{
+						for(var i in _this.data){
+							ry = _this.drawItem(_this.data[i],_this.x,ry);
+							ry += _this.o.itemH + _this.padding;
+						}
+					}
+						
+					if(_this.data.nobounded){
+						for(var i in _this.data.nobounded){
+							ry = _this.drawItem(_this.data.nobounded[i],_this.x,ry);
+							ry += _this.o.itemH + _this.padding;
+						}
+					}
+					
+					if(ry) {
+						// calculate sizes and pos
+						var divw = $(_this.div).width();
+						var divh = $(_this.div).height();
+						var cw = _this.xm + _this.o.itemW + _this.padding < divw?divw:_this.xm + _this.o.itemW + _this.padding;
+						var ch = _this.ym + _this.o.itemH + _this.padding < divh?divh:_this.ym + _this.o.itemH + _this.padding;
+						var ccw = 2*cw-divw;
+						var cch = 2*ch-divh;
+						var ccl = ccw/2-divw/2;
+						var cct = cch/2-divh/2;
+
+						$(_this.div).find('.ftContainer').css({
+							'width':ccw+'px',
+							'height':cch+'px',
+							'left':'-'+ccl+'px',
+							'top':'-'+cct+'px'
+						});
+						$(_this.div).find('.ftContent').css({
+							'width':cw+'px',
+							'height':ch+'px',
+							'left':ccl+'px',
+							'top':cct+'px'
+						})
+						.draggable({
+							containment:'parent',
+							cancel:'.ftElement'
+						});
+						$(_this.div).find('.ftCanvas').attr({
+							'width':cw,
+							'height':ch
+						});
+
+						_this.canvas = $(_this.div).find('.ftCanvas')[0];
+						if(_this.canvas.getContext) {
+							_this.ctx = _this.canvas.getContext("2d");
+							_this.addLines();
+							$('.ftElement').draggable({
+								containment: 'parent',
+								handle:'.move',
+								zIndex:901,
+								drag: function() {
+									_this.ctx.clearRect(0,0,cw,ch);
+									_this.addLines();
+								}
+							});
+							$('.ftElement').live('click', function(e) {
+								e.preventDefault()
+								e.stopPropagation();
+								var id = $(this).attr('id');
+								_this.select(id);
+								
+							});
+							$('.ftContent').live('click', function(e) {
+								e.preventDefault();
+								_this.select();
+							});
+							
+						}
+					}
+				}
+				this.drawItem = function(ar,x,y) {
+					_this.add(x,y,ar.id,ar.name);
+					_this.xi = x;
+					_this.yi = y;
+					var yl = 0;
+					var xl = 0;
+					if(ar.partners) {
+						for(var j in ar.partners) {
+							_this.xi += _this.o.itemW+_this.padding;
+							_this.add(_this.xi,y,ar.partners[j].id,ar.partners[j].name,true);
+							_this.lines.push({
+								'from': {
+									'id':'elem_'+ar.id,
+									'anchor': {
+										'x':_this.o.itemW,
+										'y':_this.o.itemH/2+yl
+									}
+								},
+								'to': {
+									'id':'elem_'+ar.partners[j].id,
+									'anchor': {
+										'x':0,
+										'y':_this.o.itemH/2+yl
+									}
+								},
+								'color':'red'
+							});
+							yl += 5;
+						}
+					}
+					if(ar.childrens) {
+						for(var j in ar.childrens) {
+							_this.yi += _this.o.itemH+_this.padding;
+							_this.lines.push({
+								'from': {
+									'id':'elem_'+ar.id,
+									'anchor': {
+										'x':_this.o.itemW/2+xl,
+										'y':_this.o.itemH
+									}
+								},
+								'to': {
+									'id':'elem_'+ar.childrens[j].id,
+									'anchor': {
+										'x':0,
+										'y':_this.o.itemH/2
+									}
+								},
+								'color':'green'
+							});
+							_this.yi = _this.drawItem(ar.childrens[j],x+_this.o.itemW/2+_this.padding,_this.yi);
+							xl -= 5;
+						}
+					}
+					return _this.yi;
+				}
+				this.add = function(x,y,id,name,partner) {
+					_this.xm = x>_this.xm?x:_this.xm;
+					_this.ym = y>_this.ym?y:_this.ym;
+					var c = $(_this.div).find('.ftContent');
+					var cl = 'ftElement partner';
+					var html = '<div class="search float-left">'+name+'</div><div class="move float-right"></div>'
+					if(!partner){
+						cl = 'ftElement';
+					}
+					$('<div/>', {
+						'id':'elem_'+id,
+						'class':cl,
+						'css': {
+							'position': 'absolute',
+							'top': y+'px',
+							'left': x+'px',
+							'width': _this.o.itemW+'px',
+							'height': _this.o.itemH+'px'
+						},
+						'html':html
+					}).appendTo(c);
+				}
+				this.addLines = function() {
+					for(var i in _this.lines) {
+
+						var points = [];
+
+						var fx = $('#'+_this.lines[i].from.id).position().left+_this.lines[i].from.anchor.x;
+						var fy = $('#'+_this.lines[i].from.id).position().top+_this.lines[i].from.anchor.y;
+						points.push({
+							'x':fx,
+							'y':fy
+						});
+
+						var tx = $('#'+_this.lines[i].to.id).position().left+_this.lines[i].to.anchor.x;
+						var ty = $('#'+_this.lines[i].to.id).position().top+_this.lines[i].to.anchor.y;
+
+						if(_this.lines[i].color == 'green') {
+							var mx = fx;
+							var my = ty;
+							points.push({
+								'x':mx,
+								'y':my
+							});
+						}
+
+						points.push({
+							'x':tx,
+							'y':ty
+						});
+
+						_this.ctx.beginPath();
+						_this.ctx.moveTo(points[0].x,points[0].y);
+						for(var j=1;j<points.length;j++) {
+							_this.ctx.lineTo(points[j].x,points[j].y);
+						}
+						_this.ctx.lineWidth = 2;
+						_this.ctx.strokeStyle = _this.lines[i].color;
+						_this.ctx.stroke();
+					}
+				}
+				this.drawJoin = function(x1,y1,x2,y2){
+					_this.ctx.beginPath();
+					_this.ctx.moveTo(x1,y1);
+					if(x1!=x2 || y1!=y2){
+						_this.ctx.lineTo(x2,y1);
+					}
+					_this.ctx.lineTo(x2,y2);
+					_this.ctx.lineWidth = 2;
+					_this.ctx.strokeStyle = '#FFA54F';
+					_this.ctx.stroke();
+				}
+				
+				_this.init();
+			}
+
+
+			$( function() {
+
+				$('label').labelOver('over');
+
+				var ft = new FamilyTree('#map',{
+					url:'request.php',
+					itemW:250,
+					itemH:100
+				});
+				
+				
+				$('#panel input').keyup( function(e) {
+					var keycode = (e.keyCode ? e.keyCode : e.which);
+					$('#panel ul').html('');
+					$('.ftElement').removeClass('active');
+					if($(this).val().length>2) {
+						var s = $(this).val();
+						var vals = [];
+						$('#map .ftElement .search:containsNoCase("' + s + '")').each( function() {
+							vals.push({
+								id:$(this).parent().attr('id'),
+								html:$(this).html()
+							});
+						});
+						if(vals.length>0) {
+							for(var i in vals) {
+								$('#panel ul').append('<li rel="'+vals[i].id+'">'+vals[i].html+'</li>');
+							}
+						} else {
+							$('#panel ul').append('<li>Vastet ei leidu!</li>');
+						}
+
+					}
+				});
+				$('#panel ul li').live('click', function(e) {
+					e.preventDefault();
+					//$('.ftElement').removeClass('active');
+					var id = $(this).attr('rel');
+					ft.unselectAll();
+					ft.select(id);
+					ft.panTo(id);
+				});
+				
+				$('#panel .load').live('click', function(e) {
+					e.preventDefault();
+					ft.organize();
+				});
+			});
+		</script>
+	</head>
+	<body>
+		<div class="float-left">
+			<div id="map">
+			</div>
+		</div>
+		<div class="float-left">
+			<div id="panel">
+				<label for="search" class="over">
+					Otsi nime järgi
+				</label>
+				<input id="search" type="text">
+				<ul class="results">
+				</ul>
+				<a href="#" class="load">Korrasta</a>
+			</div>
+		</div>
+	</body>
+</html>

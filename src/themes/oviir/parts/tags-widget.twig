@@ -1,0 +1,12 @@
+{% if meta.tags is not empty %}
+<div class="widget-sidebar">
+  <h5 class="sidebar-title">Sildid</h5>
+  <div class="sidebar-content">
+    <h4>
+    {% for tag in meta.tags %}
+      <a href="#" class="badge badge-primary">{{ tag }}</a>
+    {% endfor %}
+    </h4>
+  </div>
+</div>
+{% endif %}

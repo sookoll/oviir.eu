@@ -1,0 +1,30 @@
+<div class="modal overlay"></div>
+<div id="frame" class="modal">
+	<div class="image" style="width:{_width_}px;height:{_height_}px;">
+		<img src="{_mv-api_}/?request=getimage&album={_album_}&item={_item_}&mode=longest&size={_size_}" width="{_width_}" height="{_height_}"/>
+		<div class="photomap">
+			{_tag_areas_}
+		</div>
+	</div>
+	<div class="panel">
+		<div style="height:30px"></div>
+		<div>
+			<b class="title">{_title_}</b>
+			{_taggers_}
+		</div>
+		<div class="tags">
+			{_tag_links_}
+		</div>
+		<div>
+			{_description_}
+		</div>
+	</div>
+	<div class="clear"></div>
+	<div class="buttons">
+		<a href="{_prev_url_}" class="prev btn btn-inverse{_prev_disabled_}">{_prev_}</a>
+		<a href="{_next_url_}" class="next btn btn-inverse{_next_disabled_}">{_next_}</a>
+		<a href="{_list_url_}" class="close btn btn-inverse">{_back_to_list_}</a>
+	</div>
+	<div class="info">{_counter_}</div>
+</div>
+<div class="preload" style="display:none"></div>

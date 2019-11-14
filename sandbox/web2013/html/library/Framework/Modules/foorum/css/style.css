@@ -1,0 +1,120 @@
+#forum img {
+	vertical-align:middle
+}
+
+#forum .notes {
+	width:330px;
+	min-height:400px
+}
+
+#forum .tablewrapper {
+	width:776px
+}
+
+#forum h2 {
+	color:#00bafe
+}
+
+#forum h3 {
+	margin-top:0;
+	color:#00bafe
+}
+
+#forum .notes h3 {
+	color:#ef5d9b
+}
+
+.grey {
+	color:#888
+}
+
+.small {
+	font-size:small
+}
+
+#forum table {
+	border-collapse:collapse;
+	width:100%;
+	margin-bottom:24px;
+}
+
+#forum table th {
+	border: 1px solid #eee;
+	padding:6px;
+	text-align:left;
+	background-color:#f6f6f6;
+	font-weight:normal
+}
+
+#forum table th h3 {
+	margin:0
+}
+
+#forum table td {
+	border: 1px solid #eee;
+	padding:4px
+}
+
+#forum table td a {
+	text-decoration:none
+}
+
+#forum .align-right {
+	text-align:right
+}
+
+#forum .align-center {
+	text-align:center
+}
+
+/* adding */
+#forum input.text, #forum textarea {
+	font-size:16px;
+	border:1px solid #bbb;
+	padding:8px;
+	background: #f9f9f9;
+	box-shadow:0 0 4px #ccc inset;
+	margin-bottom:6px;
+	width:300px
+}
+
+#forum input.text:focus, #forum textarea:focus {
+	border-color:#999;
+	outline:none
+}
+
+#forum .selectBox-dropdown .selectBox-label {
+    display: block;
+}
+
+#forum em.tip {
+	color:#f6b92e
+}
+
+#forum td .btn.float-right {
+	margin: 2px 2px 0 4px
+}
+
+#forum tr.header td {
+	background-color:#f6f6f6
+}
+
+#forum tr.header td a {
+	margin-left:4px
+}
+
+#forum tr.separator td {
+	border:none;
+}
+
+#forum .nav {
+	padding:4px;
+	background:#f6f6f6;
+	border:1px solid #ddd;
+	border-radius:4px
+}
+
+#forum .nav a {
+	text-decoration:none;
+	color:#ef5d9b
+}
