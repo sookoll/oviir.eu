@@ -15,4 +15,6 @@ composer.phar
 vendor
 
 api/*
-src/config/config.yml
+config.yml
+config.php
+*.ini
