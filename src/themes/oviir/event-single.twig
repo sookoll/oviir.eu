@@ -4,6 +4,29 @@
 
   {% include 'parts/header.twig' %}
 
+  <style>
+
+    #phototag, #phototag .image {
+      position: relative;
+    }
+    #phototag .tags {
+      font-size: 2em
+    }
+    #phototag .photomap {
+      position:absolute;
+      width:100%;
+      height:100%;
+      top:0px;
+      left:0px;
+    }
+    #phototag .photomap div {
+      position:absolute;
+      cursor:pointer;
+      border:1px dashed #fff;
+    }
+
+  </style>
+
 </head>
 
 <body>
@@ -37,8 +60,20 @@
   <section class="blog-wrapper sect-pt4" id="blog">
     <div class="container">
       {% if meta.image %}
-      <div class="image-tags mb-4">
-        <img src="{{ meta.image }}" class="img-fluid" alt="">
+      <div id="phototag" class="mb-4">
+        <div class="image">
+          <img src="{{ meta.image }}" class="img-fluid" alt="">
+          <div class="photomap"></div>
+        </div>
+        <div class="tags my-3"></div>
+        <div class="toolbar">
+          <button class="btn btn-primary"
+            id="activate"
+            role="button">
+            <i class="icon ion-ios-pricetags"></i> Märgi sugulane
+          </button>
+          <span class="info text-muted ml-4">Siin saad pildil ära märkida inimesed, keda tead. Alustamiseks vajuta nuppu.</span>
+        </div>
       </div>
       {% endif %}
       <div class="row">
@@ -157,6 +192,190 @@
   {% include 'parts/footer.twig' %}
 
   {% include 'parts/scripts.twig' %}
+
+  <script type="text/javascript">
+
+    function ImageTagger(selector) {
+      this.el = $(selector)
+      this.active = false
+      this.canvas = null
+      this.ii = 0
+      this.tags = []
+      this.paint = false
+      this.canvas
+      this.ctx
+
+      this.getImage = () => {
+        return this.el.find('.image img')
+      }
+
+      this.activate = (btn) => {
+        this.active = true
+        const w = this.getImage().width()
+        const h = this.getImage().height()
+        this.canvas = $('<canvas class="tagCanvas" width="'+w+'" height="'+h+'" style="position:absolute;top:0px;left:0px;"></canvas>')
+        this.el.find('.image').append(this.canvas)
+        this.canvas.css('cursor','crosshair')
+        // FIXME
+        this.el.find('.photomap > div').each(i => {
+          const name = $(i).attr('title')
+          const id = $(i).attr('id')
+          const xi = $(i).position().left
+          const yi = $(i).position().top
+          const xii = xi + $(i).width()
+          const yii = yi + $(i).height()
+          this.tags[this.ii] = {id, xi, yi, xii, yii, name}
+          this.ii++
+        })
+        this.redraw()
+        if (btn) {
+          this.btn = btn
+          $(this.btn).prop('disabled', true)
+        }
+        this.canvas.on('mousedown', e => {
+          if (!this.paint && this.active) {
+            this.paint = true
+            this.addClick(e.pageX - this.el.offset().left, e.pageY - this.el.offset().top)
+          }
+        })
+        this.canvas.on('mousemove', e => {
+          if (this.paint && this.active) {
+            this.addClick(e.pageX - this.el.offset().left, e.pageY - this.el.offset().top, true)
+            this.redraw()
+          }
+        })
+        this.canvas.on('mouseup', e => {
+          if (this.paint && this.active) {
+            this.addTagger()
+          }
+        })
+
+      }
+
+      this.deactivate = () => {
+        this.active = false
+        //this.canvas.css('cursor','default')
+        this.canvas.remove()
+        let map = ''
+        let tags = ''
+        for (let i in this.tags) {
+          const x = this.tags[i].xi < this.tags[i].xii ? this.tags[i].xi : this.tags[i].xii
+          const y = this.tags[i].yi < this.tags[i].yii ? this.tags[i].yi : this.tags[i].yii
+          map += `<div id="${i}"
+            style="top: ${y}px; left:${x}px; width: ${Math.abs(this.tags[i].xii - this.tags[i].xi)}px; height: ${Math.abs(this.tags[i].yii - this.tags[i].yi)}px;"
+            title="${this.tags[i].name}"></div>`
+          tags += this.tag(i, this.tags[i].name)
+        }
+        this.el.find('.photomap').html(map)
+        this.el.find('.tags').html(tags)
+
+        this.ii = 0
+        this.tags = []
+        if (this.btn) {
+          $(this.btn).prop('disabled', false)
+        }
+      }
+
+      this.tag = (i, name) => {
+        return `<span class="badge badge-secondary" data-target="${i}">${name}</span>`
+      }
+
+      this.redraw = () => {
+        const context = this.canvas[0].getContext("2d")
+        this.canvas[0].width = this.canvas[0].width // Clears the canvas
+        context.strokeStyle = "#fff"
+        context.lineJoin = "round"
+        context.lineWidth = 3
+        context.globalAlpha = 0.7
+        for (let i in this.tags) {
+          context.strokeRect(this.tags[i].xi, this.tags[i].yi, this.tags[i].xii - this.tags[i].xi, this.tags[i].yii - this.tags[i].yi)
+        }
+      }
+
+      this.addClick = (x, y, dragging) => {
+        if (dragging) {
+          this.tags[this.ii].xii = x
+          this.tags[this.ii].yii = y
+        } else {
+          this.tags[this.ii] = { id: this.ii, xi: x, yi: y, xii: x, yii: y, name: null }
+        }
+      }
+
+      this.addTagger = () => {
+        this.paint = false
+        const x = this.tags[this.ii].xi + (this.tags[this.ii].xii - this.tags[this.ii].xi) / 2
+        const y = this.tags[this.ii].yi + (this.tags[this.ii].yii - this.tags[this.ii].yi) / 2
+        const pop = $('<div class="tagger"></div>')
+        pop.css({ top: y + 'px', left: x + 'px', width: '6px', height: '6px', position: 'absolute' })
+        this.el.append(pop)
+        pop.popover({
+          html : true,
+          title: `&nbsp;<button type="button" class="close" data-dismiss="popover" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>`,
+          content: `<div class="input-group p-2">
+            <input type="text" class="form-control" placeholder="Sisesta nimi">
+            <div class="input-group-append">
+              <button class="btn btn-primary save" type="button">
+                <i class="icon ion-ios-save"></i>
+              </button>
+              <button class="btn btn-secondary delete" type="button">
+                <i class="icon ion-md-trash"></i>
+              </button>
+            </div>
+          </div>`,
+          placement: 'auto',
+          trigger: 'manual',
+          offset: 50
+        }).on('shown.bs.popover', e => {
+          $('.popover').find('input').focus()
+          $('.popover').find('.close').on('click', e => {
+            pop.popover('hide')
+            this.removeTag(this.ii)
+          })
+          $('.popover').find('.save').on('click', e => {
+            pop.popover('hide')
+            this.saveTag(this.ii, $('.popover').find('input').val())
+          })
+          $('.popover').find('.delete').on('click', e => {
+            pop.popover('hide')
+            this.removeTag()
+          })
+          this.active = false
+        }).on('hidden.bs.popover', e => {
+          pop.remove()
+          this.active = true
+        }).popover('show')
+      }
+
+      this.saveTag = (i, value) => {
+        // save to api
+        this.el.find('.tags').append(this.tag(this.ii, value))
+        this.tags[this.ii].name = value
+        this.ii++
+        this.deactivate()
+      }
+
+      this.removeTag = (i) => {
+        this.tags.splice(i, 1)
+        this.redraw()
+      }
+    }
+
+    (function($) {
+
+      const it = new ImageTagger('#phototag')
+
+      // load names from contacts for autocomplete
+
+      // activate
+      $('#activate').on('click', e => {
+        it.activate(e.currentTarget)
+      })
+
+    })(jQuery)
+
+  </script>
 
 </body>
 </html>
