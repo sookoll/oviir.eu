@@ -314,7 +314,7 @@
           const y = this.tags[i].yi < this.tags[i].yii ? this.tags[i].yi : this.tags[i].yii
           map.push(`<div id="${i}" data-toggle="tooltip"
             style="top: ${y}px; left:${x}px; width: ${Math.abs(this.tags[i].xii - this.tags[i].xi)}px; height: ${Math.abs(this.tags[i].yii - this.tags[i].yi)}px;"
-            title="${this.tags[i].username}"><i class="icon ion-md-close"></i></div>`)
+            title="${this.tags[i].username}"><i class="icon ion-md-close" data-toggle="tooltip" data-placement="bottom" title="Kustuta"></i></div>`)
         }
         this.fire('deactivate', this.tags)
         this.el.find('.photomap').html(map.join(''))
@@ -328,6 +328,7 @@
         })
         this.el.find('.photomap').find('div i').on('click', e => {
           e.stopPropagation()
+          $(e.target).tooltip('hide')
           $(e.target).parent().tooltip('hide')
           const id = $(e.target).parent().attr('id')
           this.removeTag(id)
