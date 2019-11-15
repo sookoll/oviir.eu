@@ -6,11 +6,8 @@
 
   <style>
 
-    #phototag, #phototag .image {
+    #phototag {
       position: relative;
-    }
-    #phototag .tags {
-      font-size: 2em
     }
     #phototag .photomap {
       position:absolute;
@@ -22,7 +19,40 @@
     #phototag .photomap div {
       position:absolute;
       cursor:pointer;
+      border:1px solid transparent;
+    }
+    #phototag .photomap:hover div {
       border:1px dashed #fff;
+    }
+    #phototag .photomap div i {
+      position: absolute;
+      bottom: -40px;
+      width: 100%;
+      text-align: center;
+      display: none;
+      color: white;
+      font-size: 1.3rem;
+    }
+    #phototag .photomap div.active {
+      border:2px dashed #fff;
+    }
+    #phototag .photomap div.active i {
+      display: block
+    }
+    #phototag .tagCanvas {
+      position:absolute;
+      top:0px;
+      left:0px;
+    }
+    #tags {
+      padding-left: 0;
+      padding-right: 0
+    }
+    #tags .tag {
+      color: #212529
+    }
+    #tags .tag.active {
+      font-weight: bold;
     }
 
   </style>
@@ -60,19 +90,18 @@
   <section class="blog-wrapper sect-pt4" id="blog">
     <div class="container">
       {% if meta.image %}
-      <div id="phototag" class="mb-4">
-        <div class="image">
+      <div class="mb-4">
+        <div id="phototag">
           <img src="{{ meta.image }}" class="img-fluid" alt="">
           <div class="photomap"></div>
         </div>
-        <div class="tags my-3"></div>
         <div class="toolbar">
-          <button class="btn btn-primary"
+          <button class="btn btn-link"
             id="activate"
             role="button">
             <i class="icon ion-ios-pricetags"></i> Märgi sugulane
-          </button>
-          <span class="info text-muted ml-4">Siin saad pildil ära märkida inimesed, keda tead. Alustamiseks vajuta nuppu.</span>
+          </button> |
+          <span id="tags"><em class="btn text-muted">Siin pildil saad ära märkida inimesed, kes osalesid kokkutulekul.</em></span>
         </div>
       </div>
       {% endif %}
@@ -193,45 +222,67 @@
 
   {% include 'parts/scripts.twig' %}
 
+  {% if meta.image %}
+
   <script type="text/javascript">
 
-    function ImageTagger(selector) {
+    const config = {
+      url: 'https://oviir.eu/api/crud.php/records/phototags',
+      params: 'filter=deleted,eq,0&filter=category,eq,kokkutulek&filter=item,eq,{{ meta.number }}',
+      primary: 'id',
+      delete: 'deleted',
+      item: {{ meta.number }},
+      user: '{{ user }}',
+      category: '{{ meta.category }}'
+    }
+
+    function ImageTagger(selector, data) {
       this.el = $(selector)
       this.active = false
       this.canvas = null
-      this.ii = 0
-      this.tags = []
+      this.tags = data
+      this.ii = this.tags.length
       this.paint = false
-      this.canvas
-      this.ctx
+      this.events = {
+        'activate': [],
+        'deactivate': [],
+        'save': [],
+        'remove': [],
+        'select': [],
+        'deselect': []
+      }
+      this.el.find('.photomap').on('click', e => {
+        $(e.target).find('div').removeClass('active')
+        this.fire('deselect')
+      })
 
       this.getImage = () => {
-        return this.el.find('.image img')
+        return this.el.find('img')
       }
 
-      this.activate = (btn) => {
+      this.on = (event, cb) => {
+        if (event in this.events) {
+          this.events[event].push(cb)
+        }
+      }
+
+      this.fire = (event, data) => {
+        if (event in this.events) {
+          this.events[event].forEach(cb => {
+            cb(data)
+          })
+        }
+      }
+
+      this.activate = () => {
         this.active = true
         const w = this.getImage().width()
         const h = this.getImage().height()
-        this.canvas = $('<canvas class="tagCanvas" width="'+w+'" height="'+h+'" style="position:absolute;top:0px;left:0px;"></canvas>')
-        this.el.find('.image').append(this.canvas)
-        this.canvas.css('cursor','crosshair')
-        // FIXME
-        this.el.find('.photomap > div').each(i => {
-          const name = $(i).attr('title')
-          const id = $(i).attr('id')
-          const xi = $(i).position().left
-          const yi = $(i).position().top
-          const xii = xi + $(i).width()
-          const yii = yi + $(i).height()
-          this.tags[this.ii] = {id, xi, yi, xii, yii, name}
-          this.ii++
-        })
+        this.canvas = $(`<canvas class="tagCanvas" width="${w}" height="${h}"></canvas>`)
+        this.el.append(this.canvas)
+        this.canvas.css('cursor', 'crosshair')
+        this.el.find('.photomap').html('')
         this.redraw()
-        if (btn) {
-          this.btn = btn
-          $(this.btn).prop('disabled', true)
-        }
         this.canvas.on('mousedown', e => {
           if (!this.paint && this.active) {
             this.paint = true
@@ -249,46 +300,52 @@
             this.addTagger()
           }
         })
-
+        this.fire('activate')
       }
 
       this.deactivate = () => {
         this.active = false
-        //this.canvas.css('cursor','default')
-        this.canvas.remove()
-        let map = ''
-        let tags = ''
+        if (this.canvas) {
+          this.canvas.remove()
+        }
+        let map = []
         for (let i in this.tags) {
           const x = this.tags[i].xi < this.tags[i].xii ? this.tags[i].xi : this.tags[i].xii
           const y = this.tags[i].yi < this.tags[i].yii ? this.tags[i].yi : this.tags[i].yii
-          map += `<div id="${i}"
+          map.push(`<div id="${i}" data-toggle="tooltip"
             style="top: ${y}px; left:${x}px; width: ${Math.abs(this.tags[i].xii - this.tags[i].xi)}px; height: ${Math.abs(this.tags[i].yii - this.tags[i].yi)}px;"
-            title="${this.tags[i].name}"></div>`
-          tags += this.tag(i, this.tags[i].name)
+            title="${this.tags[i].username}"><i class="icon ion-md-close"></i></div>`)
         }
-        this.el.find('.photomap').html(map)
-        this.el.find('.tags').html(tags)
-
-        this.ii = 0
-        this.tags = []
-        if (this.btn) {
-          $(this.btn).prop('disabled', false)
-        }
-      }
-
-      this.tag = (i, name) => {
-        return `<span class="badge badge-secondary" data-target="${i}">${name}</span>`
+        this.fire('deactivate', this.tags)
+        this.el.find('.photomap').html(map.join(''))
+        this.el.find('[data-toggle="tooltip"]').tooltip()
+        this.el.find('.photomap').find('div').on('click', e => {
+          e.stopPropagation()
+          this.el.find('.photomap').find('div').not(e.target).removeClass('active')
+          $(e.target).toggleClass('active')
+          const event = $(e.target).hasClass('active') ? 'select' : 'deselect'
+          this.fire(event, $(e.target).attr('id'))
+        })
+        this.el.find('.photomap').find('div i').on('click', e => {
+          e.stopPropagation()
+          $(e.target).parent().tooltip('hide')
+          const id = $(e.target).parent().attr('id')
+          this.removeTag(id)
+          $(e.target).parent().remove()
+        })
       }
 
       this.redraw = () => {
-        const context = this.canvas[0].getContext("2d")
-        this.canvas[0].width = this.canvas[0].width // Clears the canvas
-        context.strokeStyle = "#fff"
-        context.lineJoin = "round"
-        context.lineWidth = 3
-        context.globalAlpha = 0.7
-        for (let i in this.tags) {
-          context.strokeRect(this.tags[i].xi, this.tags[i].yi, this.tags[i].xii - this.tags[i].xi, this.tags[i].yii - this.tags[i].yi)
+        if (this.active) {
+          const context = this.canvas[0].getContext("2d")
+          this.canvas[0].width = this.canvas[0].width // Clears the canvas
+          context.strokeStyle = "#fff"
+          context.lineJoin = "round"
+          context.lineWidth = 3
+          context.globalAlpha = 0.7
+          for (let i in this.tags) {
+            context.strokeRect(this.tags[i].xi, this.tags[i].yi, this.tags[i].xii - this.tags[i].xi, this.tags[i].yii - this.tags[i].yi)
+          }
         }
       }
 
@@ -297,12 +354,20 @@
           this.tags[this.ii].xii = x
           this.tags[this.ii].yii = y
         } else {
-          this.tags[this.ii] = { id: this.ii, xi: x, yi: y, xii: x, yii: y, name: null }
+          this.tags[this.ii] = { id: null, user: null, username: null, xi: x, yi: y, xii: x, yii: y }
         }
       }
 
       this.addTagger = () => {
         this.paint = false
+        // check size
+        if (
+          Math.abs(this.tags[this.ii].xii - this.tags[this.ii].xi) < 10 ||
+          Math.abs(this.tags[this.ii].yii - this.tags[this.ii].yi) < 10
+        ) {
+          this.removeTag(this.ii)
+          return false
+        }
         const x = this.tags[this.ii].xi + (this.tags[this.ii].xii - this.tags[this.ii].xi) / 2
         const y = this.tags[this.ii].yi + (this.tags[this.ii].yii - this.tags[this.ii].yi) / 2
         const pop = $('<div class="tagger"></div>')
@@ -319,9 +384,6 @@
               <button class="btn btn-primary save" type="button">
                 <i class="icon ion-ios-save"></i>
               </button>
-              <button class="btn btn-secondary delete" type="button">
-                <i class="icon ion-md-trash"></i>
-              </button>
             </div>
           </div>`,
           placement: 'auto',
@@ -332,14 +394,11 @@
           $('.popover').find('.close').on('click', e => {
             pop.popover('hide')
             this.removeTag(this.ii)
+            this.deactivate()
           })
           $('.popover').find('.save').on('click', e => {
             pop.popover('hide')
             this.saveTag(this.ii, $('.popover').find('input').val())
-          })
-          $('.popover').find('.delete').on('click', e => {
-            pop.popover('hide')
-            this.removeTag()
           })
           this.active = false
         }).on('hidden.bs.popover', e => {
@@ -350,32 +409,135 @@
 
       this.saveTag = (i, value) => {
         // save to api
-        this.el.find('.tags').append(this.tag(this.ii, value))
-        this.tags[this.ii].name = value
+        this.tags[this.ii].username = value
+        this.tags[this.ii].user = 1
+        this.fire('save', this.tags[this.ii])
         this.ii++
         this.deactivate()
       }
 
       this.removeTag = (i) => {
+        this.fire('remove', [i, this.tags[i]])
         this.tags.splice(i, 1)
         this.redraw()
       }
+
+      this.getTagEl = (i) => {
+        return this.el.find('#' + i)
+      }
+
+      this.deactivate()
+    }
+
+    function createTag (i, name) {
+      return `<button class="btn btn-link tag" data-target="${i}">${name}</button>`
+    }
+
+    function init(data) {
+      const infoText = $('#tags').html()
+      $('#tags').html(data.records.length ? data.records.map((tag, i) => createTag(i, tag.username)).join('') : infoText)
+      const it = new ImageTagger('#phototag', data.records)
+
+      it.on('activate', () => {
+        $('#activate').prop('disabled', true)
+        $('#tags').find('.tag').prop('disabled', true)
+      })
+      it.on('deactivate', (tags) => {
+        $('#activate').prop('disabled', false)
+        $('#tags').find('.tag').prop('disabled', false)
+        $('#tags').html(tags.length ? tags.map((tag, i) => createTag(i, tag.username)).join('') : infoText)
+      })
+      it.on('save', (data) =>{
+        save(null, formatRow(Object.assign({}, data)))
+          .then(response => {
+            console.log(response)
+          })
+      })
+      it.on('remove', (data) =>{
+        $('#tags').find(`.tag[data-target='${data[0]}'] `).remove()
+        if (!$('#tags').find('.tag').length) {
+          $('#tags').html(infoText)
+        }
+        if (data[1] && data[1][config.primary]) {
+          const primary = data[1][config.primary]
+          data = {}
+          data[config.delete] = true
+          save(primary, data)
+            .then(response => {
+              console.log(response)
+            })
+        }
+      })
+      it.on('select', (i) => {
+        $('#tags').find(`.tag`).removeClass('active')
+        $('#tags').find(`.tag[data-target=${i}]`).addClass('active')
+      })
+      it.on('deselect', (i) => {
+        $('#tags').find(`.tag`).removeClass('active')
+      })
+      // activate
+      $('#activate').on('click', e => {
+        it.activate()
+      })
+
+      $('#tags').on('mouseover', '.tag', e => {
+        it.getTagEl($(e.target).data('target')).mouseover()
+      }).on('mouseout', '.tag', e => {
+        it.getTagEl($(e.target).data('target')).mouseout()
+      }).on('click', '.tag', e => {
+        e.preventDefault()
+
+      });
+    }
+
+    function formatRow (row) {
+      delete row.id
+      row.category = config.category
+      row.item = config.item
+      row.author = config.user
+      return row
+    }
+
+    function save (primary, data) {
+      return new Promise((resolve, reject) => {
+        fetch(primary ? config.url + '/' + primary : config.url, {
+          method: primary ? 'PUT' : 'POST',
+          body: JSON.stringify(data),
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Basic {{ config.api.grant|base64_encode }}'
+          }
+        })
+          .then(response => response.text())
+          .then(resolve)
+          .catch(reject)
+      })
     }
 
     (function($) {
 
-      const it = new ImageTagger('#phototag')
-
-      // load names from contacts for autocomplete
-
-      // activate
-      $('#activate').on('click', e => {
-        it.activate(e.currentTarget)
-      })
+      setTimeout(() => {
+        if (!config.url) {
+          return false;
+        }
+        fetch(config.url + '?' + config.params, {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Basic {{ config.api.grant|base64_encode }}'
+          }
+        })
+          .then(response => response.json())
+          .then(init)
+          .catch(e => {
+            console.error(e)
+          })
+      }, 200)
 
     })(jQuery)
 
   </script>
+
+  {% endif %}
 
 </body>
 </html>

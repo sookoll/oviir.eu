@@ -801,6 +801,7 @@ a:hover {
   font-size: 4rem;
   font-weight: bold;
   width: 100%;
+  left: 0;
   top: 4rem;
   text-align: center;
   text-shadow: 0 0 2px #999
