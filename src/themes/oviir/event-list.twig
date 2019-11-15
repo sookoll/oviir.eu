@@ -4,6 +4,16 @@
 
   {% include 'parts/header.twig' %}
 
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
+    integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+    crossorigin=""/>
+
+  <style>
+    #map {
+      height: 680px;
+    }
+  </style>
+
 </head>
 
 <body>
@@ -83,27 +93,48 @@
           </div>
         </div>
       </div>
-      <div class="row">
-        {% for page in pages|reverse if page.meta.category == "kokkutulek" %}
-        <div class="col-md-4">
-          <div class="work-box">
-            <a href="{{ page.url }}">
-              <div class="work-img">
-                <img class="img-fluid lazy"
-                  src="{{ theme_url }}/img/placeholder.png"
-                  data-src="{{ page.meta.thumbnail ? page.meta.thumbnail : theme_url ~ '/img/placeholder.png' }}"
-                  alt="{{ page.meta.number }}. {{ page.meta.title }}">
+      <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+        <li class="nav-item">
+          <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">Nimekiri</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">Kaart</a>
+        </li>
+      </ul>
+      <div class="tab-content">
+        <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+          <div class="row">
+            {% set locations = [] %}
+            {% for page in pages|reverse if page.meta.category == "kokkutulek" %}
+              {% if page.meta.coordinates %}
+                {% set locations = locations|merge([{
+                  coords: page.meta.coordinates,
+                  label: page.meta.date|date('Y'),
+                  url: page.url
+                }]) %}
+              {% endif %}
+            <div class="col-md-4">
+              <div class="work-box">
+                <a href="{{ page.url }}">
+                  <div class="work-img">
+                    <img class="img-fluid lazy"
+                      src="{{ theme_url }}/img/placeholder.png"
+                      data-src="{{ page.meta.thumbnail ? page.meta.thumbnail : theme_url ~ '/img/placeholder.png' }}"
+                      alt="{{ page.meta.number }}. {{ page.meta.title }}">
+                  </div>
+                  <div class="work-content">
+                    <h2 class="w-title">{{ page.meta.number }}. {{ page.meta.title }}</h2>
+                  </div>
+                  <span class="index">{{ page.meta.date|date('Y') }}</span>
+                </a>
               </div>
-              <div class="work-content">
-                <h2 class="w-title">{{ page.meta.number }}. {{ page.meta.title }}</h2>
-              </div>
-              <span class="index">{{ page.meta.date|date('Y') }}</span>
-            </a>
+            </div>
+            {% endfor %}
           </div>
         </div>
-        {% endfor %}
-      </div>
-
+        <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+          <div id="map" class="col-12"></div>
+        </div>
     </div>
   </section>
   <!--/ Section Blog-Single End /-->
@@ -111,6 +142,61 @@
   {% include 'parts/footer.twig' %}
 
   {% include 'parts/scripts.twig' %}
+
+  <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"
+    integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="
+    crossorigin=""></script>
+  <script src="{{ theme_url }}/lib/Proj4Leaflet-1.0.2/lib/proj4-compressed.js"></script>
+  <script src="{{ theme_url }}/lib/Proj4Leaflet-1.0.2/src/proj4leaflet.js"></script>
+
+  <script type="text/javascript">
+
+    const config = {
+      locations: '{{ locations|json_encode() }}'
+    };
+
+    (function($, JSON) {
+
+      if (config.locations) {
+        const locations = JSON.parse(config.locations)
+        const crs = new L.Proj.CRS(
+          'EPSG:3301',
+          '+proj=lcc +lat_1=59.33333333333334 +lat_2=58 +lat_0=57.51755393055556 +lon_0=24 +x_0=500000 +y_0=6375000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs',
+          {
+            origin: [40500, 5993000],
+            resolutions: [
+              4000.0, 2000.0, 1000.0, 500.0, 250.0, 125.0, 62.5, 31.25, 15.625, 7.8125, 3.90625,
+              1.953125, 0.9765625, 0.48828125, 0.244140625, 0.122070313, 0.061035157],
+            bounds: L.bounds([[40500, 5993000], [1064500, 7017000]])
+          }
+        )
+        const map = L.map('map', {
+          crs: crs
+        }).setView([58.67212, 25.64129], 3)
+
+        new L.tileLayer('http://tiles.maaamet.ee/tm/s/1.0.0/kaart/{z}/{x}/{y}.png', {
+            maxZoom: crs.options.resolutions.length,
+            minZoom: 2,
+            continuousWorld: true,
+            attribution: 'Aluskaart © <a href="http://maaamet.ee">Eesti Maa-amet</a>',
+            tms: true
+        }).addTo(map)
+
+        const markers = locations.map(place => {
+          const coords = place.coords.split(',').map(c => Number(c.trim()))
+          return new L.marker(coords).bindPopup(`<a href="${place.url}">${place.label}</a>`)
+        })
+
+        const group = L.featureGroup(markers).addTo(map)
+
+        $('a[data-toggle="pill"]').on('shown.bs.tab', function (e) {
+          map.invalidateSize()
+        })
+      }
+
+    })(jQuery, JSON)
+
+  </script>
 
 </body>
 </html>

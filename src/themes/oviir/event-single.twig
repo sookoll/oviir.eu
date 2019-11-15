@@ -4,6 +4,10 @@
 
   {% include 'parts/header.twig' %}
 
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
+    integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+    crossorigin=""/>
+
   <style>
 
     #phototag {
@@ -43,6 +47,8 @@
       position:absolute;
       top:0px;
       left:0px;
+      width: 100%;
+      height: 100%
     }
     #tags {
       padding-left: 0;
@@ -53,6 +59,9 @@
     }
     #tags .tag.active {
       font-weight: bold;
+    }
+    #map {
+      height: 280px;
     }
 
   </style>
@@ -188,6 +197,11 @@
           </div>
         </div>
         <div class="col-md-4">
+
+          {% if meta.coordinates %}
+          <div id="map" class="mb-3"></div>
+          {% endif %}
+
           {% set videos = [] %}
           {% set albums = [] %}
           {% for page in pages if meta.date|date('Y') in page.meta.tags %}
@@ -221,6 +235,12 @@
   {% include 'parts/footer.twig' %}
 
   {% include 'parts/scripts.twig' %}
+
+  <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"
+    integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="
+    crossorigin=""></script>
+  <script src="{{ theme_url }}/lib/Proj4Leaflet-1.0.2/lib/proj4-compressed.js"></script>
+  <script src="{{ theme_url }}/lib/Proj4Leaflet-1.0.2/src/proj4leaflet.js"></script>
 
   {% if meta.image %}
 
@@ -313,7 +333,7 @@
           const x = this.tags[i].xi < this.tags[i].xii ? this.tags[i].xi : this.tags[i].xii
           const y = this.tags[i].yi < this.tags[i].yii ? this.tags[i].yi : this.tags[i].yii
           map.push(`<div id="${i}" data-toggle="tooltip"
-            style="top: ${y}px; left:${x}px; width: ${Math.abs(this.tags[i].xii - this.tags[i].xi)}px; height: ${Math.abs(this.tags[i].yii - this.tags[i].yi)}px;"
+            style="top: ${y}%; left:${x}%; width: ${Math.abs(this.tags[i].xii - this.tags[i].xi)}%; height: ${Math.abs(this.tags[i].yii - this.tags[i].yi)}%;"
             title="${this.tags[i].username}"><i class="icon ion-md-close" data-toggle="tooltip" data-placement="bottom" title="Kustuta"></i></div>`)
         }
         this.fire('deactivate', this.tags)
@@ -345,17 +365,30 @@
           context.lineWidth = 3
           context.globalAlpha = 0.7
           for (let i in this.tags) {
-            context.strokeRect(this.tags[i].xi, this.tags[i].yi, this.tags[i].xii - this.tags[i].xi, this.tags[i].yii - this.tags[i].yi)
+            context.strokeRect(
+              this.px(this.tags[i].xi, this.canvas[0].width),
+              this.px(this.tags[i].yi, this.canvas[0].height),
+              this.px(this.tags[i].xii - this.tags[i].xi, this.canvas[0].width),
+              this.px(this.tags[i].yii - this.tags[i].yi, this.canvas[0].height)
+            )
           }
         }
       }
 
       this.addClick = (x, y, dragging) => {
         if (dragging) {
-          this.tags[this.ii].xii = x
-          this.tags[this.ii].yii = y
+          this.tags[this.ii].xii = this.pc(x, this.canvas[0].width)
+          this.tags[this.ii].yii = this.pc(y, this.canvas[0].height)
         } else {
-          this.tags[this.ii] = { id: null, user: null, username: null, xi: x, yi: y, xii: x, yii: y }
+          this.tags[this.ii] = {
+            id: null,
+            user: null,
+            username: null,
+            xi: this.pc(x, this.canvas[0].width),
+            yi: this.pc(y, this.canvas[0].height),
+            xii: this.pc(x, this.canvas[0].width),
+            yii: this.pc(y, this.canvas[0].height)
+          }
         }
       }
 
@@ -363,8 +396,8 @@
         this.paint = false
         // check size
         if (
-          Math.abs(this.tags[this.ii].xii - this.tags[this.ii].xi) < 10 ||
-          Math.abs(this.tags[this.ii].yii - this.tags[this.ii].yi) < 10
+          this.px(Math.abs(this.tags[this.ii].xii - this.tags[this.ii].xi), this.canvas[0].width) < 10 ||
+          this.px(Math.abs(this.tags[this.ii].yii - this.tags[this.ii].yi), this.canvas[0].height) < 10
         ) {
           this.removeTag(this.ii)
           return false
@@ -372,7 +405,7 @@
         const x = this.tags[this.ii].xi + (this.tags[this.ii].xii - this.tags[this.ii].xi) / 2
         const y = this.tags[this.ii].yi + (this.tags[this.ii].yii - this.tags[this.ii].yi) / 2
         const pop = $('<div class="tagger"></div>')
-        pop.css({ top: y + 'px', left: x + 'px', width: '6px', height: '6px', position: 'absolute' })
+        pop.css({ top: y + '%', left: x + '%', width: '2px', height: '2px', position: 'absolute' })
         this.el.append(pop)
         pop.popover({
           html : true,
@@ -425,6 +458,14 @@
 
       this.getTagEl = (i) => {
         return this.el.find('#' + i)
+      }
+
+      this.px = (percent, size) => {
+        return percent * size / 100
+      }
+
+      this.pc = (px, size) => {
+        return px * 100 / size
       }
 
       this.deactivate()
@@ -534,11 +575,52 @@
           })
       }, 200)
 
-    })(jQuery)
+    })(jQuery);
 
   </script>
 
   {% endif %}
+
+  <script type="text/javascript">
+
+    if (typeof config === 'undefined') {
+      config = {}
+    }
+    config.coords = '{{ meta.coordinates }}';
+
+    (function($) {
+
+      if (config.coords) {
+        const coords = config.coords.split(',').map(c => Number(c.trim()))
+        const crs = new L.Proj.CRS(
+          'EPSG:3301',
+          '+proj=lcc +lat_1=59.33333333333334 +lat_2=58 +lat_0=57.51755393055556 +lon_0=24 +x_0=500000 +y_0=6375000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs',
+          {
+            origin: [40500, 5993000],
+            resolutions: [
+              4000.0, 2000.0, 1000.0, 500.0, 250.0, 125.0, 62.5, 31.25, 15.625, 7.8125, 3.90625,
+              1.953125, 0.9765625, 0.48828125, 0.244140625, 0.122070313, 0.061035157],
+            bounds: L.bounds([[40500, 5993000], [1064500, 7017000]])
+          }
+        )
+        const map = L.map('map', {
+          crs: crs
+        }).setView(coords, 6)
+
+        new L.tileLayer('http://tiles.maaamet.ee/tm/s/1.0.0/kaart/{z}/{x}/{y}.png', {
+            maxZoom: crs.options.resolutions.length,
+            minZoom: 2,
+            continuousWorld: true,
+            attribution: 'Aluskaart © <a href="http://maaamet.ee">Eesti Maa-amet</a>',
+            tms: true
+        }).addTo(map)
+
+        new L.marker(coords).addTo(map);
+      }
+
+    })(jQuery);
+
+  </script>
 
 </body>
 </html>
