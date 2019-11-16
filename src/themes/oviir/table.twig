@@ -87,7 +87,7 @@
           </form>
         </div>
         <div class="modal-footer">
-          {% if meta.table.deleteColumn %}
+          {% if meta.api.deleteColumn %}
           <button type="button" class="btn btn-light mr-auto delete" data-action="confirm" disabled>
             <i class="icon ion-md-trash"></i>
             <span>Kustuta</span>
@@ -132,23 +132,25 @@
     let empty = {}
 
     const config = {
-      url: '{{ meta.table.dataUrl }}',
-      params: '{{ meta.table.params }}',
-      primary: '{{ meta.table.primaryColumn }}',
-      delete: '{{ meta.table.deleteColumn }}',
+      url: '{{ config.api.url }}/{{ meta.api.source }}',
+      hash: '{{ config.api.grant|base64_encode }}',
+      params: '{{ meta.api.params }}',
+      primary: '{{ meta.api.primaryColumn }}',
+      delete: '{{ meta.api.deleteColumn }}',
       copy: '{{ meta.table.copyColumn }}',
       col: {{ meta.table.columns|json_encode() }},
       dom: '{{ meta.table.dom }}',
       editable: {{ meta.table.editable }},
     }
 
+    const api = new Api({ endpoint: config.url, hash: config.hash })
+
     function booleanCellRenderer (data, type, row) {
       return data ? 'Jah' : 'Ei'
     }
 
     function createTable (data) {
-      store = data.records
-      const columns = Object.keys(data.records[0]).map(key => {
+      const columns = Object.keys(data[0]).map(key => {
         empty[key] = ''
         let cell = { title: key, data: key }
         if (key in config.col) {
@@ -169,7 +171,7 @@
         })
       }
       const settings = {
-        data: data.records.map(item => {
+        data: data.map(item => {
           return formatRow(Object.assign({}, item))
         }),
         rowId: config.primary,
@@ -196,9 +198,8 @@
         },
         initComplete : function (settings, json) {
           $('#datatable_filter input')
-              .attr('placeholder', 'Otsi...')
-              .removeClass('form-control-sm')
-
+            .attr('placeholder', 'Otsi...')
+            .removeClass('form-control-sm')
         }
       }
       if (config.dom) {
@@ -245,30 +246,28 @@
 
     function updateRow (primary, data) {
       return new Promise((resolve, reject) => {
-        fetch(primary ? config.url + '/' + primary : config.url, {
-          method: primary ? 'PUT' : 'POST',
-          body: JSON.stringify(data),
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Basic {{ config.api.grant|base64_encode }}'
+        function afterFetch (response) {
+          if (config.primary) {
+            data[config.primary] = primary || response
           }
-        })
-          .then(response => response.text())
-          .then(response => {
-            if (config.primary) {
-              data[config.primary] = primary || response
-            }
-            if (config.delete in data) {
-              table.row('#' + primary).remove().draw(false)
-            } else if (primary) {
-              table.row('#' + primary).data(formatRow(data)).draw(false)
-            } else {
-              table.row.add(formatRow(data)).draw(false)
-            }
-
-            resolve(response)
-          })
-          .catch(reject)
+          if (config.delete in data) {
+            table.row('#' + primary).remove().draw(false)
+          } else if (primary) {
+            table.row('#' + primary).data(formatRow(data)).draw(false)
+          } else {
+            table.row.add(formatRow(data)).draw(false)
+          }
+          resolve(response)
+        }
+        if (primary) {
+          api.update(primary, data)
+            .then(afterFetch)
+            .catch(reject)
+        } else {
+          api.insert(data)
+            .then(afterFetch)
+            .catch(reject)
+        }
       })
     }
 
@@ -376,13 +375,7 @@
         if (!config.url) {
           return false;
         }
-        fetch(config.url + '?' + config.params, {
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Basic {{ config.api.grant|base64_encode }}'
-          }
-        })
-          .then(response => response.json())
+        api.load({ params: config.params })
           .then(createTable)
           .catch(e => {
             console.error(e)

@@ -161,7 +161,7 @@
               <span class="ico-circle"><i class="icon ion-ios-people"></i></span>
             </div>
             <div class="counter-num">
-              <p class="counter" data-url="{{ pages['kontaktid'].meta.table.dataUrl~'?'~pages['kontaktid'].meta.table.countParams }}">0</p>
+              <p class="counter" data-url="{{ config.api.url }}/{{ pages['kontaktid'].meta.api.source}}?{{ pages['kontaktid'].meta.api.countParams }}">0</p>
               <span class="counter-text">SUGULAST JA HÕIMLAST</span>
             </div>
           </div>
@@ -321,25 +321,17 @@
 
     (function($) {
       setTimeout(() => {
-
         $('[data-url]').each((i, item) => {
-          fetch($(item).data('url'), {
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': 'Basic {{ config.api.grant|base64_encode }}'
-            }
-          })
-            .then(response => response.json())
+          const api = new Api({ endpoint: $(item).data('url'), hash: '{{ config.api.grant|base64_encode }}' })
+          api.load()
             .then(data => {
-              $(item).text('records' in data ? data.records.length : 0)
+              $(item).text(data.length || 0)
             })
             .catch(e => {
               console.error(e)
             })
         })
-
       }, 200)
-
     })(jQuery);
 
   </script>
