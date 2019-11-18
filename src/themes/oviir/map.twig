@@ -8,6 +8,8 @@
     integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
     crossorigin=""/>
 
+  <link rel="stylesheet" href="http://fperucic.github.io/treant-js/Treant.css"/>
+
   <style>
     html, body, #map {
       height: 100%;
@@ -27,6 +29,56 @@
       background: white;
       padding: 4px
     }
+    #list {
+      position: absolute;
+      width: 250px;
+      height: 100%;
+      right: 0;
+      top: 0;
+      background: white;
+      overflow-y: auto;
+    }
+    #list .list-group {
+      margin: 110px 10px 10px
+    }
+    .node {
+      cursor: pointer;
+    }
+    .node circle {
+      fill: #fff;
+      stroke: steelblue;
+      stroke-width: 1.5px;
+    }
+    .node text {
+      font-size:10px;
+      font-family:sans-serif;
+    }
+    .link {
+      fill: none;
+      stroke: #ccc;
+      stroke-width: 1.5px;
+    }
+    .templink {
+      fill: none;
+      stroke: red;
+      stroke-width: 3px;
+    }
+    .ghostCircle.show{
+        display:block;
+    }
+    .ghostCircle, .activeDrag .ghostCircle{
+         display: none;
+    }
+    foreignObject {
+      overflow: visible;
+    }
+    .label {
+      background: white;
+      font-size: 0.7rem;
+      padding: 4px;
+      border: 1px solid black
+    }
+
   </style>
 
 </head>
@@ -47,14 +99,15 @@
     </button>
     <span class="coords"></span>
   </div>
+  <div id="list">
+    <div class="list-group"></div>
+  </div>
 
   {% include 'parts/person-modal.twig' %}
 
   {% include 'parts/scripts.twig' %}
 
-  <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"
-    integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="
-    crossorigin=""></script>
+  <script src="https://d3js.org/d3.v3.min.js"></script>
 
   <script src="{{ theme_url }}/js/familytree.js"></script>
 
@@ -70,9 +123,33 @@
 
     const api = new Api({ endpoint: config.url, hash: config.hash });
 
+    function getNested(arr, parent) {
+      const out = []
+      for (var i in arr) {
+        if (arr[i].bound_with == parent) {
+          const related = getNested(arr, arr[i].id)
+          const children = related.filter(r => r.bound_is === 'child')
+          const partners = related.filter(r => r.bound_is === 'partner')
+          if(children.length) {
+            arr[i].children = children
+          }
+          if(partners.length) {
+          arr[i].partner = partners
+          }
+          out.push(arr[i])
+        }
+      }
+      return out
+    }
+
     (function($) {
 
-      const ftree = new FamilyTree('map')
+      let treeData = []
+      let treelessData = []
+
+      const ftree = new FamilyTree({
+        target: '#map'
+      })
 
       setTimeout(() => {
         if (!config.url) {
@@ -80,7 +157,21 @@
         }
         api.load({ params: config.params })
           .then(response => {
-            ftree.load(response)
+            response.forEach(item => {
+              if (item.bound_with !== null && item.bound_is) {
+                treeData.push(item)
+              } else {
+                treelessData.push(item)
+              }
+            })
+            ftree.load(getNested(treeData, 0))
+            $('#list .list-group').html(treelessData.map(item => {
+              return `<a href="#"
+                class="list-group-item list-group-item-action"
+                data-toggle="modal"
+                data-target="#rowEdit"
+                data-row="${item[config.primary]}">${item.firstname} ${item.lastname}</a>`
+            }))
           })
           .catch(e => {
             console.error(e)
@@ -90,13 +181,22 @@
       // modal
       $('#rowEdit').on('show.bs.modal', e => {
         const primary = $(e.relatedTarget).data('row')
-        //const row = primary ? deFormatRow(Object.assign({}, table.row('#' + primary).data())) : empty
-        const row = Object.keys(config.col).reduce((a,b)=> (a[b]='',a),{})
+        let row = Object.keys(config.col).reduce((a,b)=> (a[b]='',a),{})
+        if (primary) {
+          let rows = treelessData.filter(item => item[config.primary] === primary)
+          if (rows.length) {
+            row = rows[0]
+          }
+        }
         $(e.target).find('form').append(Object.keys(row).map((key, i) => {
           if (key === config.primary) {
             return `<input type="hidden" name="${key}" value="${row[key]}">`
           }
-          if (config.col[key].dataType === 'boolean') {
+          if (
+            key in config.col &&
+            'dataType' in config.col[key] &&
+            config.col[key].dataType === 'boolean'
+          ) {
             return `<div class="form-group col-sm-6">
               <div>
                 <label class="col-form-label">
@@ -125,15 +225,16 @@
 
       // save row
       $('#rowEdit').on('click', '.save', e => {
-        const data = $('#rowEdit').find('form').serializeObject()
-        const primary = data[config.primary]
-        delete data[config.primary]
-        api.insert(data)
+        const row = $('#rowEdit').find('form').serializeObject()
+        const primary = row[config.primary]
+        delete row[config.primary]
+        api.insert(row)
           .then(response => {
             $('#rowEdit').find('.save').toggleClass('btn-primary btn-success')
-            data[config.primary] = response
-            ftree.add(data)
-            ftree.reload()
+            row[config.primary] = Number(response)
+            row.bound_with = Number(row.bound_with)
+            data.push(row)
+            ftree.reload(data)
             setTimeout(() => {
               $('#rowEdit').modal('hide')
             }, 900)
