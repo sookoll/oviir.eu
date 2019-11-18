@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  {% include 'parts/header.twig' %}
+
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
+    integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+    crossorigin=""/>
+
+  <style>
+    html, body, #map {
+      height: 100%;
+    }
+    .fullscreen nav {
+      box-shadow: 0 0 6px #aaa;
+      background: #0078ff
+    }
+    #toolbar {
+      position: fixed;
+      bottom: 10px;
+      left: 10px
+    }
+    #map .box {
+      border: 1px solid black;
+      height: 100%;
+      background: white;
+      padding: 4px
+    }
+  </style>
+
+</head>
+
+<body class="fullscreen">
+  <!--/ Nav Start /-->
+  {% include 'parts/menu.twig' %}
+  <!--/ Nav End /-->
+
+  <section id="map"></section>
+  <div id="toolbar" class="">
+    <button class="btn btn-primary add"
+      role="button"
+      data-toggle="modal"
+      data-target="#rowEdit"
+      data-row="">
+      <i class="icon ion-md-add"></i> Lisa uus
+    </button>
+    <span class="coords"></span>
+  </div>
+
+  {% include 'parts/person-modal.twig' %}
+
+  {% include 'parts/scripts.twig' %}
+
+  <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"
+    integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="
+    crossorigin=""></script>
+
+  <script src="{{ theme_url }}/js/familytree.js"></script>
+
+  <script type="text/javascript">
+
+    const config = {
+      url: '{{ config.api.url }}/{{ meta.api.source }}',
+      hash: '{{ config.api.grant|base64_encode }}',
+      params: 'filter=deleted,eq,0',
+      primary: 'id',
+      col: {{ meta.table.columns|json_encode() }}
+    }
+
+    const api = new Api({ endpoint: config.url, hash: config.hash });
+
+    (function($) {
+
+      const ftree = new FamilyTree('map')
+
+      setTimeout(() => {
+        if (!config.url) {
+          return false;
+        }
+        api.load({ params: config.params })
+          .then(response => {
+            ftree.load(response)
+          })
+          .catch(e => {
+            console.error(e)
+          })
+      }, 200)
+
+      // modal
+      $('#rowEdit').on('show.bs.modal', e => {
+        const primary = $(e.relatedTarget).data('row')
+        //const row = primary ? deFormatRow(Object.assign({}, table.row('#' + primary).data())) : empty
+        const row = Object.keys(config.col).reduce((a,b)=> (a[b]='',a),{})
+        $(e.target).find('form').append(Object.keys(row).map((key, i) => {
+          if (key === config.primary) {
+            return `<input type="hidden" name="${key}" value="${row[key]}">`
+          }
+          if (config.col[key].dataType === 'boolean') {
+            return `<div class="form-group col-sm-6">
+              <div>
+                <label class="col-form-label">
+                  ${(key in config.col && config.col[key].title) ? config.col[key].title : key}
+                </label>
+              </div>
+              <label class="switch">
+                <input type="checkbox" name="${key}" id="${key}" ${row[key] ? 'checked' : ''} value="true">
+                <span class="slider round"></span>
+              </label>
+            </div>`
+          }
+          return `<div class="form-group col-sm-6">
+            <label for="${key}" class="col-form-label">${(key in config.col && config.col[key].title) ? config.col[key].title : key}:</label>
+            <input type="text" class="form-control" id="${key}" name="${key}" value="${row[key]}" ${config.col[key].required ? 'required' : ''}>
+          </div>`
+        }).join(''))
+        if (primary) {
+          $(e.target).find('.delete').prop('disabled', false)
+        }
+      }).on('hide.bs.modal', e => {
+        $(e.target).find('form').html('')
+        $(e.target).find('.save').removeClass('btn-success').addClass('btn-primary')
+        $(e.target).find('.delete').prop('disabled', true)
+      })
+
+      // save row
+      $('#rowEdit').on('click', '.save', e => {
+        const data = $('#rowEdit').find('form').serializeObject()
+        const primary = data[config.primary]
+        delete data[config.primary]
+        api.insert(data)
+          .then(response => {
+            $('#rowEdit').find('.save').toggleClass('btn-primary btn-success')
+            data[config.primary] = response
+            ftree.add(data)
+            ftree.reload()
+            setTimeout(() => {
+              $('#rowEdit').modal('hide')
+            }, 900)
+          })
+          .catch(error => console.error(error))
+      })
+
+      // delete row
+      $('#rowEdit').on('click', '.delete', e => {
+        const action = $(e.currentTarget).data('action')
+        switch (action) {
+          case 'confirm':
+            $(e.currentTarget)
+              .toggleClass('btn-light btn-danger')
+              .data('action', 'confirmed')
+              .find('span').text('Kinnita kustutamine')
+            break;
+          case 'confirmed':
+            $(e.currentTarget)
+              .toggleClass('btn-light btn-danger')
+              .data('action', 'confirm')
+              .prop('disabled', true)
+              .find('span').text('Kustuta')
+            let data = $('#rowEdit').find('form').serializeObject()
+            const primary = data[config.primary]
+            data = {}
+            data[config.delete] = true
+            updateRow(primary, data)
+              .then(response => {
+                $('#rowEdit').find('.save').toggleClass('btn-primary btn-success')
+                setTimeout(() => {
+                  $('#rowEdit').modal('hide')
+                }, 900)
+              })
+              .then()
+              .catch(error => console.error(error))
+            break
+        }
+      });
+
+    })(jQuery);
+
+  </script>
+
+</body>
+</html>

@@ -77,28 +77,8 @@
 
   {% include 'parts/footer.twig' %}
 
-  <!-- MODAL -->
-  <div class="modal fade" id="rowEdit" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-body">
-          <form>
+  {% include 'parts/person-modal.twig' %}
 
-          </form>
-        </div>
-        <div class="modal-footer">
-          {% if meta.api.deleteColumn %}
-          <button type="button" class="btn btn-light mr-auto delete" data-action="confirm" disabled>
-            <i class="icon ion-md-trash"></i>
-            <span>Kustuta</span>
-          </button>
-          {% endif %}
-          <button type="button" class="btn btn-primary save"><i class="icon ion-ios-save"></i> Salvesta</button>
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Sulge</button>
-        </div>
-      </div>
-    </div>
-  </div>
   {% if meta.table.copyColumn %}
   <!-- MODAL -->
   <div class="modal fade" id="copy" tabindex="-1" role="dialog">
@@ -140,7 +120,7 @@
       copy: '{{ meta.table.copyColumn }}',
       col: {{ meta.table.columns|json_encode() }},
       dom: '{{ meta.table.dom }}',
-      editable: {{ meta.table.editable }},
+      editable: {{ meta.table.editable }}
     }
 
     const api = new Api({ endpoint: config.url, hash: config.hash })
@@ -385,7 +365,6 @@
     })(jQuery);
 
   </script>
-
 
 </body>
 </html>
