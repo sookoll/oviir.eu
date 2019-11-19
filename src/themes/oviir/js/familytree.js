@@ -17,55 +17,26 @@ class FamilyTree {
     this.diagonal = d3.svg.diagonal()
       .projection(d => [d.x, d.y])
     this.svgGroup = this.svg.append("g")
-    this.maxLabelLength = 0
     this.panSpeed = 200
     this.selectedNode = null
     this.duration = 750
-    this.data = []
+    this.data = {}
   }
   load(data) {
-    if (!data.length) {
+    if (!data) {
       return false
     }
     let totalNodes = 0
     this.data = data
-
-    // Call visit function to establish maxLabelLength
-    this.visit(this.data[0], d => {
-      totalNodes++
-      this.maxLabelLength = Math.max(
-        d.firstname.length + d.lastname.length,
-        this.maxLabelLength
-      )
-    }, d => {
-      return d.children && d.children.length > 0 ? d.children : null
-    })
-
     // Define the root
-    let root = this.data[0]
-    root.x0 = this.viewer.height / 2
-    root.y0 = 0
-
+    this.data.x0 = this.viewer.height / 2
+    this.data.y0 = 0
     // Layout the tree initially and center on the root node.
-    this.update(root)
-    this.centerNode(root)
+    this.update(this.data)
+    this.centerNode(this.data, { y: 120 })
   }
   reload(data) {
     this.load(data)
-  }
-  // A recursive helper function for performing some setup by walking through all nodes
-  visit(parent, visitFn, childrenFn) {
-    if (!parent) {
-      return
-    }
-    visitFn(parent)
-    let children = childrenFn(parent)
-    if (children) {
-      let count = children.length
-      for (let i = 0; i < count; i++) {
-        this.visit(children[i], visitFn, childrenFn)
-      }
-    }
   }
   // Define the zoom function for the zoomable tree
   zoom() {
@@ -151,12 +122,23 @@ class FamilyTree {
     this.updateTempConnector()
   }
   // Function to center node when clicked/dropped so node doesn't get lost when collapsing/moving with large amount of children.
-  centerNode(source) {
+  centerNode(source, fitTo) {
     let scale = this.zoomListener.scale()
     let x = -source.x0
     let y = -source.y0
-    x = x * scale + this.viewer.width / 2
-    y = y * scale + this.viewer.height / 2
+    if (fitTo && 'x' in fitTo) {
+      x = x * scale + fitTo.x
+    } else {
+      x = x * scale + this.viewer.width / 2
+    }
+    if (fitTo && 'y' in fitTo) {
+      y = y * scale + fitTo.y
+    } else {
+      y = y * scale + this.viewer.height / 2
+    }
+
+
+
     d3.select('g').transition()
         .duration(this.duration)
         .attr("transform", "translate(" + x + "," + y + ")scale(" + scale + ")")
@@ -199,11 +181,11 @@ class FamilyTree {
         })
       }
     }
-    childCount(0, this.data[0])
+    childCount(0, this.data)
     let newWidth = d3.max(levelHeight) * 25// 25 pixels per line
     this.tree = this.tree.size([this.viewer.height, newWidth])
     // Compute the new tree layout.
-    let nodes = this.tree.nodes(this.data[0]).reverse()
+    let nodes = this.tree.nodes(this.data).reverse()
     let links = this.tree.links(nodes)
     // Set height between levels based on maxLabelLength.
     nodes.forEach(d => {
@@ -213,7 +195,7 @@ class FamilyTree {
 
     // Update the nodes
     let node = this.svgGroup.selectAll("g.node")
-      .data(nodes, d => d.id || (d.id = ++i))
+      .data(nodes, d => d.id)
     // Enter any new nodes at the parent's previous position.
     let nodeEnter = node.enter().append("g")
       .attr("class", "node")
@@ -227,8 +209,10 @@ class FamilyTree {
       .attr({
         width: 100,
         height: 50,
-        x: d => d.children || d._children ? 10 : -50,
-        y: d => d.children || d._children ? -50 : 10
+        x: -50,
+        y: d => d.children || d._children ? -50 : 0
+        //x: d => d.children || d._children ? 10 : -50,
+        //y: d => d.children || d._children ? -50 : 10
       })
       .append('xhtml:div')
         .append('div')
@@ -236,35 +220,6 @@ class FamilyTree {
             return this.labelContent(d)
           })
           .attr('class', 'label')
-    /*nodeEnter.append("text")
-      .attr("x", d => d.children || d._children ? -10 : 10)
-      .attr("dy", ".35em")
-      .attr('class', 'nodeText')
-      .attr("text-anchor", d => d.children || d._children ? "end" : "start")
-      .html(d => {
-        return this.labelContent(d)
-      })
-      .style("fill-opacity", 0)*/
-    // phantom node to give us mouseover in a radius around it
-    nodeEnter.append("circle")
-      .attr('class', 'ghostCircle')
-      .attr("r", 30)
-      .attr("opacity", 0.2) // change this to zero to hide the target area
-      .style("fill", "red")
-      .attr('pointer-events', 'mouseover')
-      .on("mouseover", node => {
-        this.overCircle(node)
-      })
-      .on("mouseout", node => {
-        this.outCircle(node)
-      })
-    // Update the text to reflect whether node has children or not.
-    /*node.select('text')
-      .attr("x", d => d.children || d._children ? -10 : 10)
-      .attr("text-anchor", d => d.children || d._children ? "end" : "start")
-      .html(d => {
-        return this.labelContent(d)
-      })*/
     // Change the circle fill depending on whether it has children and is collapsed
     node.select("circle.nodeCircle")
       .attr("r", 4.5)
@@ -294,6 +249,7 @@ class FamilyTree {
     // Enter any new links at the parent's previous position.
     link.enter().insert("path", "g")
       .attr("class", "link")
+      .style("stroke-dasharray", d => d.source.id === 0 || d.target.id === 0 ? '1.5,3' : '5,0')
       .attr("d", d => {
         let o = {
           x: source.x0,

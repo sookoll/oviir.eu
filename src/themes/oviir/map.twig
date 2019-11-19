@@ -16,7 +16,8 @@
     }
     .fullscreen nav {
       box-shadow: 0 0 6px #aaa;
-      background: #0078ff
+      background: #0078ff;
+      padding: 0
     }
     #toolbar {
       position: fixed;
@@ -30,6 +31,7 @@
       padding: 4px
     }
     #list {
+      display: none;
       position: absolute;
       width: 250px;
       height: 100%;
@@ -63,14 +65,11 @@
       stroke: red;
       stroke-width: 3px;
     }
-    .ghostCircle.show{
-        display:block;
-    }
-    .ghostCircle, .activeDrag .ghostCircle{
-         display: none;
-    }
     foreignObject {
       overflow: visible;
+    }
+    foreignObject div {
+      min-height: 50px;
     }
     .label {
       background: white;
@@ -124,17 +123,21 @@
     const api = new Api({ endpoint: config.url, hash: config.hash });
 
     function getNested(arr, parent) {
-      const out = []
+      let out = []
       for (var i in arr) {
         if (arr[i].bound_with == parent) {
           const related = getNested(arr, arr[i].id)
           const children = related.filter(r => r.bound_is === 'child')
           const partners = related.filter(r => r.bound_is === 'partner')
+          const unsure = related.filter(r => r.bound_is !== 'partner' && r.bound_is !== 'child')
           if(children.length) {
             arr[i].children = children
           }
           if(partners.length) {
-          arr[i].partner = partners
+            arr[i].partner = partners
+          }
+          if(unsure.length) {
+            out = out.concat(unsure)
           }
           out.push(arr[i])
         }
@@ -142,10 +145,46 @@
       return out
     }
 
+    function buildList(treelessData) {
+      if (treelessData.length) {
+        $('#list').show().find('.list-group').html(treelessData.map(item => {
+          return `<a href="#"
+            class="list-group-item list-group-item-action"
+            data-toggle="modal"
+            data-target="#rowEdit"
+            data-row="${item[config.primary]}">${item.firstname} ${item.lastname}</a>`
+        }))
+      } else {
+        $('#list').hide().find('.list-group').html('')
+      }
+    }
+
     (function($) {
 
-      let treeData = []
-      let treelessData = []
+      //let treeData = []
+      //let treelessData = []
+
+      function insertTo(item) {
+        if (item.bound_with !== null && item.bound_is) {
+          treeData.push(item)
+        } else {
+          treelessData.push(item)
+        }
+      }
+      function removeItem(id) {
+        for (let i = 0, len = treeData.length; i < len; i++) {
+          if (treeData[i][config.primary] === id) {
+            treeData.splice(i, 1)
+            return true
+          }
+        }
+        for (let i = 0, len = treelessData.length; i < len; i++) {
+          if (treelessData[i][config.primary] === id) {
+            treelessData.splice(i, 1)
+            return true
+          }
+        }
+      }
 
       const ftree = new FamilyTree({
         target: '#map'
@@ -157,21 +196,22 @@
         }
         api.load({ params: config.params })
           .then(response => {
-            response.forEach(item => {
-              if (item.bound_with !== null && item.bound_is) {
-                treeData.push(item)
-              } else {
-                treelessData.push(item)
-              }
-            })
-            ftree.load(getNested(treeData, 0))
-            $('#list .list-group').html(treelessData.map(item => {
-              return `<a href="#"
-                class="list-group-item list-group-item-action"
-                data-toggle="modal"
-                data-target="#rowEdit"
-                data-row="${item[config.primary]}">${item.firstname} ${item.lastname}</a>`
-            }))
+            /*response.forEach(item => {
+              insertTo(item)
+            })*/
+            const treeData = getNested(response)
+            if (treeData.length > 1) {
+              ftree.load({
+                id: 0,
+                firstname: 'Suguvõsa',
+                lastname: 'osad',
+                children: treeData
+              })
+            } else if (treeData.length > 0) {
+              ftree.load(treeData[0])
+            }
+
+            //buildList(treelessData)
           })
           .catch(e => {
             console.error(e)
@@ -189,18 +229,20 @@
           }
         }
         $(e.target).find('form').append(Object.keys(row).map((key, i) => {
+          if (!(key in config.col)) {
+            return ''
+          }
           if (key === config.primary) {
             return `<input type="hidden" name="${key}" value="${row[key]}">`
           }
           if (
-            key in config.col &&
             'dataType' in config.col[key] &&
             config.col[key].dataType === 'boolean'
           ) {
             return `<div class="form-group col-sm-6">
               <div>
                 <label class="col-form-label">
-                  ${(key in config.col && config.col[key].title) ? config.col[key].title : key}
+                  ${config.col[key].title ? config.col[key].title : key}
                 </label>
               </div>
               <label class="switch">
@@ -226,20 +268,43 @@
       // save row
       $('#rowEdit').on('click', '.save', e => {
         const row = $('#rowEdit').find('form').serializeObject()
-        const primary = row[config.primary]
+        const primary = Number(row[config.primary])
         delete row[config.primary]
-        api.insert(row)
-          .then(response => {
-            $('#rowEdit').find('.save').toggleClass('btn-primary btn-success')
-            row[config.primary] = Number(response)
-            row.bound_with = Number(row.bound_with)
-            data.push(row)
-            ftree.reload(data)
-            setTimeout(() => {
-              $('#rowEdit').modal('hide')
-            }, 900)
-          })
-          .catch(error => console.error(error))
+        if (primary) {
+          api.update(primary, row)
+            .then(response => {
+              $('#rowEdit').find('.save').toggleClass('btn-primary btn-success')
+              // remove
+              removeItem(primary)
+              row[config.primary] = primary
+              if (row.bound_with !== '') {
+                row.bound_with = Number(row.bound_with)
+              }
+              insertTo(row)
+              ftree.reload(getNested(treeData, 0))
+              buildList(treelessData)
+              setTimeout(() => {
+                $('#rowEdit').modal('hide')
+              }, 900)
+            })
+            .catch(error => console.error(error))
+        } else {
+          api.insert(row)
+            .then(response => {
+              $('#rowEdit').find('.save').toggleClass('btn-primary btn-success')
+              row[config.primary] = Number(response)
+              if (row.bound_with !== '') {
+                row.bound_with = Number(row.bound_with)
+              }
+              insertTo(row)
+              ftree.reload(getNested(treeData, 0))
+              buildList(treelessData)
+              setTimeout(() => {
+                $('#rowEdit').modal('hide')
+              }, 900)
+            })
+            .catch(error => console.error(error))
+        }
       })
 
       // delete row
@@ -258,13 +323,17 @@
               .data('action', 'confirm')
               .prop('disabled', true)
               .find('span').text('Kustuta')
-            let data = $('#rowEdit').find('form').serializeObject()
-            const primary = data[config.primary]
-            data = {}
-            data[config.delete] = true
-            updateRow(primary, data)
+            let row = $('#rowEdit').find('form').serializeObject()
+            const primary = row[config.primary]
+            row = {}
+            row[config.delete] = true
+            api.update(primary, row)
               .then(response => {
                 $('#rowEdit').find('.save').toggleClass('btn-primary btn-success')
+                // remove
+                removeItem(primary)
+                ftree.reload(getNested(treeData, 0))
+                buildList(treelessData)
                 setTimeout(() => {
                   $('#rowEdit').modal('hide')
                 }, 900)
