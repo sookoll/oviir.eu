@@ -1,0 +1,127 @@
+<!-- MODAL -->
+<div class="modal fade" id="rowEdit" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <form class="row" novalidate>
+
+        </form>
+      </div>
+      <div class="modal-footer">
+        {% if meta.api.deleteColumn %}
+        <button type="button" class="btn btn-light mr-auto delete" data-action="confirm" disabled>
+          <i class="icon ion-md-trash"></i>
+          <span>Kustuta</span>
+        </button>
+        {% endif %}
+        <button type="button" class="btn btn-primary save"><i class="icon ion-ios-save"></i> Salvesta</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Sulge</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<script type="text/javascript">
+
+  const TableModal = {
+    onShow: (modal, config, row) => {
+      modal.find('form').append(Object.keys(row)
+        .filter(key => key in config.col)
+        .map((key, i) => {
+          if (key === config.primary) {
+            return `<input type="hidden" name="${key}" value="${row[key] || ''}">`
+          }
+          if (
+            'dataType' in config.col[key] &&
+            config.col[key].dataType === 'boolean'
+          ) {
+            return `<div class="form-group col-sm-6">
+              <div>
+                <label class="col-form-label">
+                  ${config.col[key].title ? config.col[key].title : key}
+                </label>
+              </div>
+              <label class="switch">
+                <input type="checkbox" name="${key}" id="${key}" ${row[key] ? 'checked' : ''} value="true">
+                <span class="slider round"></span>
+              </label>
+            </div>`
+          }
+          if (
+            'dataType' in config.col[key] &&
+            config.col[key].dataType === 'select'
+          ) {
+            return `<div class="form-group col-sm-6">
+              <label for="${key}" class="col-form-label">
+                ${(key in config.col && config.col[key].title) ? config.col[key].title : key}:
+              </label>
+              <select class="form-control" name="${key}" id="${key}">
+                ${Object.keys(config.col[key].select).map(opt => {
+                  return `<option value="${opt}" ${row[key] === opt ? 'selected' : ''}>${config.col[key].select[opt]}</option>`
+                }).join('')}
+              </select>
+            </div>`
+          }
+          if (
+            'dataType' in config.col[key] &&
+            config.col[key].dataType === 'search' &&
+            key in config.search
+          ) {
+            const selected = config.search[key].filter(r => r['data'] === row[key])
+            console.log(selected)
+            return `<div class="form-group col-sm-6">
+              <label for="${key}" class="col-form-label">
+                ${(key in config.col && config.col[key].title) ? config.col[key].title : key}:
+              </label>
+              <input type="text"
+                class="form-control"
+                id="${key}"
+                data-target="${key}"
+                value="${selected.length ? selected[0].value : ''}"
+                autocomplete
+                ${config.col[key].required ? 'required' : ''}>
+                <input type="hidden" name="${key}" value="${row[key] || ''}">
+            </div>`
+          }
+          return `<div class="form-group col-sm-6">
+            <label for="${key}" class="col-form-label">
+              ${(key in config.col && config.col[key].title) ? config.col[key].title : key}:
+            </label>
+            <input type="text"
+              class="form-control"
+              id="${key}"
+              name="${key}"
+              value="${row[key] || ''}"
+              ${config.col[key].required ? 'required' : ''}>
+          </div>`
+        }).join(''))
+      if (row[config.primary]) {
+        modal.find('.delete').prop('disabled', false)
+      }
+      if (config.search) {
+        $('[autocomplete]').each((i, item) => {
+          const target = $(item).data('target')
+          if (target in config.search) {
+            $(item).autocomplete({
+              lookup: config.search[target],
+              minChars: 2,
+              triggerSelectOnValidInput: false,
+              onSelect: suggestion => {
+                $(`[name=${target}]`).val(suggestion.data)
+              }
+            })
+          }
+        })
+      }
+
+    },
+    onHide: (modal, config) => {
+      modal.find('form').html('')
+      modal.find('.save').removeClass('btn-success').addClass('btn-primary')
+      modal.find('.delete').prop('disabled', true)
+    }
+  }
+
+</script>

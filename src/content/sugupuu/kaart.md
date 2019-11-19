@@ -24,8 +24,14 @@ Table:
       title: Surm
     bound_with:
       title: Seotud sugulane
+      dataType: 'search'
     bound_is:
       title: Seos
+      dataType: select
+      select:
+        null: -- Vali --
+        child: Järglane
+        partner: Kaaslane
     ancestor:
       title: Haru
     address:

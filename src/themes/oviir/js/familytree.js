@@ -10,23 +10,31 @@ class FamilyTree {
     })
     this.tree = d3.layout.tree()
       .size([this.viewer.height, this.viewer.width])
-    this.svg = this.el.append("svg")
-      .attr("width", this.viewer.width)
-      .attr("height", this.viewer.height)
-      .call(this.zoomListener)
+    this.svg = null
     this.diagonal = d3.svg.diagonal()
       .projection(d => [d.x, d.y])
-    this.svgGroup = this.svg.append("g")
+    this.svgGroup = null
     this.panSpeed = 200
     this.selectedNode = null
     this.duration = 750
     this.data = {}
+    // Redraw based on the new size whenever the browser window is resized.
+    window.addEventListener("resize", () => {
+      this.create(this.data)
+    });
   }
-  load(data) {
+  create(data) {
     if (!data) {
       return false
     }
-    let totalNodes = 0
+    if (this.svg) {
+      this.svg.remove()
+    }
+    this.svg = this.el.append("svg")
+      .attr("width", this.viewer.width)
+      .attr("height", this.viewer.height)
+      .call(this.zoomListener)
+    this.svgGroup = this.svg.append("g")
     this.data = data
     // Define the root
     this.data.x0 = this.viewer.height / 2
@@ -34,9 +42,6 @@ class FamilyTree {
     // Layout the tree initially and center on the root node.
     this.update(this.data)
     this.centerNode(this.data, { y: 120 })
-  }
-  reload(data) {
-    this.load(data)
   }
   // Define the zoom function for the zoomable tree
   zoom() {
@@ -136,9 +141,6 @@ class FamilyTree {
     } else {
       y = y * scale + this.viewer.height / 2
     }
-
-
-
     d3.select('g').transition()
         .duration(this.duration)
         .attr("transform", "translate(" + x + "," + y + ")scale(" + scale + ")")
@@ -200,19 +202,17 @@ class FamilyTree {
     let nodeEnter = node.enter().append("g")
       .attr("class", "node")
       .attr("transform", d => "translate(" + source.x0 + "," + source.y0 + ")")
-      .on('click', d => this.click(d))
     nodeEnter.append("circle")
       .attr('class', 'nodeCircle')
-      .attr("r", 0)
+      .attr("r", 7)
       .style("fill", d => d._children ? "lightsteelblue" : "#fff")
+      .on('click', d => this.click(d))
     nodeEnter.append('foreignObject')
       .attr({
         width: 100,
         height: 50,
         x: -50,
         y: d => d.children || d._children ? -50 : 0
-        //x: d => d.children || d._children ? 10 : -50,
-        //y: d => d.children || d._children ? -50 : 10
       })
       .append('xhtml:div')
         .append('div')
@@ -222,7 +222,7 @@ class FamilyTree {
           .attr('class', 'label')
     // Change the circle fill depending on whether it has children and is collapsed
     node.select("circle.nodeCircle")
-      .attr("r", 4.5)
+      .attr("r", 7)
       .style("fill", d => d._children ? "lightsteelblue" : "#fff")
     // Transition nodes to their new position.
     let nodeUpdate = node.transition()
@@ -287,9 +287,17 @@ class FamilyTree {
   }
   // label content
   labelContent(d) {
-    const partners = d.partner ?
-      d.partner.map(p => `${p.firstname} ${p.lastname}`) : []
-    return `<b>${d.firstname} ${d.lastname}</b><br>${partners.join('<br>')}`
+    const rows = [d].concat(d.partner || [])
+    return rows.map((item, i) => {
+      const name = (i === 0 && d.id !== 0) ? `<b>${item.firstname} ${item.lastname}</b>` :
+        `${item.firstname} ${item.lastname}`
+      return d.id !== 0 ?
+        `<a href="#"
+          class=""
+          data-toggle="modal"
+          data-target="#rowEdit"
+          data-row="${item.id}">${name}</a>` : `${name}`
+    }).join('<br>')
   }
 
 

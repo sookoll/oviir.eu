@@ -30,26 +30,11 @@
       background: white;
       padding: 4px
     }
-    #list {
-      display: none;
-      position: absolute;
-      width: 250px;
-      height: 100%;
-      right: 0;
-      top: 0;
-      background: white;
-      overflow-y: auto;
-    }
-    #list .list-group {
-      margin: 110px 10px 10px
-    }
-    .node {
-      cursor: pointer;
-    }
     .node circle {
       fill: #fff;
       stroke: steelblue;
       stroke-width: 1.5px;
+      cursor: pointer;
     }
     .node text {
       font-size:10px;
@@ -77,6 +62,18 @@
       padding: 4px;
       border: 1px solid black
     }
+    .autocomplete-suggestions {
+      border: 1px solid #999;
+      background: #fff;
+      padding: 6px
+    }
+    .autocomplete-suggestion {
+      cursor: pointer;
+      padding: 2px;
+    }
+    .autocomplete-suggestion:hover {
+      background: #fafafa;
+    }
 
   </style>
 
@@ -102,12 +99,12 @@
     <div class="list-group"></div>
   </div>
 
-  {% include 'parts/person-modal.twig' %}
+  {% include 'parts/table-modal.twig' %}
 
   {% include 'parts/scripts.twig' %}
 
   <script src="https://d3js.org/d3.v3.min.js"></script>
-
+  <script src="{{ theme_url }}/lib/jquery.autocomplete.min.js"></script>
   <script src="{{ theme_url }}/js/familytree.js"></script>
 
   <script type="text/javascript">
@@ -117,7 +114,11 @@
       hash: '{{ config.api.grant|base64_encode }}',
       params: 'filter=deleted,eq,0',
       primary: 'id',
-      col: {{ meta.table.columns|json_encode() }}
+      delete: 'deleted',
+      col: {{ meta.table.columns|json_encode() }},
+      search: {
+        bound_with: []
+      }
     }
 
     const api = new Api({ endpoint: config.url, hash: config.hash });
@@ -145,42 +146,34 @@
       return out
     }
 
-    function buildList(treelessData) {
-      if (treelessData.length) {
-        $('#list').show().find('.list-group').html(treelessData.map(item => {
-          return `<a href="#"
-            class="list-group-item list-group-item-action"
-            data-toggle="modal"
-            data-target="#rowEdit"
-            data-row="${item[config.primary]}">${item.firstname} ${item.lastname}</a>`
-        }))
-      } else {
-        $('#list').hide().find('.list-group').html('')
-      }
+    function getFormData() {
+      const row = $('#rowEdit').find('form').serializeObject()
+      return formatRow(row)
+    }
+
+    function formatRow(row) {
+      Object.keys(row).forEach(key => {
+        if (row[key] === '') {
+          row[key] = null
+        }
+        if (key === config.primary) {
+          row[key] = Number(row[key])
+        }
+        if (key === 'bound_with' && row[key]) {
+          row[key] = Number(row[key])
+        }
+      })
+      return row
     }
 
     (function($) {
 
-      //let treeData = []
-      //let treelessData = []
+      var apidata = []
 
-      function insertTo(item) {
-        if (item.bound_with !== null && item.bound_is) {
-          treeData.push(item)
-        } else {
-          treelessData.push(item)
-        }
-      }
       function removeItem(id) {
-        for (let i = 0, len = treeData.length; i < len; i++) {
-          if (treeData[i][config.primary] === id) {
-            treeData.splice(i, 1)
-            return true
-          }
-        }
-        for (let i = 0, len = treelessData.length; i < len; i++) {
-          if (treelessData[i][config.primary] === id) {
-            treelessData.splice(i, 1)
+        for (let i = 0, len = apidata.length; i < len; i++) {
+          if (apidata[i][config.primary] === id) {
+            apidata.splice(i, 1)
             return true
           }
         }
@@ -190,99 +183,72 @@
         target: '#map'
       })
 
-      setTimeout(() => {
-        if (!config.url) {
-          return false;
+      function initTree(data) {
+        const treeData = getNested(data)
+        if (treeData.length > 1) {
+          ftree.create({
+            id: 0,
+            firstname: 'Sugupuu',
+            lastname: 'osad',
+            children: treeData
+          })
+        } else if (treeData.length > 0) {
+          ftree.create(treeData[0])
         }
+      }
+
+      function reload() {
         api.load({ params: config.params })
           .then(response => {
-            /*response.forEach(item => {
-              insertTo(item)
-            })*/
-            const treeData = getNested(response)
-            if (treeData.length > 1) {
-              ftree.load({
-                id: 0,
-                firstname: 'Suguvõsa',
-                lastname: 'osad',
-                children: treeData
-              })
-            } else if (treeData.length > 0) {
-              ftree.load(treeData[0])
-            }
-
-            //buildList(treelessData)
+            apidata = response
+            config.search.bound_with = apidata.map(row => {
+              return {
+                data: row[config.primary],
+                value: `${row.firstname} ${row.lastname}`
+              }
+            })
+            initTree(apidata)
           })
           .catch(e => {
             console.error(e)
           })
+      }
+
+      setTimeout(() => {
+        if (!config.url) {
+          return false
+        }
+        reload()
       }, 200)
 
       // modal
       $('#rowEdit').on('show.bs.modal', e => {
-        const primary = $(e.relatedTarget).data('row')
+        const primary = Number($(e.relatedTarget).data('row'))
         let row = Object.keys(config.col).reduce((a,b)=> (a[b]='',a),{})
         if (primary) {
-          let rows = treelessData.filter(item => item[config.primary] === primary)
+          let rows = apidata.filter(item => {
+            return item[config.primary] === primary
+          })
           if (rows.length) {
-            row = rows[0]
+            row = formatRow(rows[0])
           }
         }
-        $(e.target).find('form').append(Object.keys(row).map((key, i) => {
-          if (!(key in config.col)) {
-            return ''
-          }
-          if (key === config.primary) {
-            return `<input type="hidden" name="${key}" value="${row[key]}">`
-          }
-          if (
-            'dataType' in config.col[key] &&
-            config.col[key].dataType === 'boolean'
-          ) {
-            return `<div class="form-group col-sm-6">
-              <div>
-                <label class="col-form-label">
-                  ${config.col[key].title ? config.col[key].title : key}
-                </label>
-              </div>
-              <label class="switch">
-                <input type="checkbox" name="${key}" id="${key}" ${row[key] ? 'checked' : ''} value="true">
-                <span class="slider round"></span>
-              </label>
-            </div>`
-          }
-          return `<div class="form-group col-sm-6">
-            <label for="${key}" class="col-form-label">${(key in config.col && config.col[key].title) ? config.col[key].title : key}:</label>
-            <input type="text" class="form-control" id="${key}" name="${key}" value="${row[key]}" ${config.col[key].required ? 'required' : ''}>
-          </div>`
-        }).join(''))
-        if (primary) {
-          $(e.target).find('.delete').prop('disabled', false)
-        }
+        TableModal.onShow($(e.target), config, row)
       }).on('hide.bs.modal', e => {
-        $(e.target).find('form').html('')
-        $(e.target).find('.save').removeClass('btn-success').addClass('btn-primary')
-        $(e.target).find('.delete').prop('disabled', true)
+        TableModal.onHide($(e.target), config)
       })
 
       // save row
       $('#rowEdit').on('click', '.save', e => {
-        const row = $('#rowEdit').find('form').serializeObject()
-        const primary = Number(row[config.primary])
+        const row = getFormData()
+        console.log(row)
+        const primary = row[config.primary]
         delete row[config.primary]
         if (primary) {
           api.update(primary, row)
             .then(response => {
               $('#rowEdit').find('.save').toggleClass('btn-primary btn-success')
-              // remove
-              removeItem(primary)
-              row[config.primary] = primary
-              if (row.bound_with !== '') {
-                row.bound_with = Number(row.bound_with)
-              }
-              insertTo(row)
-              ftree.reload(getNested(treeData, 0))
-              buildList(treelessData)
+              reload()
               setTimeout(() => {
                 $('#rowEdit').modal('hide')
               }, 900)
@@ -292,13 +258,7 @@
           api.insert(row)
             .then(response => {
               $('#rowEdit').find('.save').toggleClass('btn-primary btn-success')
-              row[config.primary] = Number(response)
-              if (row.bound_with !== '') {
-                row.bound_with = Number(row.bound_with)
-              }
-              insertTo(row)
-              ftree.reload(getNested(treeData, 0))
-              buildList(treelessData)
+              reload()
               setTimeout(() => {
                 $('#rowEdit').modal('hide')
               }, 900)
@@ -323,17 +283,13 @@
               .data('action', 'confirm')
               .prop('disabled', true)
               .find('span').text('Kustuta')
-            let row = $('#rowEdit').find('form').serializeObject()
+            let row = getFormData()
             const primary = row[config.primary]
             row = {}
             row[config.delete] = true
             api.update(primary, row)
               .then(response => {
-                $('#rowEdit').find('.save').toggleClass('btn-primary btn-success')
-                // remove
-                removeItem(primary)
-                ftree.reload(getNested(treeData, 0))
-                buildList(treelessData)
+                reload()
                 setTimeout(() => {
                   $('#rowEdit').modal('hide')
                 }, 900)
