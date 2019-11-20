@@ -70,7 +70,6 @@
             key in config.search
           ) {
             const selected = config.search[key].filter(r => r['data'] === row[key])
-            console.log(selected)
             return `<div class="form-group col-sm-6">
               <label for="${key}" class="col-form-label">
                 ${(key in config.col && config.col[key].title) ? config.col[key].title : key}:
@@ -110,8 +109,15 @@
               triggerSelectOnValidInput: false,
               onSelect: suggestion => {
                 $(`[name=${target}]`).val(suggestion.data)
+              },
+              onInvalidateSelection: () => {
+                $(`[name=${target}]`).val('')
               }
             })
+            if ($(`[name=${target}]`).val().length) {
+              // Set selection property on the instance:
+              $(item).autocomplete().selection = $(`[name=${target}]`).val()
+            }
           }
         })
       }

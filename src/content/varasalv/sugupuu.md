@@ -12,7 +12,7 @@ Documents:
     description: PDF
   -
     url: http://oviir.eu/materjalid/pdf/sugupuu-2-madis-oviir-1979.pdf
-    title: Sugupuu 14.03.1979
+    title: Sugupuu 15.03.1979
     description: PDF
 ---
 

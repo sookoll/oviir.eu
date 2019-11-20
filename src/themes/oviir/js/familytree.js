@@ -1,6 +1,11 @@
 class FamilyTree {
   constructor(options) {
     this.el = d3.select(options.target)
+    this.nameFormat = options.nameFormat
+    this.padding = {
+      y: 100,
+      x: 2
+    }
     this.viewer = {
       width: this.el.node().getBoundingClientRect().width,
       height: this.el.node().getBoundingClientRect().height
@@ -14,13 +19,20 @@ class FamilyTree {
     this.diagonal = d3.svg.diagonal()
       .projection(d => [d.x, d.y])
     this.svgGroup = null
+    this.rect = null
     this.panSpeed = 200
     this.selectedNode = null
     this.duration = 750
     this.data = {}
     // Redraw based on the new size whenever the browser window is resized.
     window.addEventListener("resize", () => {
-      this.create(this.data)
+      this.viewer = {
+        width: this.el.node().getBoundingClientRect().width * 2,
+        height: this.el.node().getBoundingClientRect().height
+      }
+      this.svg
+        .attr("width", this.viewer.width)
+        .attr("height", this.viewer.height)
     });
   }
   create(data) {
@@ -28,12 +40,17 @@ class FamilyTree {
       return false
     }
     if (this.svg) {
-      this.svg.remove()
+      this.el.html('')
     }
     this.svg = this.el.append("svg")
       .attr("width", this.viewer.width)
       .attr("height", this.viewer.height)
       .call(this.zoomListener)
+    this.svg.append('g').append("rect")
+      .attr("width", this.viewer.width)
+      .attr("height", this.viewer.height)
+      .attr("fill", "none")
+      .attr("pointer-events", "all")
     this.svgGroup = this.svg.append("g")
     this.data = data
     // Define the root
@@ -141,7 +158,7 @@ class FamilyTree {
     } else {
       y = y * scale + this.viewer.height / 2
     }
-    d3.select('g').transition()
+    this.svgGroup.transition()
         .duration(this.duration)
         .attr("transform", "translate(" + x + "," + y + ")scale(" + scale + ")")
     this.zoomListener.scale(scale)
@@ -191,10 +208,9 @@ class FamilyTree {
     let links = this.tree.links(nodes)
     // Set height between levels based on maxLabelLength.
     nodes.forEach(d => {
-      d.y = d.depth * 150
-      d.x = d.x * 3
+      d.y = d.depth * this.padding.y
+      d.x = d.x * this.padding.x
     })
-
     // Update the nodes
     let node = this.svgGroup.selectAll("g.node")
       .data(nodes, d => d.id)
@@ -204,35 +220,50 @@ class FamilyTree {
       .attr("transform", d => "translate(" + source.x0 + "," + source.y0 + ")")
     nodeEnter.append("circle")
       .attr('class', 'nodeCircle')
-      .attr("r", 7)
+      .attr("r", 0)
       .style("fill", d => d._children ? "lightsteelblue" : "#fff")
       .on('click', d => this.click(d))
-    nodeEnter.append('foreignObject')
+    const fo = nodeEnter.append('foreignObject')
       .attr({
         width: 100,
-        height: 50,
+        height: 25,
         x: -50,
-        y: d => d.children || d._children ? -50 : 0
+        y: d => d.children || d._children ? -25 : 0
       })
-      .append('xhtml:div')
-        .append('div')
-          .html(d => {
-            return this.labelContent(d)
-          })
-          .attr('class', 'label')
+      .attr("class", "fo")
+    fo.append('xhtml:div')
+      .append('div')
+        .html(d => {
+          return this.labelContent(d)
+        })
+        .attr('id', d => d.id)
+        .attr('class', d => d.children || d._children ? 'label anchor-bottom' : 'label anchor-top')
+        .style("opacity", 0)
     // Change the circle fill depending on whether it has children and is collapsed
     node.select("circle.nodeCircle")
       .attr("r", 7)
       .style("fill", d => d._children ? "lightsteelblue" : "#fff")
+    fo.attr({
+      height: d => {
+        const label = node.select('.label').filter(l => l.id === d.id)
+        if (label[0] && label[0][0]) {
+          return label[0][0].getBoundingClientRect().height
+        }
+      },
+      y: d => {
+        const label = node.select('.label').filter(l => l.id === d.id)
+        if (label[0] && label[0][0]) {
+          return d.children || d._children ? -label[0][0].getBoundingClientRect().height : 0
+        }
+      }
+    })
     // Transition nodes to their new position.
     let nodeUpdate = node.transition()
       .duration(this.duration)
       .attr("transform", d => "translate(" + d.x + "," + d.y + ")")
-
     // Fade the text in
-    nodeUpdate.select("text")
-      .style("fill-opacity", 1)
-
+    nodeUpdate.select(".label")
+      .style("opacity", 1)
     // Transition exiting nodes to the parent's new position.
     let nodeExit = node.exit().transition()
       .duration(this.duration)
@@ -240,9 +271,8 @@ class FamilyTree {
       .remove()
     nodeExit.select("circle")
       .attr("r", 0)
-    nodeExit.select("text")
-    .style("fill-opacity", 0)
-
+    nodeExit.select(".label")
+      .style("opacity", 0)
     // Update the links
     var link = this.svgGroup.selectAll("path.link")
       .data(links, d => d.target.id)
@@ -289,8 +319,8 @@ class FamilyTree {
   labelContent(d) {
     const rows = [d].concat(d.partner || [])
     return rows.map((item, i) => {
-      const name = (i === 0 && d.id !== 0) ? `<b>${item.firstname} ${item.lastname}</b>` :
-        `${item.firstname} ${item.lastname}`
+      const name = (i === 0 && d.id !== 0) ? `<b>${this.nameFormat(item)}</b>` :
+        `${this.nameFormat(item)}`
       return d.id !== 0 ?
         `<a href="#"
           class=""

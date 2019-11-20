@@ -24,7 +24,6 @@ Api.prototype.load = function (options = '') {
     const params = typeof options.params === 'object' ?
       new URLSearchParams(params).toString() : options.params
     const url = params ? `${this.options.endpoint}?${params}` : `${this.options.endpoint}`
-    console.log(url)
     fetch(url, {
       headers: {
         'Content-Type': 'application/json',

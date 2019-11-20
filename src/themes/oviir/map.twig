@@ -13,6 +13,7 @@
   <style>
     html, body, #map {
       height: 100%;
+      overflow: hidden;
     }
     .fullscreen nav {
       box-shadow: 0 0 6px #aaa;
@@ -24,21 +25,12 @@
       bottom: 10px;
       left: 10px
     }
-    #map .box {
-      border: 1px solid black;
-      height: 100%;
-      background: white;
-      padding: 4px
-    }
     .node circle {
       fill: #fff;
       stroke: steelblue;
       stroke-width: 1.5px;
       cursor: pointer;
-    }
-    .node text {
-      font-size:10px;
-      font-family:sans-serif;
+      overflow: visible
     }
     .link {
       fill: none;
@@ -50,17 +42,15 @@
       stroke: red;
       stroke-width: 3px;
     }
-    foreignObject {
-      overflow: visible;
-    }
-    foreignObject div {
-      min-height: 50px;
+    .fo div {
+      min-height: 25px;
     }
     .label {
       background: white;
       font-size: 0.7rem;
       padding: 4px;
-      border: 1px solid black
+      border: 1px solid black;
+      width: 100%
     }
     .autocomplete-suggestions {
       border: 1px solid #999;
@@ -166,21 +156,17 @@
       return row
     }
 
+    function nameFormat(row) {
+      return [row.firstname, row.lastname || '', row.birth || ''].join(' ')
+    }
+
     (function($) {
 
       var apidata = []
 
-      function removeItem(id) {
-        for (let i = 0, len = apidata.length; i < len; i++) {
-          if (apidata[i][config.primary] === id) {
-            apidata.splice(i, 1)
-            return true
-          }
-        }
-      }
-
       const ftree = new FamilyTree({
-        target: '#map'
+        target: '#map',
+        nameFormat: nameFormat
       })
 
       function initTree(data) {
@@ -204,7 +190,7 @@
             config.search.bound_with = apidata.map(row => {
               return {
                 data: row[config.primary],
-                value: `${row.firstname} ${row.lastname}`
+                value: `${nameFormat(row)}`
               }
             })
             initTree(apidata)
@@ -241,7 +227,6 @@
       // save row
       $('#rowEdit').on('click', '.save', e => {
         const row = getFormData()
-        console.log(row)
         const primary = row[config.primary]
         delete row[config.primary]
         if (primary) {

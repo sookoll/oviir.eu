@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  {% include 'parts/header.twig' %}
+
+</head>
+
+<body id="page-top">
+
+  <!--/ Nav Start /-->
+  {% include 'parts/menu.twig' %}
+  <!--/ Nav End /-->
+
+  <!--/ Intro Skew Start /-->
+  <div id="home" class="intro route bg-image" style="background-image: url({{ meta.image }})">
+    <div class="overlay-itro"></div>
+    <div class="intro-content display-table">
+      <div class="table-cell">
+        <div class="container">
+          <span>
+            <img src="http://oviir.eu/miuview-api/?request=getimage&album=wp-pildid-sisusse&item=o-logo-transp.png&size=150&mode=longest">
+          </span>
+          <div class="intro-subtitle">
+            <div class="d-flex justify-content-center">
+              {% include 'parts/login.twig' %}
+            </div>
+          </div>
+          <p class="pt-3">
+            {{ content }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--/ Intro Skew End /-->
+
+
+  {% include 'parts/footer.twig' %}
+
+  {% include 'parts/scripts.twig' %}
+
+
+</body>
+</html>
