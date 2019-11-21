@@ -10,7 +10,9 @@ class FamilyTree {
       width: this.el.node().getBoundingClientRect().width,
       height: this.el.node().getBoundingClientRect().height
     }
-    this.zoomListener = d3.behavior.zoom().scaleExtent([0.1, 3]).on('zoom', () => {
+    this.x = d3.scale.linear().domain([0, this.viewer.width]).range([0, this.viewer.width]),
+    this.y = d3.scale.linear().domain([0, this.viewer.height]).range([0, this.viewer.height]),
+    this.zoomListener = d3.behavior.zoom().x(this.x).y(this.y).scaleExtent([1, 16]).on('zoom', () => {
       this.zoom()
     })
     this.tree = d3.layout.tree()
@@ -27,7 +29,7 @@ class FamilyTree {
     // Redraw based on the new size whenever the browser window is resized.
     window.addEventListener("resize", () => {
       this.viewer = {
-        width: this.el.node().getBoundingClientRect().width * 2,
+        width: this.el.node().getBoundingClientRect().width,
         height: this.el.node().getBoundingClientRect().height
       }
       this.svg
@@ -45,57 +47,74 @@ class FamilyTree {
     this.svg = this.el.append("svg")
       .attr("width", this.viewer.width)
       .attr("height", this.viewer.height)
-      .call(this.zoomListener)
-    this.svg.append('g').append("rect")
+      .attr("viewBox", `0 0 ${this.viewer.width} ${this.viewer.height}`)
+    this.svgGroup = this.svg.append("g")
+    this.svgGroup.append("rect")
       .attr("width", this.viewer.width)
       .attr("height", this.viewer.height)
       .attr("fill", "none")
       .attr("pointer-events", "all")
-    this.svgGroup = this.svg.append("g")
     this.data = data
     // Define the root
-    this.data.x0 = this.viewer.height / 2
-    this.data.y0 = 0
+    this.data.x0 = this.viewer.width / 2
+    this.data.y0 = this.viewer.height / 2
     // Layout the tree initially and center on the root node.
     this.update(this.data)
-    this.centerNode(this.data, { y: 120 })
+    this.svgGroup.call(this.zoomListener)
+
+    //this.centerNode(this.data, { y: 120 })
+    this.centerNode(this.data)
+  }
+  // Function to center node when clicked/dropped so node doesn't get lost when collapsing/moving with large amount of children.
+  centerNode(source, fitTo) {
+    let scale = this.zoomListener.scale()
+    let x = -this.x(source.x0)
+    let y = -this.y(source.y0)
+    if (fitTo && 'x' in fitTo) {
+      x = this.x(x * scale + fitTo.x)
+    } else {
+      x = this.x(x * scale + this.viewer.width / 2)
+    }
+    if (fitTo && 'y' in fitTo) {
+      y = this.y(y * scale + fitTo.y)
+    } else {
+      y = this.y(y * scale + this.viewer.height / 2)
+    }
+    /*this.svgGroup.transition()
+        .duration(this.duration)
+        .attr("transform", "translate(" + x + "," + y + ")scale(" + scale + ")")*/
+
+    this.zoomListener
+      .scale(scale)
+      .translate([x, y])
+      
+
+    console.log(this.zoomListener)
+
+    /*var nodes = this.svgGroup.selectAll(".node");
+    nodes.attr("transform", d => this.transform(d));
+    var link = this.svgGroup.selectAll(".link");
+    link.attr("d", d => this.translate(d));*/
   }
   // Define the zoom function for the zoomable tree
   zoom() {
-    this.svgGroup.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+    var nodes = this.svgGroup.selectAll(".node");
+    nodes.attr("transform", d => this.transform(d));
+    var link = this.svgGroup.selectAll(".link");
+    link.attr("d", d => this.translate(d));
   }
-  // pan
-  pan(domNode, direction) {
-    let speed = this.panSpeed
-    let panTimer = null,
-        translateX, translateY
-    if (panTimer) {
-      clearTimeout(panTimer)
-      translateCoords = d3.transform(this.svgGroup.attr("transform"))
-      if (direction == 'left' || direction == 'right') {
-        translateX = direction == 'left' ?
-          translateCoords.translate[0] + speed :
-          translateCoords.translate[0] - speed
-        translateY = translateCoords.translate[1]
-      } else if (direction == 'up' || direction == 'down') {
-        translateX = translateCoords.translate[0]
-        translateY = direction == 'up' ?
-          translateCoords.translate[1] + speed :
-          translateCoords.translate[1] - speed
-      }
-      let scaleX = translateCoords.scale[0]
-      let scaleY = translateCoords.scale[1]
-      let scale = zoomListener.scale()
-      this.svgGroup.transition()
-        .attr("transform", "translate(" + translateX + "," + translateY + ")scale(" + scale + ")")
-      d3.select(domNode).select('g.node')
-        .attr("transform", "translate(" + translateX + "," + translateY + ")")
-      this.zoomListener.scale(this.zoomListener.scale())
-      this.zoomListener.translate([translateX, translateY])
-      panTimer = setTimeout(() => {
-        this.pan(domNode, speed, direction)
-      }, 50)
-    }
+  transform(d) {
+    return "translate(" + this.x(d.x) + "," + this.y(d.y) + ")";
+  }
+  translate(d) {
+    var sourceX = this.x(d.target.parent.x);
+    var sourceY = this.y(d.target.parent.y);
+    var targetX = this.x(d.target.x);
+    var targetY = this.y(d.target.y);
+    return `M ${sourceX} ${sourceY}
+      C ${sourceX} ${(sourceY + targetY) / 2},
+        ${targetX} ${(sourceY + targetY) / 2},
+        ${targetX} ${targetY}`;
   }
   // Helper functions for collapsing and expanding nodes.
   collapse(d) {
@@ -142,27 +161,6 @@ class FamilyTree {
   outCircle(d) {
     this.selectedNode = null
     this.updateTempConnector()
-  }
-  // Function to center node when clicked/dropped so node doesn't get lost when collapsing/moving with large amount of children.
-  centerNode(source, fitTo) {
-    let scale = this.zoomListener.scale()
-    let x = -source.x0
-    let y = -source.y0
-    if (fitTo && 'x' in fitTo) {
-      x = x * scale + fitTo.x
-    } else {
-      x = x * scale + this.viewer.width / 2
-    }
-    if (fitTo && 'y' in fitTo) {
-      y = y * scale + fitTo.y
-    } else {
-      y = y * scale + this.viewer.height / 2
-    }
-    this.svgGroup.transition()
-        .duration(this.duration)
-        .attr("transform", "translate(" + x + "," + y + ")scale(" + scale + ")")
-    this.zoomListener.scale(scale)
-    this.zoomListener.translate([x, y])
   }
   // Toggle children function
   toggleChildren(d) {
@@ -294,6 +292,11 @@ class FamilyTree {
     link.transition()
       .duration(this.duration)
       .attr("d", this.diagonal)
+      .style("stroke", d => {
+        if(d.target.class === "found") {
+          return "#ff4136";
+        }
+      })
     // Transition exiting nodes to the parent's new position.
     link.exit().transition()
       .duration(this.duration)
@@ -329,6 +332,45 @@ class FamilyTree {
           data-row="${item.id}">${name}</a>` : `${name}`
     }).join('<br>')
   }
-
+  search(id) {
+    var paths = this.searchTree(this.data, id, [])
+    if (typeof(paths) !== "undefined") {
+      this.openPaths(paths)
+      this.centerNode(paths[paths.length - 1])
+    }
+  }
+  searchTree(obj,search,path) {
+    obj.class = null
+    if (obj.id === search) { //if search is found return, add the object to the path and return it
+      path.push(obj);
+      return path;
+    } else if (obj.children || obj._children) { //if children are collapsed d3 object will have them instantiated as _children
+      var children = (obj.children) ? obj.children : obj._children;
+      for (var i = 0; i < children.length; i++) {
+        obj.class = null
+        path.push(obj);// we assume this path is the right one
+        var found = this.searchTree(children[i], search, path);
+        if (found) {// we were right, this should return the bubbled-up path from the first if statement
+          return found;
+        } else{//we were wrong, remove this parent from the path and continue iterating
+          path.pop();
+        }
+      }
+    } else{//not the right object, return false so it will continue to iterate in the loop
+      return false;
+    }
+  }
+  openPaths(paths) {
+    for (var i = 0; i < paths.length; i++) {
+      if (paths[i].id !== 0) {//i.e. not root
+        paths[i].class = 'found';
+        if (paths[i]._children) { //if children are hidden: open them, otherwise: don't do anything
+          paths[i].children = paths[i]._children;
+          paths[i]._children = null;
+        }
+        this.update(paths[i]);
+      }
+    }
+  }
 
 }

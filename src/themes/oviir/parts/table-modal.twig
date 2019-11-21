@@ -100,30 +100,34 @@
         modal.find('.delete').prop('disabled', false)
       }
       if (config.search) {
-        $('[autocomplete]').each((i, item) => {
+        modal.find('[autocomplete]').each((i, item) => {
           const target = $(item).data('target')
           if (target in config.search) {
             $(item).autocomplete({
               lookup: config.search[target],
               minChars: 2,
+              orientation: 'auto',
+              lookupLimit: 10,
               triggerSelectOnValidInput: false,
               onSelect: suggestion => {
-                $(`[name=${target}]`).val(suggestion.data)
+                modal.find(`[name=${target}]`).val(suggestion.data)
               },
               onInvalidateSelection: () => {
-                $(`[name=${target}]`).val('')
+                modal.find(`[name=${target}]`).val('')
               }
             })
-            if ($(`[name=${target}]`).val().length) {
+            if (modal.find(`[name=${target}]`).val().length) {
               // Set selection property on the instance:
               $(item).autocomplete().selection = $(`[name=${target}]`).val()
             }
           }
         })
       }
-
     },
     onHide: (modal, config) => {
+      modal.find('[autocomplete]').each((i, item) => {
+        $(item).autocomplete('dispose')
+      })
       modal.find('form').html('')
       modal.find('.save').removeClass('btn-success').addClass('btn-primary')
       modal.find('.delete').prop('disabled', true)

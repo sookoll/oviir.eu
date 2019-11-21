@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS `phototags` (
   `xii` float not null,
   `yii` float not null,
   `deleted` tinyint(1) DEFAULT 0,
-  `modified` TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP
+  `modified` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 DROP TABLE IF EXISTS `persons`;
@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS `persons` (
   `phone` varchar(100) CHARACTER SET utf8 COLLATE utf8_estonian_ci DEFAULT NULL,
   `active` tinyint(1) DEFAULT 1,
   `deleted` tinyint(1) DEFAULT 0,
-  `modified` TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP
+  `modified` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 INSERT INTO `persons` (`firstname`, `lastname`, `birth`, `death`, `bound_with`, `bound_is`, `ancestor`, `address`, `email`, `phone`, `active`, `deleted`, `modified`) VALUES
