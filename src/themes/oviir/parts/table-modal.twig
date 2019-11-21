@@ -25,8 +25,12 @@
 
 <script type="text/javascript">
 
+  let tableModal = null
+
   const TableModal = {
+    el: null,
     onShow: (modal, config, row) => {
+      tableModal = modal
       modal.find('form').append(Object.keys(row)
         .filter(key => key in config.col)
         .map((key, i) => {
@@ -94,6 +98,9 @@
               name="${key}"
               value="${row[key] || ''}"
               ${config.col[key].required ? 'required' : ''}>
+              ${config.col[key].required ? `<div class="invalid-feedback">
+                Eesnimi peab olema täidetud
+              </div>` : ''}
           </div>`
         }).join(''))
       if (row[config.primary]) {
@@ -124,13 +131,51 @@
         })
       }
     },
-    onHide: (modal, config) => {
-      modal.find('[autocomplete]').each((i, item) => {
+    onHide: () => {
+      tableModal.find('[autocomplete]').each((i, item) => {
         $(item).autocomplete('dispose')
       })
-      modal.find('form').html('')
-      modal.find('.save').removeClass('btn-success').addClass('btn-primary')
-      modal.find('.delete').prop('disabled', true)
+      tableModal.find('form').removeClass('was-validated')
+      tableModal.find('form').html('')
+      tableModal.find('.save').removeClass('btn-success').addClass('btn-primary')
+      tableModal.find('.delete').prop('disabled', true)
+      tableModal = null
+    },
+    validate: () => {
+      tableModal.find('form').addClass('was-validated')
+      return tableModal.find('form')[0].checkValidity()
+    },
+    onSave: () => {
+      tableModal.find('.save').toggleClass('btn-primary btn-success')
+      setTimeout(() => {
+        tableModal.modal('hide')
+      }, 900)
+    },
+    deleteConfirm: () => {
+      const btn = tableModal.find('.delete')
+      return new Promise((resolve, reject) => {
+        switch (btn.data('action')) {
+          case 'confirm':
+            btn
+              .toggleClass('btn-light btn-danger')
+              .data('action', 'confirmed')
+              .find('span').text('Kinnita kustutamine')
+            break;
+          case 'confirmed':
+            btn
+              .toggleClass('btn-light btn-danger')
+              .data('action', 'confirm')
+              .prop('disabled', true)
+              .find('span').text('Kustuta')
+            resolve()
+            break
+        }
+      })
+    },
+    onDelete: () => {
+      setTimeout(() => {
+        $('#rowEdit').modal('hide')
+      }, 900)
     }
   }
 

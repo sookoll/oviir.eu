@@ -4,145 +4,10 @@
 
   {% include 'parts/header.twig' %}
 
-  <style>
-    html, body, #map {
-      height: 100%;
-      overflow: hidden;
-    }
-    .fullscreen nav {
-      box-shadow: 0 0 6px #aaa;
-      background: #0078ff;
-      padding: 0
-    }
-    #toolbar {
-      position: fixed;
-      bottom: 10px;
-      left: 10px;
-      pointer-events: none;
-    }
-    #toolbar > * {
-      pointer-events: all;
-    }
-    /*Now the CSS*/
-    .tree {
-      width: auto;
-    }
-    .tree ul {
-    	padding-top: 20px;
-      position: relative;
-    	transition: all 0.5s;
-    	-webkit-transition: all 0.5s;
-    	-moz-transition: all 0.5s;
-      white-space: nowrap;
-    }
-    .tree li {
-    	display: inline-block;
-      vertical-align: top;
-      text-align: center;
-    	list-style-type: none;
-    	position: relative;
-    	padding: 20px 5px 0 5px;
-    	transition: all 0.5s;
-    	-webkit-transition: all 0.5s;
-    	-moz-transition: all 0.5s;
-    }
-    /*We will use ::before and ::after to draw the connectors*/
-    .tree li::before, .tree li::after{
-    	content: '';
-    	position: absolute; top: 0; right: 50%;
-    	border-top: 1px solid #ccc;
-    	width: 50%; height: 20px;
-    }
-    .tree li::after{
-    	right: auto; left: 50%;
-    	border-left: 1px solid #ccc;
-    }
-    /*We need to remove left-right connectors from elements without
-    any siblings*/
-    .tree li:only-child::after, .tree li:only-child::before {
-    	display: none;
-    }
-    /*Remove space from the top of single children*/
-    .tree li:only-child{
-      padding-top: 0;
-    }
-    /*Remove left connector from first child and
-    right connector from last child*/
-    .tree li:first-child::before, .tree li:last-child::after{
-    	border: 0 none;
-    }
-    /*Adding back the vertical connector to the last nodes*/
-    .tree li:last-child::before{
-    	border-right: 1px solid #ccc;
-    	border-radius: 0 5px 0 0;
-    	-webkit-border-radius: 0 5px 0 0;
-    	-moz-border-radius: 0 5px 0 0;
-    }
-    .tree li:first-child::after{
-    	border-radius: 5px 0 0 0;
-    	-webkit-border-radius: 5px 0 0 0;
-    	-moz-border-radius: 5px 0 0 0;
-    }
-    /*Time to add downward connectors from parents*/
-    .tree ul ul::before {
-    	content: '';
-    	position: absolute; top: 0; left: 50%;
-    	border-left: 1px solid #ccc;
-    	width: 0; height: 20px;
-    }
-    .tree li span {
-      background: white;
-      border: 1px solid #ccc;
-      display: inline-block;
-    	border-radius: 5px;
-    	-webkit-border-radius: 5px;
-    	-moz-border-radius: 5px;
-    	transition: all 0.5s;
-    	-webkit-transition: all 0.5s;
-    	-moz-transition: all 0.5s;
-    }
-    .tree li span a {
-      padding: 5px 10px;
-    	text-decoration: none;
-    	color: #666;
-    	font-family: arial, verdana, tahoma;
-    	font-size: 11px;
-      display: inline-block;
-    }
-    /*Time for some hover effects*/
-    /*We will apply the hover effect the the lineage of the element also*/
-    .tree li span:hover,
-    .tree li span:hover+ul li span,
-    .tree li span.selected {
-    	background: #c8e4f8;
-      color: #000;
-      border: 1px solid #94a0b4;
-    }
-    /*Connector styles on hover*/
-    .tree li span:hover+ul li::after,
-    .tree li span:hover+ul li::before,
-    .tree li span:hover+ul::before,
-    .tree li span:hover+ul ul::before{
-    	border-color:  #94a0b4;
-    }
-    .tree li span a:hover {
-      color: #007bff;
-    }
-    .autocomplete-suggestions {
-      padding: 0 4px;
-      background: #fff;
-      border: 1px solid #666;
-      box-shadow: 0 0 5px #666
-    }
-    .autocomplete-suggestion {
-      padding: 2px 0;
-      cursor: pointer;
-    }
-    .autocomplete-suggestion:hover {
-      background: #fafafa
-    }
+  {% if meta.style %}
+  <link href="{{ theme_url }}/css/{{ meta.style }}" rel="stylesheet">
+  {% endif %}
 
-  </style>
 
 </head>
 
@@ -156,297 +21,50 @@
   </section>
   <div id="toolbar" class="form-inline">
     <button class="btn btn-primary add"
-      role="button"
-      data-toggle="modal"
-      data-target="#rowEdit"
-      data-row="">
-      <i class="icon ion-md-add"></i> Lisa uus
-    </button>
-    <input type="text"
-      class="form-control ml-3"
-      id="search"
-      data-target="bound_with"
-      autocomplete
-      placeholder="Otsi...">
-    <span class="coords"></span>
-  </div>
-  <div id="list">
-    <div class="list-group"></div>
-  </div>
+    role="button"
+    data-toggle="modal"
+    data-target="#rowEdit"
+    data-row="">
+    <i class="icon ion-md-add"></i> Lisa uus
+  </button>
+  <input type="text"
+  class="form-control ml-3"
+  id="search"
+  data-target="bound_with"
+  autocomplete
+  placeholder="Otsi...">
+  <span class="coords"></span>
+</div>
+<div id="list">
+  <div class="list-group"></div>
+</div>
 
-  {% include 'parts/table-modal.twig' %}
+{% include 'parts/table-modal.twig' %}
 
-  {% include 'parts/scripts.twig' %}
+{% include 'parts/scripts.twig' %}
 
-  <script src="{{ theme_url }}/lib/jquery.autocomplete.min.js"></script>
-  <script src='{{ theme_url }}/lib/panzoom.min.js'></script>
+<script src="{{ theme_url }}/lib/jquery.autocomplete.min.js"></script>
+<script src='{{ theme_url }}/lib/panzoom.min.js'></script>
 
-  <script type="text/javascript">
 
-    const config = {
-      url: '{{ config.api.url }}/{{ meta.api.source }}',
-      hash: '{{ config.api.grant|base64_encode }}',
-      params: 'filter=deleted,eq,0',
-      primary: 'id',
-      delete: 'deleted',
-      col: {{ meta.table.columns|json_encode() }},
-      search: {
-        bound_with: []
-      }
-    }
+<script type="text/javascript">
 
-    const api = new Api({ endpoint: config.url, hash: config.hash });
-    let pz = null
+const config = {
+  url: '{{ config.api.url }}/{{ meta.api.source }}',
+  hash: '{{ config.api.grant|base64_encode }}',
+  params: '{{ meta.api.params }}',
+  primary: '{{ meta.api.primaryColumn }}',
+  delete: '{{ meta.api.deleteColumn }}',
+  col: {{ meta.table.columns|json_encode() }},
+  search: {
+    bound_with: []
+  }
+};
 
-    function getNested(arr, parent) {
-      let out = []
-      for (var i in arr) {
-        if (arr[i].bound_with == parent) {
-          const related = getNested(arr, arr[i].id)
-          const children = related.filter(r => r.bound_is === 'child')
-          const partners = related.filter(r => r.bound_is === 'partner')
-          const unsure = related.filter(r => r.bound_is !== 'partner' && r.bound_is !== 'child')
-          if(children.length) {
-            arr[i].children = children
-          }
-          if(partners.length) {
-            arr[i].partner = partners
-          }
-          if(unsure.length) {
-            out = out.concat(unsure)
-          }
-          out.push(arr[i])
-        }
-      }
-      return out
-    }
+</script>
 
-    function getFormData() {
-      const row = $('#rowEdit').find('form').serializeObject()
-      return formatRow(row)
-    }
-
-    function formatRow(row) {
-      Object.keys(row).forEach(key => {
-        if (row[key] === '') {
-          row[key] = null
-        }
-        if (key === config.primary) {
-          row[key] = Number(row[key])
-        }
-        if (key === 'bound_with' && row[key]) {
-          row[key] = Number(row[key])
-        }
-      })
-      return row
-    }
-
-    function nameFormat(row) {
-      return [row.firstname, row.lastname || '', row.birth || ''].join(' ')
-    }
-
-    function initSearch() {
-      if (config.search) {
-        $('[autocomplete]').each((i, item) => {
-          const target = $(item).data('target')
-          if (target in config.search) {
-            $(item).autocomplete({
-              lookup: config.search[target],
-              minChars: 2,
-              orientation: 'auto',
-              lookupLimit: 10,
-              triggerSelectOnValidInput: false,
-              onSelect: suggestion => {
-                zoomTo(suggestion.data)
-              }
-            })
-            $(item).on('focus').select()
-          }
-        })
-      }
-    }
-
-    function render(root) {
-      return `<li>
-          <span>${labelContent(root)}</span>
-          ${root.children ? `<ul>${root.children.map(child => render(child)).join('')}</ul>` : ''}
-        </li>`
-    }
-
-    function labelContent(row) {
-      const rows = [row].concat(row.partner || [])
-      return rows.map((item, i) => {
-        const name = (i === 0 && row.id !== 0) ? `<b>${nameFormat(item)}</b>` :
-          `${nameFormat(item)}`
-        return `<a href="#"
-          class=""
-          ${item.id ? `data-toggle="modal"
-          data-target="#rowEdit"` : ''}
-          data-row="${item.id}">${name}</a>`
-      }).join('|')
-    }
-
-    function zoomTo (id) {
-      const ppos = $('.tree > ul > li').offset()
-      const el = $(`[data-row=${id}]`)
-      const center = {
-        left: ppos.left - el.offset().left + window.innerWidth / 2 - el.width() / 2,
-        top: ppos.top - el.offset().top + window.innerHeight / 2 - el.height() / 2
-      }
-      //pz.zoomTo(pz.getTransform().x, pz.getTransform().y, 1.5)
-      //pz.smoothZoom(window.innerWidth / 2, window.innerHeight / 2, 1.5 - pz.getTransform().scale)
-      pz.moveTo(center.left, center.top)
-      setTimeout(() => {
-        pz.smoothZoom(window.innerWidth / 2, window.innerHeight / 2, 10)
-      }, 150)
-      el.closest('span').addClass('selected')
-      setTimeout(() => {
-        el.closest('span').removeClass('selected')
-      }, 3500)
-    }
-
-    (function($) {
-
-      var apidata = []
-
-      function initTree(data) {
-        const treeData = getNested(data)
-        let html
-        let count = 0
-        if (treeData.length > 1) {
-          html = render({
-            id: 0,
-            firstname: 'Oviiride',
-            lastname: 'Sugupuu',
-            children: treeData
-          })
-        } else if (treeData.length > 0) {
-          html = render(treeData[0])
-        }
-        $('#map .tree')
-          .html(`<ul>${html}</ul>`)
-
-        // And pass it to panzoom
-        pz = panzoom(document.querySelector('.tree'), {
-          zoomSpeed: 0.02,
-          zoomDoubleClickSpeed: 2,
-          maxZoom: 1.5,
-          minZoom: 0.1
-        })
-        pz.on('panend', e => {});
-      }
-
-      function reload(id) {
-        api.load({ params: config.params })
-          .then(response => {
-            apidata = response
-            config.search.bound_with = apidata.map(row => {
-              return {
-                data: row[config.primary],
-                value: `${nameFormat(row)}`
-              }
-            })
-            initTree(apidata)
-            initSearch()
-            if (id) {
-              zoomTo(id)
-            } else {
-              zoomTo(0)
-            }
-          })
-          .catch(e => {
-            console.error(e)
-          })
-      }
-
-      setTimeout(() => {
-        if (!config.url) {
-          return false
-        }
-        reload()
-      }, 200)
-
-      // modal
-      $('#rowEdit').on('show.bs.modal', e => {
-        const primary = Number($(e.relatedTarget).data('row'))
-        let row = Object.keys(config.col).reduce((a,b)=> (a[b]='',a),{})
-        if (primary) {
-          let rows = apidata.filter(item => {
-            return item[config.primary] === primary
-          })
-          if (rows.length) {
-            row = formatRow(rows[0])
-          }
-        }
-        TableModal.onShow($(e.target), config, row)
-      }).on('hide.bs.modal', e => {
-        TableModal.onHide($(e.target), config)
-      })
-
-      // save row
-      $('#rowEdit').on('click', '.save', e => {
-        const row = getFormData()
-        const primary = row[config.primary]
-        delete row[config.primary]
-        if (primary) {
-          api.update(primary, row)
-            .then(response => {
-              $('#rowEdit').find('.save').toggleClass('btn-primary btn-success')
-              reload(primary)
-              setTimeout(() => {
-                $('#rowEdit').modal('hide')
-              }, 900)
-            })
-            .catch(error => console.error(error))
-        } else {
-          api.insert(row)
-            .then(response => {
-              $('#rowEdit').find('.save').toggleClass('btn-primary btn-success')
-              reload(response)
-              setTimeout(() => {
-                $('#rowEdit').modal('hide')
-              }, 900)
-            })
-            .catch(error => console.error(error))
-        }
-      })
-
-      // delete row
-      $('#rowEdit').on('click', '.delete', e => {
-        const action = $(e.currentTarget).data('action')
-        switch (action) {
-          case 'confirm':
-            $(e.currentTarget)
-              .toggleClass('btn-light btn-danger')
-              .data('action', 'confirmed')
-              .find('span').text('Kinnita kustutamine')
-            break;
-          case 'confirmed':
-            $(e.currentTarget)
-              .toggleClass('btn-light btn-danger')
-              .data('action', 'confirm')
-              .prop('disabled', true)
-              .find('span').text('Kustuta')
-            let row = getFormData()
-            const primary = row[config.primary]
-            row = {}
-            row[config.delete] = true
-            api.update(primary, row)
-              .then(response => {
-                reload()
-                setTimeout(() => {
-                  $('#rowEdit').modal('hide')
-                }, 900)
-              })
-              .then()
-              .catch(error => console.error(error))
-            break
-        }
-      });
-
-    })(jQuery);
-
-  </script>
-
+{% if meta.script %}
+<script src="{{ theme_url }}/js/{{ meta.script }}"></script>
+{% endif %}
 </body>
 </html>

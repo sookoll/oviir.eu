@@ -100,6 +100,8 @@
   </div>
   {% endif %}
 
+  {% include 'parts/table-modal.twig' %}
+
   {% include 'parts/scripts.twig' %}
 
   <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
@@ -210,6 +212,11 @@
         </button>`
     }
 
+    function getFormData() {
+      const row = $('#rowEdit').find('form').serializeObject()
+      return deFormatRow(row)
+    }
+
     function formatRow (row) {
       if (config.editable) {
         row.__editable = getEditButton(row)
@@ -221,6 +228,20 @@
       if (config.editable) {
         delete row.__editable
       }
+      Object.keys(row).forEach(key => {
+        if (row[key] === '') {
+          row[key] = null
+        }
+        if (key === config.primary) {
+          row[key] = Number(row[key])
+        }
+        if (key === 'bound_with' && row[key]) {
+          row[key] = Number(row[key])
+        }
+        if (key === '__editable') {
+          delete row[key]
+        }
+      })
       return row
     }
 
@@ -253,37 +274,24 @@
 
     (function($) {
 
+      setTimeout(() => {
+        if (!config.url) {
+          return false;
+        }
+        api.load({ params: config.params })
+          .then(createTable)
+          .catch(e => {
+            console.error(e)
+          })
+      })
+
       // modal
       $('#rowEdit').on('show.bs.modal', e => {
-        const primary = $(e.relatedTarget).data('row')
+        const primary = Number($(e.relatedTarget).data('row'))
         const row = primary ? deFormatRow(Object.assign({}, table.row('#' + primary).data())) : empty
-        $(e.target).find('form').append(Object.keys(row).map(key => {
-          if (key === config.primary) {
-            return `<input type="hidden" name="${key}" value="${row[key]}">`
-          }
-          if (config.col[key].dataType === 'boolean') {
-            return `<div class="form-group">
-              <label class="col-form-label">
-                ${(key in config.col && config.col[key].title) ? config.col[key].title : key}
-              </label>
-            </div>
-            <label class="switch">
-              <input type="checkbox" name="${key}" id="${key}" ${row[key] ? 'checked' : ''} value="true">
-              <span class="slider round"></span>
-            </label>`
-          }
-          return `<div class="form-group">
-            <label for="${key}" class="col-form-label">${(key in config.col && config.col[key].title) ? config.col[key].title : key}:</label>
-            <input type="text" class="form-control" id="${key}" name="${key}" value="${row[key]}">
-          </div>`
-        }).join(''))
-        if (primary) {
-          $(e.target).find('.delete').prop('disabled', false)
-        }
+        TableModal.onShow($(e.target), config, row)
       }).on('hide.bs.modal', e => {
-        $(e.target).find('form').html('')
-        $(e.target).find('.save').removeClass('btn-success').addClass('btn-primary')
-        $(e.target).find('.delete').prop('disabled', true)
+        TableModal.onHide()
       })
       if (config.copy) {
         $('#copy').on('show.bs.modal', e => {
@@ -297,15 +305,15 @@
 
       // save row
       $('#rowEdit').on('click', '.save', e => {
-        const data = $('#rowEdit').find('form').serializeObject()
-        const primary = data[config.primary]
-        delete data[config.primary]
+        if (!TableModal.validate()) {
+          return false
+        }
+        const row = getFormData()
+        const primary = row[config.primary]
+        delete row[config.primary]
         updateRow(primary, data)
           .then(response => {
-            $('#rowEdit').find('.save').toggleClass('btn-primary btn-success')
-            setTimeout(() => {
-              $('#rowEdit').modal('hide')
-            }, 900)
+            TableModal.onSave()
           })
           .then()
           .catch(error => console.error(error))
@@ -313,54 +321,27 @@
 
       // delete row
       $('#rowEdit').on('click', '.delete', e => {
-        const action = $(e.currentTarget).data('action')
-        switch (action) {
-          case 'confirm':
-            $(e.currentTarget)
-              .toggleClass('btn-light btn-danger')
-              .data('action', 'confirmed')
-              .find('span').text('Kinnita kustutamine')
-            break;
-          case 'confirmed':
-            $(e.currentTarget)
-              .toggleClass('btn-light btn-danger')
-              .data('action', 'confirm')
-              .prop('disabled', true)
-              .find('span').text('Kustuta')
-            let data = $('#rowEdit').find('form').serializeObject()
-            const primary = data[config.primary]
-            data = {}
-            data[config.delete] = true
-            updateRow(primary, data)
+        TableModal.deleteConfirm()
+          .then(() => {
+            let row = getFormData()
+            const primary = row[config.primary]
+            row = {}
+            row[config.delete] = true
+            updateRow(primary, row)
               .then(response => {
-                $('#rowEdit').find('.save').toggleClass('btn-primary btn-success')
-                setTimeout(() => {
-                  $('#rowEdit').modal('hide')
-                }, 900)
+                TableModal.onDelete()
               })
               .then()
               .catch(error => console.error(error))
-            break
-          default:
-        }
-      })
+          })
+          .catch(e => console.error(e))
+      });
 
       $('#copy').on('focus', 'textarea', function () {
         this.select()
       }).on('mouseup', 'textarea', function () {
         return false
       })
-
-      setTimeout(() => {
-        if (!config.url) {
-          return false;
-        }
-        api.load({ params: config.params })
-          .then(createTable)
-          .catch(e => {
-            console.error(e)
-          })
-      }, 200)
 
     })(jQuery);
 

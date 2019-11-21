@@ -7,7 +7,7 @@ Thumbnail: http://oviir.eu/miuview-api?request=getimage&album=kokkutulekud&item=
 Template: table
 Category: suguvõsa
 Api:
-  source: oviiride_kontaktid
+  source: persons
   params: include=id,firstname,lastname,address,email,phone,active&filter=deleted,eq,0
   countParams: include=id&filter=deleted,eq,0
   primaryColumn: id

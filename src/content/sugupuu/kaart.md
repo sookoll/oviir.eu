@@ -4,9 +4,11 @@ Description: Interaktiivne sugupuu
 Image: http://oviir.eu/miuview-api?request=getimage&album=kokkutulekud&item=1975-12.-kokkutulek-karellide-juures.jpg&size=1200&mode=longest
 Template: map
 Category: suguvõsa
+style: familytree.css
+script: familytree.js
 Api:
   source: persons
-  params: exclude=deleted,modified&filter=deleted,eq,0
+  params: exclude=deleted,modified&filter=deleted,eq,0&&order=firstname
   primaryColumn: id
   deleteColumn: deleted
 Table:
