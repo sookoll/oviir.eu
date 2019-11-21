@@ -100,13 +100,12 @@
   </div>
   {% endif %}
 
-  {% include 'parts/table-modal.twig' %}
-
   {% include 'parts/scripts.twig' %}
 
   <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
   <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>
   <script src="http://bartaz.github.io/sandbox.js/jquery.highlight.js"></script>
+  <script src="{{ theme_url }}/lib/jquery.autocomplete.min.js"></script>
 
   <script type="text/javascript">
 
@@ -122,7 +121,10 @@
       copy: '{{ meta.table.copyColumn }}',
       col: {{ meta.table.columns|json_encode() }},
       dom: '{{ meta.table.dom }}',
-      editable: {{ meta.table.editable }}
+      editable: {{ meta.table.editable }},
+      search: {
+        bound_with: []
+      }
     }
 
     const api = new Api({ endpoint: config.url, hash: config.hash })
@@ -132,16 +134,16 @@
     }
 
     function createTable (data) {
-      const columns = Object.keys(data[0]).map(key => {
+      const columns = []
+      Object.keys(config.col).forEach(key => {
         empty[key] = ''
-        let cell = { title: key, data: key }
-        if (key in config.col) {
-          cell = Object.assign(cell, config.col[key])
+        if (config.col[key].visible) {
+          const cell = Object.assign({ title: key, data: key }, config.col[key])
           if (config.col[key].dataType === 'boolean') {
             cell.render = booleanCellRenderer
           }
+          columns.push(cell)
         }
-        return cell
       })
 
       if (config.editable) {
@@ -279,7 +281,15 @@
           return false;
         }
         api.load({ params: config.params })
-          .then(createTable)
+          .then(response => {
+            config.search.bound_with = response.map(row => {
+              return {
+                data: row[config.primary],
+                value: `${TableModal.nameFormat(row)}`
+              }
+            })
+            createTable(response)
+          })
           .catch(e => {
             console.error(e)
           })
@@ -311,11 +321,10 @@
         const row = getFormData()
         const primary = row[config.primary]
         delete row[config.primary]
-        updateRow(primary, data)
+        updateRow(primary, row)
           .then(response => {
             TableModal.onSave()
           })
-          .then()
           .catch(error => console.error(error))
       })
 

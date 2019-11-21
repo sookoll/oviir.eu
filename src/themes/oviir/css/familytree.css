@@ -5,7 +5,7 @@ html, body, #map {
 .fullscreen nav {
   box-shadow: 0 0 6px #aaa;
   background: #0078ff;
-  padding: 0
+  padding: 3px 0 0 0
 }
 #toolbar {
   position: fixed;
@@ -129,17 +129,4 @@ right connector from last child*/
 }
 .tree li .toggle {
   cursor: pointer
-}
-.autocomplete-suggestions {
-  padding: 0 4px;
-  background: #fff;
-  border: 1px solid #666;
-  box-shadow: 0 0 5px #666
-}
-.autocomplete-suggestion {
-  padding: 2px 0;
-  cursor: pointer;
-}
-.autocomplete-suggestion:hover {
-  background: #fafafa
 }

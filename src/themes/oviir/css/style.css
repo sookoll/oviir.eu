@@ -1424,3 +1424,16 @@ input:checked + .slider:before {
 a.white-link, a.white-link:hover {
   color: white
 }
+.autocomplete-suggestions {
+  padding: 0 4px;
+  background: #fff;
+  
+  box-shadow: 0 0 5px #666
+}
+.autocomplete-suggestion {
+  padding: 2px 0;
+  cursor: pointer;
+}
+.autocomplete-suggestion:hover {
+  background: #fafafa
+}

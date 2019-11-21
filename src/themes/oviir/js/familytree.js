@@ -46,9 +46,7 @@ function formatRow(row) {
   return row
 }
 
-function nameFormat(row) {
-  return [row.firstname, row.lastname || '', row.birth ? `(${row.birth})` : ''].join(' ')
-}
+
 
 function initSearch() {
   if (config.search) {
@@ -84,8 +82,8 @@ function render(root) {
 function labelContent(row) {
   const rows = [row].concat(row.partner || [])
   return rows.map((item, i) => {
-    const name = (i === 0 && row.id !== 0) ? `<b>${nameFormat(item)}</b>` :
-    `${nameFormat(item)}`
+    const name = (i === 0 && row.id !== 0) ? `<b>${TableModal.nameFormat(item)}</b>` :
+    `${TableModal.nameFormat(item)}`
     return `<a href="#${item.id}"
     draggable="false"
     ${item.id ? `data-toggle="modal"
@@ -154,7 +152,7 @@ function reload(id) {
       config.search.bound_with = apidata.map(row => {
         return {
           data: row[config.primary],
-          value: `${nameFormat(row)}`
+          value: `${TableModal.nameFormat(row)}`
         }
       })
       initTree(apidata)

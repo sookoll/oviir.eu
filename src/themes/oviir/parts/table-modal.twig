@@ -71,6 +71,7 @@
           if (
             'dataType' in config.col[key] &&
             config.col[key].dataType === 'search' &&
+            'search' in config &&
             key in config.search
           ) {
             const selected = config.search[key].filter(r => r['data'] === row[key])
@@ -138,7 +139,10 @@
       tableModal.find('form').removeClass('was-validated')
       tableModal.find('form').html('')
       tableModal.find('.save').removeClass('btn-success').addClass('btn-primary')
-      tableModal.find('.delete').prop('disabled', true)
+      tableModal.find('.delete')
+        .removeClass('btn-danger').addClass('btn-light')
+        .data('action', 'confirm')
+        .prop('disabled', true)
       tableModal = null
     },
     validate: () => {
@@ -176,6 +180,9 @@
       setTimeout(() => {
         $('#rowEdit').modal('hide')
       }, 900)
+    },
+    nameFormat: row => {
+      return [row.firstname, row.lastname || '', row.birth ? `(${row.birth})` : ''].join(' ')
     }
   }
 

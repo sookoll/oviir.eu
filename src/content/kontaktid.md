@@ -8,7 +8,7 @@ Template: table
 Category: suguvõsa
 Api:
   source: persons
-  params: include=id,firstname,lastname,address,email,phone,active&filter=deleted,eq,0
+  params: exclude=deleted,modified&filter=deleted,eq,0&filter=death,is,null&order=firstname
   countParams: include=id&filter=deleted,eq,0
   primaryColumn: id
   deleteColumn: deleted
@@ -17,22 +17,47 @@ Table:
   columns:
     id:
       searchable: false
+      visible: true
     firstname:
       title: Eesnimi
+      required: true
+      visible: true
     lastname:
       title: Perenimi
+      visible: true
+    birth:
+      title: Sünd
+      visible: true
+    death:
+      title: Surm
+    bound_with:
+      title: Seotud sugulane
+      dataType: 'search'
+    bound_is:
+      title: Seos
+      dataType: select
+      select:
+        null: -- Vali --
+        child: Järglane
+        partner: Kaaslane
+    ancestor:
+      title: Haru
     address:
       title: Aadress
       orderable: false
+      visible: true
     email:
       title: E-post
       orderable: false
+      visible: true
     phone:
       title: Telefon
       orderable: false
+      visible: true
     active:
       title: Kutse
       searchable: false
       dataType: boolean
+      visible: true
   editable: true
 ---
