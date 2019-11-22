@@ -8,7 +8,6 @@
           <div class="copyright-box">
             <p class="copyright">&copy; <strong>{{ 'now' | date('Y') }}</strong> Oviiride suguvõsa</p>
             <p class="text-center credits"><a href="{{ pages['teave'].url }}">Teave</a></p>
-            </div>
           </div>
         </div>
       </div>
@@ -17,5 +16,15 @@
 </section>
 <!--/ Section Contact-footer End /-->
 
-<a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>
+<div class="bottom-tools">
+  <a href="#" class="back-to-top" data-toggle="tooltip" title="Üles">
+    <i class="icon ion-ios-arrow-up"></i>
+  </a>
+  {% for tool in tools %}
+  <a href="#" class="{{ tool.class }}" data-toggle="tooltip" title="{{ tool.title }}">
+    <i class="{{ tool.icon }}"></i>
+  </a>
+  {% endfor %}
+</div>
+
 <div id="preloader"></div>

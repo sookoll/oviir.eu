@@ -12,6 +12,9 @@ Links:
     url: https://et.wikipedia.org/wiki/Madis_Oviir
     title: Vikipeedia
   -
+    url: http://www.eelk.ee/~elulood/oviir_madis.html
+    title: Vaimulike elulood: Madis Oviir
+  -
     url: http://www.eestikirik.ee/kooli-ja-kirikuopetaja-madis-oviir/
     title: Eesti Kirik - "Kooli- ja kirikuõpetaja Madis Oviir"
   -

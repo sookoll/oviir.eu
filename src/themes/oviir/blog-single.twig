@@ -137,7 +137,11 @@
   </section>
   <!--/ Section Blog-Single End /-->
 
+  {% if user_has_right('edit') %}
+  {% include 'parts/footer.twig' with { tools: [{ title: 'Muuda', class: 'edit', icon: 'icon ion-md-create' }] } %}
+  {% else %}
   {% include 'parts/footer.twig' %}
+  {% endif %}
 
   {% include 'parts/scripts.twig' %}
 

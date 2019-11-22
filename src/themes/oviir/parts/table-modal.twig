@@ -188,7 +188,18 @@
       }, 900)
     },
     nameFormat (row) {
-      return [row.firstname, row.lastname || '', row.birth ? `(${row.birth})` : ''].join(' ')
+      const nameArr = [row.firstname]
+      if (row.lastname) {
+        nameArr.push(row.lastname)
+      }
+      if (row.birth && row.death) {
+        nameArr.push(`(${row.birth} - ${row.death})`)
+      } else if (row.birth) {
+        nameArr.push(`(${row.birth})`)
+      } else if (row.death) {
+        nameArr.push(`( - ${row.death})`)
+      }
+      return nameArr.join(' ')
     }
   }
 

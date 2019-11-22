@@ -84,7 +84,7 @@ function labelContent(row) {
     ${item.id ? `data-toggle="modal"
     data-target="#rowEdit"` : ''}
     data-row="${item.id}">${name}</a>`
-  }).join('|')
+  }).join('&hearts;')
 }
 
 function zoomTo (id) {

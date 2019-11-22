@@ -92,6 +92,9 @@ right connector from last child*/
   position: relative;
   background: white;
   border: 1px solid #ccc;
+  font-size: 9px;
+  line-height: 16px;
+  color: #ccc;
   display: inline-block;
   border-radius: 5px;
   -webkit-border-radius: 5px;
@@ -106,7 +109,11 @@ right connector from last child*/
   color: #666;
   font-family: arial, verdana, tahoma;
   font-size: 11px;
+  line-height: 16px;
   display: inline-block;
+  transition: all 0.5s;
+  -webkit-transition: all 0.5s;
+  -moz-transition: all 0.5s;
 }
 /*Time for some hover effects*/
 /*We will apply the hover effect the the lineage of the element also*/

@@ -38,7 +38,7 @@
               </a>
               <i class="icon ion-md-time"></i> {{ page.date_formatted }}
             </div>
-            {{ page.excerpt }}...
+            {{ page.excerpt }}
           </div>
         </li>
         {% endfor %}
@@ -46,8 +46,11 @@
     </div>
   </section>
   <!--/ Section Blog-Single End /-->
-
+  {% if user_has_right('read') %}
+  {% include 'parts/footer.twig' with { tools: [{ title: 'Lisa uudis', class: 'add', icon: 'icon ion-ios-add' }] } %}
+  {% else %}
   {% include 'parts/footer.twig' %}
+  {% endif %}
 
   {% include 'parts/scripts.twig' %}
 

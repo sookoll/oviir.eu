@@ -40,7 +40,7 @@ $.fn.serializeObject = function() {
   // Back to top button
   $(window).scroll(function() {
     if ($(this).scrollTop() > 100) {
-      $('.back-to-top').fadeIn('slow');
+      $('.back-to-top').fadeIn('slow').css("display","inline-block");
     } else {
       $('.back-to-top').fadeOut('slow');
     }
