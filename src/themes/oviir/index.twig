@@ -34,7 +34,7 @@
           </p>
           <p class="pt-3">
             <a class="btn btn-primary js-scroll px-4" href="#about" role="button">Meie ajalugu...</a>
-            <a class="btn btn-link px-4 mr-3 white-link" href="/sugupuu/kaart" role="button">
+            <a class="btn btn-link px-4 mr-3 white-link" href="{{ base_url }}/sugupuu/kaart" role="button">
               <i class="icon ion-md-git-branch"></i>
               Sugupuu
             </a>
@@ -64,7 +64,7 @@
                   </div>
                   {{ 'ajalugu'|content|slice(0, 660) }}
                   <p class="pt-3">
-                    <a class="btn btn-primary js-scroll px-4" href="/ajalugu" role="button">Loe edasi...</a>
+                    <a class="btn btn-primary js-scroll px-4" href="{{ pages['ajalugu'].url }}" role="button">Loe edasi...</a>
                   </p>
                 </div>
               </div>
@@ -126,7 +126,7 @@
         {% endfor %}
       </div>
       <div class="pb-3 center-btn">
-        <a class="btn btn-lg btn-primary btn-block" href="/uudised" role="button">Kõik uudised</a>
+        <a class="btn btn-lg btn-primary btn-block" href="{{ pages['uudised'].url }}" role="button">Kõik uudised</a>
       </div>
     </div>
   </section>
@@ -213,7 +213,7 @@
         {% endfor %}
       </div>
       <div class="pb-3 center-btn">
-        <a class="btn btn-lg btn-primary btn-block" href="/kokkutulekud" role="button">Vaata lähemalt</a>
+        <a class="btn btn-lg btn-primary btn-block" href="{{ pages['kokkutulekud'].url }}" role="button">Vaata lähemalt</a>
       </div>
     </div>
   </section>
@@ -245,7 +245,7 @@
         {% endfor %}
       </div>
       <div class="pb-3 center-btn">
-        <a class="btn btn-lg btn-primary btn-block" href="/pildid" role="button">Vaata kõiki albumeid</a>
+        <a class="btn btn-lg btn-primary btn-block" href="{{ pages['pildid'].url }}" role="button">Vaata kõiki albumeid</a>
       </div>
     </div>
   </section>

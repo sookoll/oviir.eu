@@ -1,0 +1,23 @@
+<div class="intro intro-single route bg-image" style="background-image: url({{ meta.image }})">
+  <div class="overlay-mf"></div>
+  <div class="intro-content display-table">
+    <div class="table-cell">
+      <div class="container">
+        <h2 class="intro-title mb-4">{{ meta.title }}</h2>
+        <p class="subtitle-a text-light">
+          {{ meta.description }}
+        </p>
+        {% if breadcrumbs %}
+        <ol class="breadcrumb d-flex justify-content-center">
+          {% for crumb in breadcrumbs %}
+          <li class="breadcrumb-item">
+            <a href="{{ crumb.url }}">{{ crumb.title }}</a>
+          </li>
+          {% endfor %}
+          <li class="breadcrumb-item active">{{ meta.title }}</li>
+        </ol>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>

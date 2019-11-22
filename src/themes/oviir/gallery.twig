@@ -12,25 +12,7 @@
   <!--/ Nav End /-->
 
   <!--/ Intro Skew Star /-->
-  <div class="intro intro-single route bg-image" style="background-image: url({{ meta.image }})">
-    <div class="overlay-mf"></div>
-    <div class="intro-content display-table">
-      <div class="table-cell">
-        <div class="container">
-          <h2 class="intro-title mb-4">{{ meta.title }}</h2>
-          <p class="subtitle-a text-light">
-            {{ meta.description }}
-          </p>
-          <ol class="breadcrumb d-flex justify-content-center">
-            <li class="breadcrumb-item">
-              <a href="/">Avaleht</a>
-            </li>
-            <li class="breadcrumb-item active">{{ meta.title }}</li>
-          </ol>
-        </div>
-      </div>
-    </div>
-  </div>
+  {% include 'parts/intro.twig' with { 'breadcrumbs': [{ url: base_url, title: 'Avaleht' }] } %}
   <!--/ Intro Skew End /-->
 
   <!--/ Section Blog-Single Start /-->

@@ -8,6 +8,7 @@ function ImageTagger(selector, data) {
   this.events = {
     'activate': [],
     'deactivate': [],
+    'draw': [],
     'save': [],
     'remove': [],
     'select': [],
@@ -155,7 +156,7 @@ function ImageTagger(selector, data) {
           <span aria-hidden="true">&times;</span>
         </button>`,
       content: `<div class="input-group p-2">
-        <input type="text" class="form-control" placeholder="Sisesta nimi">
+        <input type="text" class="form-control" placeholder="Sisesta nimi" autocomplete>
         <div class="input-group-append">
           <button class="btn btn-primary save" type="button">
             <i class="icon ion-ios-save"></i>
@@ -164,29 +165,35 @@ function ImageTagger(selector, data) {
       </div>`,
       placement: 'auto',
       trigger: 'manual',
+      sanitize: false,
       offset: 50
     }).on('shown.bs.popover', e => {
-      $('.popover').find('input').focus()
-      $('.popover').find('.close').on('click', e => {
+      const popover = $($(e.target).data('bs.popover').tip)
+      popover.find('input').focus()
+      popover.find('.close').on('click', e => {
         pop.popover('hide')
         this.removeTag(this.ii)
         this.deactivate()
       })
-      $('.popover').find('.save').on('click', e => {
+      popover.find('.save').on('click', e => {
         pop.popover('hide')
-        this.saveTag(this.ii, $('.popover').find('input').val())
+        this.saveTag(this.ii, popover.find('input').val())
       })
       this.active = false
+      this.fire('draw', {
+        pop: popover,
+        row: this.tags[this.ii]
+      })
     }).on('hidden.bs.popover', e => {
       pop.remove()
       this.active = true
     }).popover('show')
+    console.log(pop)
   }
 
   this.saveTag = (i, value) => {
     // save to api
     this.tags[this.ii].username = value
-    this.tags[this.ii].user = 1
     this.fire('save', this.tags[this.ii])
     this.ii++
     this.deactivate()

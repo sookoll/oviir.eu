@@ -74,25 +74,7 @@
   <!--/ Nav End /-->
 
   <!--/ Intro Skew Star /-->
-  <div class="intro intro-single route bg-image" style="background-image: url({{ meta.image }})">
-    <div class="overlay-mf"></div>
-    <div class="intro-content display-table">
-      <div class="table-cell">
-        <div class="container">
-          <h2 class="intro-title mb-4">{{ meta.date|date('Y') }}</h2>
-          <ol class="breadcrumb d-flex justify-content-center">
-            <li class="breadcrumb-item">
-              <a href="/">Avaleht</a>
-            </li>
-            <li class="breadcrumb-item">
-              <a href="/kokkutulekud">Kokkutulekud</a>
-            </li>
-            <li class="breadcrumb-item active">{{ meta.title }}</li>
-          </ol>
-        </div>
-      </div>
-    </div>
-  </div>
+  {% include 'parts/intro.twig' with { 'breadcrumbs': [{ url: base_url, title: 'Avaleht' }, { url: pages['kokkutulekud'].url, title: pages['kokkutulekud'].meta.title }] } %}
   <!--/ Intro Skew End /-->
 
   <!--/ Section Blog-Single Star /-->
@@ -236,6 +218,8 @@
 
   {% include 'parts/scripts.twig' %}
 
+  {% include 'parts/table-modal.twig' %}
+
   <script src="{{ theme_url }}/js/imagetagger.js"></script>
 
   <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"
@@ -256,7 +240,12 @@
       delete: 'deleted',
       item: {{ meta.date|date('Y') }},
       user: '{{ user }}',
-      category: '{{ meta.category }}'
+      category: '{{ meta.category }}',
+      searchUrl: `{{ config.api.url }}/{{ pages['kontaktid'].meta.api.source }}`,
+      searchParams: `{{ pages['kontaktid'].meta.api.params }}`,
+      search: {
+        person: []
+      }
     }
 
     const api = new Api({ endpoint: config.url, hash: config.hash })
@@ -273,6 +262,21 @@
       it.on('activate', () => {
         $('#activate').prop('disabled', true)
         $('#tags').find('.tag').prop('disabled', true)
+        if (!config.search.person.length) {
+          const searchApi = new Api({ endpoint: config.searchUrl, hash: config.hash })
+          searchApi.load({ params: config.searchParams })
+            .then(response => {
+              config.search.person = response.map(row => {
+                return {
+                  data: row[config.primary],
+                  value: `${TableModal.nameFormat(row)}`
+                }
+              })
+            })
+            .catch(e => {
+              console.error(e)
+            })
+        }
       })
       it.on('deactivate', (tags) => {
         $('#activate').prop('disabled', false)
@@ -305,6 +309,19 @@
               console.error(e)
             })
         }
+      })
+      it.on('draw', (data) => {
+        data.pop.find('[autocomplete]').each((i, item) => {
+          const ac = TableModal.autoComplete($(item), {
+            lookup: config.search.person,
+            onSelect: suggestion => {
+              data.row.user = suggestion.data
+            },
+            onInvalidateSelection: () => {
+              data.row[config.primary] = null
+            }
+          })
+        })
       })
       it.on('select', (i) => {
         $('#tags').find(`.tag`).removeClass('active')

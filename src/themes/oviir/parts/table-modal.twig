@@ -21,15 +21,14 @@
   </div>
 </div>
 
-
-
+<script src="{{ theme_url }}/lib/jquery.autocomplete.min.js"></script>
 <script type="text/javascript">
 
   let tableModal = null
 
   const TableModal = {
     el: null,
-    onShow: (modal, config, row) => {
+    onShow (modal, config, row) {
       tableModal = modal
       modal.find('form').append(Object.keys(row)
         .filter(key => key in config.col)
@@ -111,12 +110,8 @@
         modal.find('[autocomplete]').each((i, item) => {
           const target = $(item).data('target')
           if (target in config.search) {
-            $(item).autocomplete({
+            const ac = this.autoComplete($(item), {
               lookup: config.search[target],
-              minChars: 2,
-              orientation: 'auto',
-              lookupLimit: 10,
-              triggerSelectOnValidInput: false,
               onSelect: suggestion => {
                 modal.find(`[name=${target}]`).val(suggestion.data)
               },
@@ -126,13 +121,24 @@
             })
             if (modal.find(`[name=${target}]`).val().length) {
               // Set selection property on the instance:
-              $(item).autocomplete().selection = $(`[name=${target}]`).val()
+              ac.autocomplete().selection = $(`[name=${target}]`).val()
             }
           }
         })
       }
     },
-    onHide: () => {
+    autoComplete (el, options) {
+      return el.autocomplete(Object.assign({
+        lookup: [],
+        minChars: 2,
+        orientation: 'auto',
+        lookupLimit: 10,
+        triggerSelectOnValidInput: false,
+        onSelect: suggestion => {},
+        onInvalidateSelection: () => {}
+      }, options))
+    },
+    onHide () {
       tableModal.find('[autocomplete]').each((i, item) => {
         $(item).autocomplete('dispose')
       })
@@ -145,17 +151,17 @@
         .prop('disabled', true)
       tableModal = null
     },
-    validate: () => {
+    validate () {
       tableModal.find('form').addClass('was-validated')
       return tableModal.find('form')[0].checkValidity()
     },
-    onSave: () => {
+    onSave () {
       tableModal.find('.save').toggleClass('btn-primary btn-success')
       setTimeout(() => {
         tableModal.modal('hide')
       }, 900)
     },
-    deleteConfirm: () => {
+    deleteConfirm () {
       const btn = tableModal.find('.delete')
       return new Promise((resolve, reject) => {
         switch (btn.data('action')) {
@@ -176,12 +182,12 @@
         }
       })
     },
-    onDelete: () => {
+    onDelete () {
       setTimeout(() => {
         $('#rowEdit').modal('hide')
       }, 900)
     },
-    nameFormat: row => {
+    nameFormat (row) {
       return [row.firstname, row.lastname || '', row.birth ? `(${row.birth})` : ''].join(' ')
     }
   }

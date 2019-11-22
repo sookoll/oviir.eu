@@ -46,19 +46,13 @@ function formatRow(row) {
   return row
 }
 
-
-
 function initSearch() {
   if (config.search) {
     $('[autocomplete]').each((i, item) => {
       const target = $(item).data('target')
       if (target in config.search) {
-        $(item).autocomplete({
+        const ac = TableModal.autoComplete($(item), {
           lookup: config.search[target],
-          minChars: 2,
-          orientation: 'auto',
-          lookupLimit: 10,
-          triggerSelectOnValidInput: false,
           onSelect: suggestion => {
             zoomTo(suggestion.data)
           }
@@ -70,11 +64,12 @@ function initSearch() {
 
 function render(root) {
   return `<li>
+  ${root.children ? `
+    <i class="icon ion-ios-arrow-dropup-circle toggle"></i>` : ''}
   <span>
     ${labelContent(root)}
   </span>
   ${root.children ? `
-    <i class="icon ion-ios-arrow-dropup-circle toggle"></i>
     <ul>${root.children.map(child => render(child)).join('')}</ul>` : ''}
   </li>`
 }
