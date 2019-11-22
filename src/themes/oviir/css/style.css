@@ -629,7 +629,7 @@ a:hover {
 .intro .intro-title {
   color: #fff;
   font-weight: 600;
-  font-size: 3rem;
+  font-size: 3.5rem;
 }
 
 .intro .intro-subtitle {
@@ -642,7 +642,7 @@ a:hover {
 }
 
 .intro-single {
-  height: 350px;
+  height: 450px;
 }
 
 .intro-single .intro-content {
@@ -651,7 +651,7 @@ a:hover {
 
 .intro-single .intro-title {
   text-transform: uppercase;
-  font-size: 3rem;
+  font-size: 2rem;
 }
 
 .intro-single .breadcrumb {
@@ -836,8 +836,6 @@ a:hover {
 
 .w-title {
   font-size: 1.2rem;
-  white-space: nowrap;
-  overflow: hidden;
 }
 
 /*======================================
@@ -1427,7 +1425,7 @@ a.white-link, a.white-link:hover {
 .autocomplete-suggestions {
   padding: 0 4px;
   background: #fff;
-  
+
   box-shadow: 0 0 5px #666
 }
 .autocomplete-suggestion {

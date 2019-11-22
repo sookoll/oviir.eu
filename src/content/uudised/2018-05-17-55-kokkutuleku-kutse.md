@@ -2,8 +2,8 @@
 Title: Suguvõsa 55. kokkutulek toimub 8. juulil 2018
 Description: Oviir.eu suguvõsa veebileht
 Date: 2018-05-17
-Image: http://oviir.eu/miuview-api?request=getimage&album=wp-pildid-sisusse&item=o-logo-white.png&size=600&mode=longest
-Thumbnail: http://oviir.eu/miuview-api?request=getimage&album=wp-pildid-sisusse&item=o-logo-white.png&size=600&mode=square
+Image: http://oviir.eu/miuview-api?request=getimage&album=wp-pildid-sisusse&item=o-logo-white.png&size=800&mode=longest
+Thumbnail: http://oviir.eu/miuview-api?request=getimage&album=wp-pildid-sisusse&item=o-logo-white.png&size=800&mode=square
 Template: blog-single
 Category: uudis
 Author: Karl Keldrima

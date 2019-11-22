@@ -245,4 +245,8 @@ function reload(id) {
       .catch(e => console.error(e))
   });
 
+  $('#map').on("touchstart click","a[data-row]",function(e){
+    alert('clicked')
+  })
+
 })(jQuery);
