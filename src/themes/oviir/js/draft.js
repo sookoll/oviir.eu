@@ -141,7 +141,6 @@ const Draft = {
     const path = Draft.path
     const file = Draft.id
     const changed = Draft.changed
-    console.log(path, file, changed)
     $(e.target).find('.modal-title b').text('')
     $(e.target).find('.modal-title span').text('').prop('contenteditable', false)
     $(e.target).find('.save').removeClass('btn-success').addClass('btn-primary')
