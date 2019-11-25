@@ -4,8 +4,9 @@
   {% include 'parts/document.twig'
     with { doc: { title: username, url: '/sugupuu/'~username, description: 'Sisse logitud kasutaja' }, grid: 'x', icon: 'ion-ios-contact' } %}
 
-  <div class="form-group">
-    <button type="submit" name="logout" class="btn btn-primary btn-block">Välju</button>
+  <div class="form-group text-center">
+    <button type="button" class="btn btn-light" data-toggle="modal" data-target="#register">Registreeri</button>
+    <button type="submit" name="logout" class="btn btn-primary">Välju</button>
   </div>
 
 {% else %}
@@ -15,7 +16,7 @@
     <input type="text" class="form-control" id="username" name="login" placeholder="">
   </div>
   <div class="form-group">
-    <label for="password">Password</label>
+    <label for="password">Parool</label>
     <input type="password" class="form-control" id="password" name="pass" placeholder="">
   </div>
   <div class="form-group">

@@ -156,4 +156,44 @@ $.fn.selectText = function(){
   $('[data-toggle="tooltip"]').tooltip()
   $('[data-toggle="popover"]').popover()
 
+  $('#register form').on('submit', e => {
+    e.preventDefault()
+    const form = $(e.target).closest('form')
+    const url = form.attr('action')
+    const data = form.serialize()
+    const method = form.attr('method')
+    const info = form.find('.info').text()
+    fetch(url, {
+      method: method,
+      body: data,
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded"
+      }
+    }).then(response => response.text())
+      .then(response => {
+        if (response === 'ok') {
+          form.find('button[type="submit"]')
+            .removeClass('btn-primary')
+            .addClass('btn-success')
+          form.find('.info').text('Kasutaja lisamine õnnestus. Logi välja ja uue kasutajaga sisse.')
+        }
+        setTimeout(() => {
+          form.find('button[type="submit"]').removeClass('btn-success').addClass('btn-primary')
+          form.find('.info').text(info)
+          $('#register').modal('hide')
+        }, 5000)
+      })
+      .catch(error => {
+        form.find('button[type="submit"]')
+          .removeClass('btn-primary')
+          .addClass('btn-danger')
+        form.find('.info').text(error.toString())
+        setTimeout(() => {
+          form.find('button[type="submit"]').removeClass('btn-danger').addClass('btn-primary')
+          form.find('.info').text(info)
+          $('#register').modal('hide')
+        }, 5000)
+      })
+  })
+
 })(jQuery);

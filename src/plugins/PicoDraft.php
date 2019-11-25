@@ -1,13 +1,13 @@
 <?php
 /**
- * A content editor plugin for Pico 2, using ContentTools.
+ * A content editor plugin for Pico 2
  *
  * Supports PicoUsers plugin for authentification
  * {@link https://github.com/nliautaud/pico-users}
  *
- * @author  Nicolas Liautaud
+ * @author  Mihkel Oviir
  * @license http://opensource.org/licenses/MIT The MIT License
- * @link    https://github.com/nliautaud/pico-content-editor
+ * @link    https://github.com/sookoll/pico-draft
  * @link    http://picocms.org
  */
 class PicoDraft extends AbstractPicoPlugin
@@ -103,7 +103,8 @@ class PicoDraft extends AbstractPicoPlugin
     }
   }
 
-  private function setRights() {
+  private function setRights()
+  {
     if (class_exists('PicoUsers')) {
       $PicoUsers = $this->getPlugin('PicoUsers');
       $this->canEdit = $PicoUsers->hasRight('editor/edit');
@@ -115,7 +116,8 @@ class PicoDraft extends AbstractPicoPlugin
     return false;
   }
 
-  private function createFile() {
+  private function createFile()
+  {
     // we have a request, let's save it to file
     $payload = json_decode(file_get_contents('php://input'));
     if (!isset($payload)) {
@@ -136,7 +138,8 @@ class PicoDraft extends AbstractPicoPlugin
     return false;
   }
 
-  private function editFile() {
+  private function editFile()
+  {
     // we have a request, let's save it to file
     $payload = json_decode(file_get_contents('php://input'));
     if (!isset($payload)) {
@@ -157,7 +160,8 @@ class PicoDraft extends AbstractPicoPlugin
     return false;
   }
 
-  private function deleteFile() {
+  private function deleteFile()
+  {
     $payload = json_decode(file_get_contents('php://input'));
     if (!isset($payload)) {
       $this->info = 'No input data';

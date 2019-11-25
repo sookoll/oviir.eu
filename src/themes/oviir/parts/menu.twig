@@ -12,6 +12,9 @@
         <li class="nav-item">
           <a class="nav-link {{ current_page.id starts with 'uudised' ? 'active' : '' }}" href="{{ pages['uudised'].url }}">Uudised</a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link {{ current_page.id starts with 'pildid' ? 'active' : '' }}" href="{{ pages['pildid'].url }}">Pildid</a>
+        </li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle {{ current_page.meta.category == 'suguvõsa' ? 'active' : '' }}"
             href="#"
@@ -25,18 +28,15 @@
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
             <a class="dropdown-item {{ current_page.id == 'ajalugu' ? 'active' : '' }}" href="{{ pages['ajalugu'].url }}">Ajalugu</a>
             <a class="dropdown-item {{ current_page.id starts with 'kokkutulekud' ? 'active' : '' }}" href="{{ pages['kokkutulekud'].url }}">Kokkutulekud</a>
-            <a class="dropdown-item {{ current_page.id starts with 'sugupuu' ? 'active' : '' }}" href="{{ pages['sugupuu'].url }}">Sugupuu</a>
+            <a class="dropdown-item {{ current_page.id == 'sugupuu' ? 'active' : '' }}" href="{{ pages['sugupuu'].url }}">Sugupuu</a>
+            <a class="dropdown-item {{ current_page.id == 'sugupuu/kaart' ? 'active' : '' }}" href="{{ pages['sugupuu/kaart'].url }}">Sugupuu kaart</a>
             <a class="dropdown-item {{ current_page.id starts with 'kontaktid' ? 'active' : '' }}" href="{{ pages['kontaktid'].url }}">Sugulaste kontaktid</a>
+            <a class="dropdown-item {{ current_page.id starts with 'varasalv' ? 'active' : '' }}" href="{{ pages['varasalv'].url }}">Varasalv</a>
             <div class="dropdown-divider"></div>
             <a class="dropdown-item {{ current_page.id == 'teave' ? 'active' : '' }}" href="{{ pages['teave'].url }}">Teave</a>
           </div>
         </li>
-        <li class="nav-item">
-          <a class="nav-link {{ current_page.id starts with 'pildid' ? 'active' : '' }}" href="{{ pages['pildid'].url }}">Pildid</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link {{ current_page.id starts with 'varasalv' ? 'active' : '' }}" href="{{ pages['varasalv'].url }}">Varasalv</a>
-        </li>
+
         <li class="nav-item dropdown">
           <a class="nav-link"
             href="#"

@@ -17,9 +17,11 @@
 <!--/ Section Contact-footer End /-->
 
 <div class="bottom-tools">
+  {% if disable != 'back-to-top' %}
   <a href="#" class="back-to-top" data-toggle="tooltip" title="Üles">
     <i class="icon ion-ios-arrow-up"></i>
   </a>
+  {% endif %}
   {% for tool in tools %}
   <b data-toggle="tooltip" title="{{ tool.title }}">
     <a href="#"
@@ -64,6 +66,38 @@
         <em class="text-muted info">Ctrl-S</em>
         <button type="button" class="btn btn-primary save"><i class="icon ion-ios-save"></i> Salvesta</button>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Sulge</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}
+
+{% if user %}
+<!-- REGISTER MODAL -->
+<div class="modal fade" id="register" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Registreeri uus kasutaja</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form method="post" action="{{ base_url }}/{{ config.register.hash }}">
+          <div class="form-group">
+            <label for="username">Kasutaja</label>
+            <input type="text" class="form-control" id="username" name="username" placeholder="">
+          </div>
+          <div class="form-group">
+            <label for="password">Parool</label>
+            <input type="password" class="form-control" id="password" name="password" placeholder="">
+          </div>
+          <div class="form-group">
+            <button type="submit" class="btn btn-primary">Saada</button>
+          </div>
+          <em class="text-muted info">Lisa uus kasutaja, kui soovid enda nime alt siseneda</em>
+        </form>
       </div>
     </div>
   </div>

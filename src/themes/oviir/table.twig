@@ -4,8 +4,9 @@
 
   {% include 'parts/header.twig' %}
 
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.css">
-  <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css">
+  <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css">-->
+  <link rel="stylesheet" href="{{ theme_url }}/lib/datatables/datatables.min.css">
 
   <style>
     table.dataTable th:first-letter {
@@ -95,8 +96,9 @@
 
   {% include 'parts/table-modal.twig' %}
 
-  <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
-  <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>
+  <!--<script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>-->
+  <script src="{{ theme_url }}/lib/datatables/datatables.min.js"></script>
   <script src="http://bartaz.github.io/sandbox.js/jquery.highlight.js"></script>
 
   <script type="text/javascript">
@@ -297,7 +299,9 @@
       })
       if (config.copy) {
         $('#copy').on('show.bs.modal', e => {
-          const data = table.rows({ search: 'applied' }).data().filter(row => row[config.copy].length > 5).map(row => row[config.copy])
+          const data = table.rows({ search: 'applied' }).data()
+            .filter(row => row[config.copy] && row[config.copy].length > 5)
+            .map(row => row[config.copy])
           $(e.target).find('label span').text(`(${data.length})`)
           $(e.target).find('textarea').text(data.join(', '))
         }).on('hide.bs.modal', e => {

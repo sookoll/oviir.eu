@@ -148,9 +148,15 @@ a:hover {
 }
 
 .title-a {
-  font-size: 3rem;
+  font-size: 2rem;
   font-weight: bold;
   text-transform: uppercase;
+}
+
+@media (min-width: 768px) {
+  .title-a {
+    font-size: 3rem
+  }
 }
 
 .subtitle-a {
@@ -484,8 +490,8 @@ a:hover {
 .navbar-b.navbar-reduce {
   transition: all .5s ease-in-out;
   background-color: #fff;
-  padding-top: 15px;
-  padding-bottom: 15px;
+  padding-top: 6px;
+  padding-bottom: 6px;
 }
 
 .navbar-b.navbar-reduce .nav-link {
@@ -530,7 +536,7 @@ a:hover {
 }
 
 .navbar-b .dropdown-menu {
-  margin: 1.12rem 0 0;
+  margin: 0.6rem 0 0;
   border-radius: 0;
 }
 
@@ -1427,7 +1433,8 @@ input:checked + .slider:before {
 .lead a {
   color: #007bff;
 }
-a.white-link, a.white-link:hover {
+a.white-link, a.white-link:hover,
+button.white-link, button.white-link:hover {
   color: white
 }
 .autocomplete-suggestions {
