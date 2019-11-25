@@ -1,20 +1,35 @@
 $.fn.serializeObject = function() {
-	var o = {};
-	var a = this.serializeArray();
-	$.each(a, function() {
-		if (o[this.name]) {
-			if (!o[this.name].push) {
-				o[this.name] = [o[this.name]];
-			}
-			o[this.name].push(this.value || '');
-		} else {
-			o[this.name] = this.value || '';
-		}
-	});
-	this.find('input[type=checkbox]:not(:checked)').each(function() {
-		o[this.name] = false
-	})
-	return o;
+  var o = {};
+  var a = this.serializeArray();
+  $.each(a, function() {
+    if (o[this.name]) {
+      if (!o[this.name].push) {
+        o[this.name] = [o[this.name]];
+      }
+      o[this.name].push(this.value || '');
+    } else {
+      o[this.name] = this.value || '';
+    }
+  });
+  this.find('input[type=checkbox]:not(:checked)').each(function() {
+    o[this.name] = false
+  })
+  return o;
+};
+$.fn.selectText = function(){
+  var doc = document;
+  var element = this[0];
+  if (doc.body.createTextRange) {
+    var range = document.body.createTextRange();
+    range.moveToElementText(element);
+    range.select();
+  } else if (window.getSelection) {
+    var selection = window.getSelection();
+    var range = document.createRange();
+    range.selectNodeContents(element);
+    selection.removeAllRanges();
+    selection.addRange(range);
+  }
 };
 
 (function ($) {
@@ -139,6 +154,6 @@ $.fn.serializeObject = function() {
   })
 
   $('[data-toggle="tooltip"]').tooltip()
-	$('[data-toggle="popover"]').popover()
+  $('[data-toggle="popover"]').popover()
 
 })(jQuery);

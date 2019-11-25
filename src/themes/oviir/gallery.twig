@@ -28,11 +28,23 @@
   </section>
   <!--/ Section Blog-Single End /-->
 
-  {% if user_has_right('edit') %}
-  {% include 'parts/footer.twig' with { tools: [{ title: 'Lisa album', class: 'add', icon: 'icon ion-ios-add' }] } %}
-  {% else %}
-  {% include 'parts/footer.twig' %}
+  {% set tools = [] %}
+
+  {% if user_has_right('editor/admin') %}
+  {% set tools = tools|merge([
+    { title: 'Lisa album', type: 'create', icon: 'icon ion-ios-add', path: pages['pildid'].id ~ '/', id: "now"|date("Y-m-d") ~ '-sisesta-siia-faili-nimi' }
+  ]) %}
   {% endif %}
+
+  {% if user_has_right('editor/admin') %}
+  {% set tools = tools|merge([
+    { title: 'Muuda', type: 'edit', icon: 'icon ion-md-create', id: current_page.id }
+  ]) %}
+  {% endif %}
+
+  {% include 'parts/footer.twig' with { tools: tools } %}
+
+  {% include 'parts/scripts.twig' %}
 
   {% include 'parts/scripts.twig' %}
 

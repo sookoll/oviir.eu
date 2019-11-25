@@ -33,3 +33,8 @@
 
 <!-- Main Stylesheet File -->
 <link href="{{ theme_url }}/css/{{ config.theme_config.style ? config.theme_config.style : 'style' }}.css" rel="stylesheet">
+
+{% if user_has_right('editor/edit') %}
+<link rel="stylesheet" href="{{ theme_url }}/lib/codemirror-5.49.2/codemirror.css">
+<link rel="stylesheet" href="{{ theme_url }}/css/draft.css">
+{% endif %}

@@ -46,11 +46,22 @@
     </div>
   </section>
   <!--/ Section Blog-Single End /-->
-  {% if user_has_right('read') %}
-  {% include 'parts/footer.twig' with { tools: [{ title: 'Lisa uudis', class: 'add', icon: 'icon ion-ios-add' }] } %}
-  {% else %}
-  {% include 'parts/footer.twig' %}
+
+  {% set tools = [] %}
+
+  {% if user_has_right('editor/edit') %}
+  {% set tools = tools|merge([
+    { title: 'Lisa uudis', type: 'create', icon: 'icon ion-ios-add', path: pages['uudised'].id ~ '/', id: "now"|date("Y-m-d") ~ '-sisesta-siia-faili-nimi' }
+  ]) %}
   {% endif %}
+
+  {% if (user_has_right('editor/edit') and meta.edit != 'admins') or user_has_right('editor/admin') %}
+  {% set tools = tools|merge([
+    { title: 'Muuda', type: 'edit', icon: 'icon ion-md-create', id: current_page.id }
+  ]) %}
+  {% endif %}
+
+  {% include 'parts/footer.twig' with { tools: tools } %}
 
   {% include 'parts/scripts.twig' %}
 

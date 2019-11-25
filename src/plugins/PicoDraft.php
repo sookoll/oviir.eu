@@ -25,11 +25,10 @@ class PicoDraft extends AbstractPicoPlugin
   protected $dependsOn = array(
     'PicoUsers'
   );
-
-  protected $canAdd = false;
   protected $canEdit = false;
   protected $canAdmin = false;
   protected $hash = null;
+  protected $info = 'Unknown error';
 
   /**
    * Triggered after Pico has read its configuration
@@ -41,6 +40,8 @@ class PicoDraft extends AbstractPicoPlugin
   public function onConfigLoaded(array &$config)
   {
     $this->hash = @$config['editor']['hash'];
+    $this->template = @$config['editor']['template'];
+    $this->deleteDir = @$config['editor']['content_dir_delete'];
   }
 
   /**
@@ -52,59 +53,133 @@ class PicoDraft extends AbstractPicoPlugin
    */
   public function onRequestUrl(&$url)
   {
-    // check user rights
-    if (!$this->setRights()) {
-      $url = '403';
-      header('HTTP/1.1 403 Forbidden');
-      exit;
-    }
     // if hash match, handle request
     if (substr($url, 0, strlen($this->hash)) === $this->hash) {
-      var_dump($_GET['filename'], CONTENT_DIR . $_GET['filename'] . CONTENT_EXT);
-      if ($_GET['filename'] && file_exists(CONTENT_DIR . $_GET['filename'] . CONTENT_EXT)) {
-        // read file content and output
-        readfile(CONTENT_DIR . $_GET['filename'] . CONTENT_EXT);
+      // check user rights
+      if (!$this->setRights()) {
+        $url = '403';
+        header('HTTP/1.1 403 Forbidden');
+        exit;
       }
-      // getting the payload, decoding it and saving to file system inside content dir
-      if ($_POST['payload'] && $this->saveFile($_POST['payload'])) {
-        echo '1';
+      $method = $_SERVER['REQUEST_METHOD'];
+      switch($method) {
+        case 'POST':
+          $save = $this->createFile();
+          if ($save) {
+            echo 'ok';
+          } else {
+            header('HTTP/1.1 400 Bad Request');
+            echo $this->info;
+          }
+          break;
+        case 'PUT':
+          $save = $this->editFile();
+          if ($save) {
+            echo 'ok';
+          } else {
+            header('HTTP/1.1 400 Bad Request');
+            echo $this->info;
+          }
+          break;
+        case 'DELETE':
+          $save = $this->deleteFile();
+          if ($save) {
+            echo 'ok';
+          } else {
+            header('HTTP/1.1 400 Bad Request');
+            echo $this->info;
+          }
+          break;
+        case 'GET':
+          // read file content and output
+          if (file_exists(CONTENT_DIR . $_GET['path'] . CONTENT_EXT)) {
+            readfile(CONTENT_DIR . $_GET['path'] . CONTENT_EXT);
+          } else {
+            readFile(CONTENT_DIR . $this->template);
+          }
+          break;
       }
       exit; // stop everything!
     }
-    var_dump($url);
   }
 
   private function setRights() {
     if (class_exists('PicoUsers')) {
       $PicoUsers = $this->getPlugin('PicoUsers');
-      $this->canAdd = $PicoUsers->hasRight('editor/add');
       $this->canEdit = $PicoUsers->hasRight('editor/edit');
       $this->canAdmin = $PicoUsers->hasRight('editor/admin');
-      if ($this->canAdd || $this->canEdit || $this->canAdmin) {
+      if ($this->canEdit || $this->canAdmin) {
         return true;
       }
     }
     return false;
   }
 
-  private function saveFile($payload) {
-    // we have a request from Draft, let's save it to file
-    $payload = json_decode($payload);
-    $fileName = strtolower($payload['filename']) . CONTENT_EXT;
-    // edit
+  private function createFile() {
+    // we have a request, let's save it to file
+    $payload = json_decode(file_get_contents('php://input'));
+    if (!isset($payload)) {
+      $this->info = 'No input data';
+      return false;
+    }
+    $fileName = strtolower($payload->path) . CONTENT_EXT;
+    if (file_exists(CONTENT_DIR . $fileName)) {
+      $this->info = 'File exist';
+      return false;
+    }
     if (
-      file_exists(CONTENT_DIR . $fileName) && $this->canEdit &&
-      @file_put_contents(CONTENT_DIR . $fileName, $payload['content'])
+      strlen($fileName) > strlen(CONTENT_EXT) &&
+      file_put_contents(CONTENT_DIR . $fileName, $payload->content)
     ) {
       return true;
     }
-    // add
+    return false;
+  }
+
+  private function editFile() {
+    // we have a request, let's save it to file
+    $payload = json_decode(file_get_contents('php://input'));
+    if (!isset($payload)) {
+      $this->info = 'No input data';
+      return false;
+    }
+    $fileName = strtolower($payload->path) . CONTENT_EXT;
+    if (!file_exists(CONTENT_DIR . $fileName)) {
+      $this->info = 'File not exist';
+      return false;
+    }
     if (
-      !file_exists(CONTENT_DIR . $fileName) && $this->$canAdd &&
-      @file_put_contents(CONTENT_DIR . $fileName, $payload['content'])
+      strlen($fileName) > strlen(CONTENT_EXT) &&
+      file_put_contents(CONTENT_DIR . $fileName, $payload->content)
     ) {
       return true;
     }
+    return false;
+  }
+
+  private function deleteFile() {
+    $payload = json_decode(file_get_contents('php://input'));
+    if (!isset($payload)) {
+      $this->info = 'No input data';
+      return false;
+    }
+    $fileName = strtolower($payload->path) . CONTENT_EXT;
+    if (!file_exists(CONTENT_DIR . $fileName)) {
+      $this->info = 'File not exist';
+      return false;
+    }
+    $toName = ROOT_DIR . $this->deleteDir . date('Y-m-d-h-m-s');
+    if (is_dir($toName)) {
+      $toName += '0';
+    }
+    $toName = $toName . '/' . $fileName;
+    if (!is_dir(dirname($toName))) {
+      mkdir(dirname($toName), 0777, true);
+    }
+    if (rename(CONTENT_DIR . $fileName, $toName)) {
+      return true;
+    }
+    $this->info = 'File not exist or unknown delete error';
     return false;
   }
 }

@@ -1,5 +1,6 @@
 ---
-Title: Oviiride suguvõsa 56. kokkutulek toimub  28.07.2019
+
+Title: Oviiride suguvõsa 56. kokkutulek toimub 28.07.2019
 Description: Oviir.eu suguvõsa veebileht
 Date: 2019-07-01
 Image: http://oviir.eu/miuview-api?request=getimage&album=wp-pildid-sisusse&item=o-logo-white.png&size=800&mode=longest
@@ -8,6 +9,7 @@ Template: blog-single
 Category: uudis
 Author: Anna-Liisa Miilits
 Tags: '2019'
+
 ---
 
 <strong>Armas sugulane!</strong>

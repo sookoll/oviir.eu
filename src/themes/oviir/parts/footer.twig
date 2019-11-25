@@ -21,10 +21,51 @@
     <i class="icon ion-ios-arrow-up"></i>
   </a>
   {% for tool in tools %}
-  <a href="#" class="{{ tool.class }}" data-toggle="tooltip" title="{{ tool.title }}">
-    <i class="{{ tool.icon }}"></i>
-  </a>
+  <b data-toggle="tooltip" title="{{ tool.title }}">
+    <a href="#"
+      data-draft-type="{{ tool.type }}"
+      data-draft-path="{{ tool.path }}"
+      data-draft-id="{{ tool.id }}"
+      data-toggle="modal"
+      data-target="#draft"
+      data-backdrop="static"
+      data-draft-url="{{ base_url }}/{{ config.editor.hash }}">
+      <i class="{{ tool.icon }}"></i>
+    </a>
+  </b>
   {% endfor %}
 </div>
 
 <div id="preloader"></div>
+
+{% if user_has_right('editor/edit') %}
+<div id="draft" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" aria-labelledby="Editor">
+  <div class="modal-dialog modal-dialog-scrollable modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">
+          <b></b>
+          <span></span>
+        </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="edit-area">
+          <textarea>Initial value</textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-light mr-auto delete" data-action="confirm" disabled>
+          <i class="icon ion-md-trash"></i>
+          <span>Kustuta</span>
+        </button>
+        <em class="text-muted info">Ctrl-S</em>
+        <button type="button" class="btn btn-primary save"><i class="icon ion-ios-save"></i> Salvesta</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Sulge</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}

@@ -1,0 +1,21 @@
+#draft .modal-title span {
+  min-width: 100px;
+  display: inline-block;
+}
+#draft .modal-body {
+  padding: 0;
+  position: relative
+}
+#draft .modal-body .edit-area {
+  position: relative;
+}
+
+
+#draft .CodeMirror {
+  height: auto;
+  position: relative;
+}
+
+#draft .activeline {
+	background: #f6fcff !important;
+}

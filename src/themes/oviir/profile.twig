@@ -83,11 +83,15 @@
   </section>
   <!--/ Section Blog-Single End /-->
 
-  {% if user_has_right('edit') %}
-  {% include 'parts/footer.twig' with { tools: [{ title: 'Muuda', class: 'edit', icon: 'icon ion-md-create' }] } %}
-  {% else %}
-  {% include 'parts/footer.twig' %}
+  {% set tools = [] %}
+
+  {% if user_has_right('editor/admin') %}
+  {% set tools = tools|merge([
+    { title: 'Muuda', type: 'edit', icon: 'icon ion-md-create', id: current_page.id }
+  ]) %}
   {% endif %}
+
+  {% include 'parts/footer.twig' with { tools: tools } %}
 
   {% include 'parts/scripts.twig' %}
 

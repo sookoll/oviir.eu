@@ -329,6 +329,9 @@ a:hover {
   bottom: 15px;
   z-index: 11;
 }
+.bottom-tools b {
+  display: inline-block;
+}
 .bottom-tools a {
   display: inline-block;
   background: #0078ff;
