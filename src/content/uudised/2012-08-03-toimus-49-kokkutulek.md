@@ -8,6 +8,7 @@ Template: blog-single
 Category: uudis
 Author: Mihkel Oviir
 Tags: '2012'
+Edit: admins
 ---
 
 Perekond Suur võõrustas selle aasta sugulste kokkutulekut 8. juulil Männitukas, Põhja külas, Kuusalu vallas. Kokkutuleku pilte saab vaadata <a href="/kokkutulekud/2012">kokkutuleku lehelt</a>.

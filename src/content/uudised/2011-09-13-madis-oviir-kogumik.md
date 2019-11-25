@@ -8,6 +8,7 @@ Template: blog-single
 Category: uudis
 Author: Madis Oviir
 Tags: Madis Oviir
+Edit: admins
 ---
 
 Mõtlesin, et sugulasi huvitaks ka vanemate inimeste kirjapandu, siin on minu isa kirjutatud mälestuste esimene köide + tiitelleht pdf-s. Eks neid vanemate inimeste mälestusi tasub korjata ja netti üles ka panna (mitte igaühele, vaid sugulastele) lugemiseks. Paberkandjal kipuvad nad kuhugi kapipõhja ununema ja kui inimest enam pole, siis tihti nooremad põlved ei oska seda hinnata ja võib kaotsi minna niimoodi.

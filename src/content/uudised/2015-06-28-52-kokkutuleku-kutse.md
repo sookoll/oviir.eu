@@ -8,6 +8,7 @@ Template: blog-single
 Category: uudis
 Author: Tanel Vahenurm
 Tags: '2015'
+Edit: admins
 ---
 
 Oviiride 52. sugulaste kokkutulek toimub 5. juulil Puise Nina turismitalus Läänemaal Ridala vallas Puise külas.

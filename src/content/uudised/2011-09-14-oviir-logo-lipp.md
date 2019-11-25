@@ -7,6 +7,7 @@ Thumbnail: http://oviir.eu/miuview-api?request=getimage&album=avalik&item=p91700
 Template: blog-single
 Category: uudis
 Author: Mihkel Oviir
+Edit: admins
 ---
 
 2002\. aasta kokkutulekuks sai tehtud uus Oviiride suguvõsa kokkutuleku lipp sellise logoga.

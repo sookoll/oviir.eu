@@ -8,6 +8,7 @@ Template: blog-single
 Category: uudis
 Author: Krista Vahenurm
 Tags: '2016'
+Edit: admins
 ---
 
 Kallis sugulane!

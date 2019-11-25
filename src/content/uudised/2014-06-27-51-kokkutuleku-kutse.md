@@ -8,6 +8,7 @@ Template: blog-single
 Category: uudis
 Author: Andro Oviir
 Tags: '2014'
+Edit: admins
 ---
 
 Hea sugulane!

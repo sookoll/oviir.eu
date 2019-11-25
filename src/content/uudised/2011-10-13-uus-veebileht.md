@@ -7,6 +7,7 @@ Thumbnail: http://oviir.eu/miuview-api?request=getimage&album=wp-pildid-sisusse&
 Template: blog-single
 Category: uudis
 Author: Madis Oviir
+Edit: admins
 ---
 
 Head sugulased!

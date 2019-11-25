@@ -9,6 +9,7 @@ Template: blog-single
 Category: uudis
 Author: Anna-Liisa Miilits
 Tags: '2019'
+Edit: admins
 
 ---
 

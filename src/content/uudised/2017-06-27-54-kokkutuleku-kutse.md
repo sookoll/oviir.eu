@@ -8,6 +8,7 @@ Template: blog-single
 Category: uudis
 Author: Liisa Oviir
 Tags: '2017'
+Edit: admins
 ---
 
 <strong>Armas sugulane!</strong>

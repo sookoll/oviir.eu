@@ -8,6 +8,7 @@ Template: blog-single
 Category: uudis
 Author: Mihkel Oviir
 Tags: Evald Ovir, Leeno Oviir, Madis Oviir
+Edit: admins
 ---
 
 Täna sai lisatud suur hulk uut materjali:

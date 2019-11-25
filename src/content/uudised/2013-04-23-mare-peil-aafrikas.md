@@ -8,6 +8,7 @@ Template: blog-single
 Category: uudis
 Author: Mare Peil
 Tags: Mare Peil, Evald Ovir
+Edit: admins
 ---
 
 Läinud aasta lõpus külastas Mare Peil koos tütre perega Tansaaniat. Muuhulgas käidi ka kohas kus elas, töötas ja suri misjonär Evald Ovir. Sellest käigust valmis ka raadiosaade, mida saab kuulata siit:

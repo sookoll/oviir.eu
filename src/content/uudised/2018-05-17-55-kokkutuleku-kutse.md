@@ -8,6 +8,7 @@ Template: blog-single
 Category: uudis
 Author: Karl Keldrima
 Tags: '2018'
+Edit: admins
 ---
 
 <strong>Armas sugulane!</strong>

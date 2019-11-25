@@ -8,6 +8,7 @@ Template: blog-single
 Category: uudis
 Author: Madis Oviir
 Tags: '2013'
+Edit: admins
 ---
 
 Head sugulased, <a href="/kokkutulekud/2013">siit leiate Oviiride 50-nda kokkutuleku pildid</a>. Oli ilus

@@ -8,6 +8,7 @@ Template: blog-single
 Category: uudis
 Author: Mihkel Oviir
 Tags: Liisa Voore
+Edit: admins
 ---
 
 Varasalve on lisatud Liisa Voore elu ja põlvnemise lugu. Esialgu skanneeritud materjal, kuid hiljem paneme üles ka trükitud versiooni (vabatahtlikke?). Lisaks kolm albumitäit pilte Liisa elust on lisatud galeriisse.

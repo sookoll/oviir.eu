@@ -8,6 +8,7 @@ Template: blog-single
 Category: uudis
 Author: Madis Oviir
 Tags: Jaagu Jaan, Madis Oviir
+Edit: admins
 ---
 
 Minuni jõudis 1975.a kirjutatud kiri, milles Jaagu Jaan meenutab hetki oma isa elust. Katkend kirjast:

@@ -8,6 +8,7 @@ Template: blog-single
 Category: uudis
 Author: Mihkel Oviir
 Tags: Madis Oviir
+Edit: admins
 ---
 
 Varasalves saab vaadata kolme videot. Mihkel Oviiri reisist Tansaaniasse pajatav videoklipp viib meid Evald Oviri radadele ja kaks videot Madis Oviir seeniori 100-nda sünniaastapäeva tähistamisest juulis 2008.
