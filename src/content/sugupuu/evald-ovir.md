@@ -6,6 +6,7 @@ Image: http://oviir.eu/miuview-api?request=getimage&album=avalik&item=evald-ovir
 Thumbnail: http://oviir.eu/miuview-api?request=getimage&album=avalik&item=evald-ovir-2.jpg&size=600&mode=square
 Template: profile
 Category: inimesed
+Edit: admins
 tags_filter: Evald Ovir
 Links:
   -

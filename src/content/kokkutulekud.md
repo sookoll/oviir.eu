@@ -5,6 +5,7 @@ Image: http://oviir.eu/miuview-api?request=getimage&album=kokkutulekud&item=1964
 Thumbnail: http://oviir.eu/miuview-api?request=getimage&album=wp-pildid-sisusse&item=o-logo-white.png&size=600&mode=square
 Template: event-list
 Category: suguvõsa
+Edit: admins
 ---
 
 2020. **Tiina Liiva, Velisel**

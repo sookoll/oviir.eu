@@ -6,6 +6,7 @@ Image: http://oviir.eu/miuview-api?request=getimage&album=liisa-voore-album1&ite
 Thumbnail: http://oviir.eu/miuview-api?request=getimage&album=liisa-voore-album1&item=dsc_1072.jpg&size=600&mode=square
 Template: profile
 Category: inimesed
+Edit: admins
 tags_filter: Liisa Voore
 Links:
   -

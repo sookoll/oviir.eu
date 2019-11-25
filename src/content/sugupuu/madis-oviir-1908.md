@@ -6,6 +6,7 @@ Image: http://www.eestikirik.ee/files/images/stories/2008/31_Oviir_Madis.jpg
 Thumbnail: http://www.eestikirik.ee/files/images/stories/2008/31_Oviir_Madis.jpg
 Template: profile
 Category: inimesed
+Edit: admins
 tags_filter: Madis Oviir
 Links:
   -

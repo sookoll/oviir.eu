@@ -5,6 +5,7 @@ Image: http://oviir.eu/miuview-api?request=getimage&album=avalik&item=1900-nurtu
 Thumbnail: http://oviir.eu/miuview-api?request=getimage&album=avalik&item=1900-nurtus-noormaa-ues-1900.-suvel.jpg&size=600&mode=square
 Template: page
 Category: suguvõsa
+Edit: admins
 ---
 
 ### Võtmeisikud
