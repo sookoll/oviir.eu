@@ -64,13 +64,13 @@
 
   {% set tools = [] %}
 
-  {% if user_has_right('editor/edit') %}
+  {% if user_has_right('editor/admin') %}
   {% set tools = tools|merge([
     { title: 'Lisa sugulase leht', type: 'create', icon: 'icon ion-ios-add', path: pages['sugupuu'].id ~ '/', id: "now"|date("Y-m-d") ~ '-sisesta-siia-faili-nimi' }
   ]) %}
   {% endif %}
 
-  {% if (user_has_right('editor/edit') and meta.edit != 'admins') or user_has_right('editor/admin') %}
+  {% if user_has_right('editor/admin') %}
   {% set tools = tools|merge([
     { title: 'Muuda', type: 'edit', icon: 'icon ion-md-create', id: current_page.id }
   ]) %}
