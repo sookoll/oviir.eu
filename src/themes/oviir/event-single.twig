@@ -162,6 +162,11 @@
         </div>
       </div>
       <!-- prev-next start -->
+      {% include 'parts/prevnext.twig' with {
+        category: 'kokkutulek', reverse: true, author: 'organizer', date: 'event_date', index: 'date', format: 'Y' } %}
+      <!-- prev-next end -->
+
+      <!-- prev-next start -->
       {% set prev_event = {} %}
       {% set next_event = {} %}
       {% set lastwascurrent = false %}

@@ -165,6 +165,11 @@ const Draft = {
     Draft.save()
       .then(response => {
         $('#draft').find('.save').toggleClass('btn-primary btn-success')
+        if (Draft.path) {
+          setTimeout(() => {
+            $('#draft').modal('hide')
+          }, 900)
+        }
       })
       .catch(error => {
         const info = $('#draft').find('.info').text()

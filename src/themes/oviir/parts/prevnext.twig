@@ -1,0 +1,92 @@
+{% set prev_event = {} %}
+{% set next_event = {} %}
+{% set lastwascurrent = false %}
+{% set lastpage = {} %}
+{% for page in reverse ? pages|reverse : pages if page.meta.category == category %}
+  {% if lastwascurrent %}
+    {% set next_event = page %}
+    {% set lastwascurrent = false %}
+  {% endif %}
+  {% if page.id == current_page.id %}
+    {% set lastwascurrent = true %}
+    {% set prev_event = lastpage %}
+  {% endif %}
+  {% set lastpage = page %}
+{% endfor %}
+<div class="row mt-4">
+  <div class="col-md-4 mb-3">
+    {% if prev_event %}
+    <div class="work-box">
+      <a href="{{ prev_event.url }}">
+        <div class="work-img">
+          <img src="{{ prev_event.meta.thumbnail }}" alt="" class="img-fluid">
+        </div>
+        <div class="work-content">
+          <div class="row">
+            <div class="col-sm-10">
+              <h2 class="w-title text-truncate">
+                {% if prev_event.meta.number %}{{ prev_event.meta.number }}. {% endif %}{{ prev_event.meta.title }}</h2>
+              <div class="w-more">
+                <span class="w-ctegory">
+                  <i class="icon ion-ios-person"></i>
+                  {{ prev_event.meta[author] ? prev_event.meta[author] : '' }}
+                </span> /
+                <span class="w-date">
+                  <i class="icon ion-md-time"></i>
+                  {{ prev_event.meta[date] }}
+                </span>
+              </div>
+            </div>
+            <div class="col-sm-2">
+              <div class="w-like">
+                <i class="icon ion-ios-arrow-round-back"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% if index %}
+        <span class="index">{{ format ? prev_event.meta[index]|date(format) : prev_event.meta[index] }}</span>
+        {% endif %}
+      </a>
+    </div>
+    {% endif %}
+  </div>
+  <div class="col-md-4 mb-3">
+    {% if next_event %}
+    <div class="work-box">
+      <a href="{{ next_event.url }}">
+        <div class="work-img">
+          <img src="{{ next_event.meta.thumbnail }}" alt="" class="img-fluid">
+        </div>
+        <div class="work-content">
+          <div class="row">
+            <div class="col-sm-10">
+              <h2 class="w-title text-truncate">
+                {% if next_event.meta.number %}{{ next_event.meta.number }}. {% endif %}{{ next_event.meta.title }}
+              </h2>
+              <div class="w-more">
+                <span class="w-ctegory">
+                  <i class="icon ion-ios-person"></i>
+                  {{ next_event.meta[author] ? next_event.meta[author] : '' }}
+                </span> /
+                <span class="w-date">
+                  <i class="icon ion-md-time"></i>
+                  {{ next_event.meta[date] }}
+                </span>
+              </div>
+            </div>
+            <div class="col-sm-2">
+              <div class="w-like">
+                <i class="icon ion-ios-arrow-round-forward"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% if index %}
+        <span class="index">{{ format ? next_event.meta[index]|date(format) : next_event.meta[index] }}</span>
+        {% endif %}
+      </a>
+    </div>
+    {% endif %}
+  </div>
+</div>
