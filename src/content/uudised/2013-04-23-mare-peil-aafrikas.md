@@ -13,8 +13,8 @@ Edit: admins
 
 Läinud aasta lõpus külastas Mare Peil koos tütre perega Tansaaniat. Muuhulgas käidi ka kohas kus elas, töötas ja suri misjonär Evald Ovir. Sellest käigust valmis ka raadiosaade, mida saab kuulata siit:
 
-<a href="/varasalv/mare-peil-tansaanias" title="Mare Peil Tansaanias Evald Oviri radadel">Mare Peil Tansaanias Evald Oviri radadel</a>
+<a href="%base_url%/varasalv/mare-peil-tansaanias" title="Mare Peil Tansaanias Evald Oviri radadel">Mare Peil Tansaanias Evald Oviri radadel</a>
 
 Lisaks on galeriis paar pilti reisist:
 
-<a href="/pildid/mare-peil-tansaania">Link galeriisse</a>
+<a href="%base_url%/pildid/mare-peil-tansaania">Link galeriisse</a>

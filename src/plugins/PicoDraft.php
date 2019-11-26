@@ -93,9 +93,9 @@ class PicoDraft extends AbstractPicoPlugin
         case 'GET':
           // read file content and output
           if (file_exists(CONTENT_DIR . $_GET['path'] . CONTENT_EXT)) {
-            readfile(CONTENT_DIR . $_GET['path'] . CONTENT_EXT);
+            readFile(CONTENT_DIR . $_GET['path'] . CONTENT_EXT);
           } else {
-            readFile(CONTENT_DIR . $this->template);
+            echo $this->formatContent(file_get_contents(CONTENT_DIR . $this->template));
           }
           break;
       }
@@ -185,5 +185,24 @@ class PicoDraft extends AbstractPicoPlugin
     }
     $this->info = 'File not exist or unknown delete error';
     return false;
+  }
+
+  private function formatContent($content)
+  {
+    $fp = $this->fingerprint();
+    $user = $_SESSION[$fp]['path'];
+    return str_replace(['{user}', '{date}'], [basename($user), date('Y-m-d')], $content);
+  }
+  /**
+   * Return session fingerprint hash.
+   * @return string
+   */
+  private function fingerprint()
+  {
+    return hash('sha256', 'pico'
+      .$_SERVER['HTTP_USER_AGENT']
+      .$_SERVER['REMOTE_ADDR']
+      .$_SERVER['SCRIPT_NAME']
+      .session_id());
   }
 }

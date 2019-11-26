@@ -19,7 +19,10 @@ function Api (options) {
   this.options = Object.assign(defaults, options)
 }
 
-Api.prototype.load = function (options = '') {
+Api.prototype.load = function (options) {
+  if (typeof options === 'undefined') {
+    options = ''
+  }
   return new Promise((resolve, reject) => {
     const params = typeof options.params === 'object' ?
       new URLSearchParams(params).toString() : options.params

@@ -73,13 +73,12 @@ class PicoUsersRegister extends AbstractPicoPlugin
 
   private function createUser()
   {
-    var_dump($_POST);
     // we have a request, let's save it to file
     if (empty($_POST['username']) || empty($_POST['password'])) {
       $this->info = 'Missing username or password';
       return false;
     }
-    if ($this->getUser($this->group . '/' . $_POST['username'])) {
+    if ($this->checkUsername($this->users, $_POST['username'])) {
       $this->info = 'Username already exist';
       return false;
     }
@@ -124,6 +123,23 @@ class PicoUsersRegister extends AbstractPicoPlugin
       $new_yaml = $dumper->dump(['users' => $this->users], $this->getArrayDepth($this->users) + 2);
       if ($new_yaml && file_put_contents($this->configFile, $new_yaml)) {
         return true;
+      }
+    }
+    return false;
+  }
+
+  private function checkUsername(array $arr, $key)
+  {
+    // is in base array?
+    if (array_key_exists($key, $arr)) {
+      return true;
+    }
+    // check arrays contained in this array
+    foreach ($arr as $element) {
+      if (is_array($element)) {
+        if ($this->checkUsername($element, $key)) {
+          return true;
+        }
       }
     }
     return false;

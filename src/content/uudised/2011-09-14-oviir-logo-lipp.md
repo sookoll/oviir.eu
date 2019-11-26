@@ -2,8 +2,8 @@
 Title: Oviiride logo ja kokkutulekute lipp
 Description: Oviir.eu suguvõsa veebileht
 Date: 2011-09-14
-Image: http://oviir.eu/miuview-api?request=getimage&album=avalik&item=p9170006.jpg&size=600&mode=longest
-Thumbnail: http://oviir.eu/miuview-api?request=getimage&album=avalik&item=p9170006.jpg&size=600&mode=square
+Image: http://oviir.eu/miuview-api?request=getimage&album=wp-pildid-sisusse&item=p9170006.jpg&size=600&mode=longest
+Thumbnail: http://oviir.eu/miuview-api?request=getimage&album=wp-pildid-sisusse&item=p9170006.jpg&size=600&mode=square
 Template: blog-single
 Category: uudis
 Author: Mihkel Oviir

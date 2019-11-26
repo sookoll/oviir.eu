@@ -2,8 +2,8 @@
 Title: Evald Ovir
 Description: Oviir.eu suguvõsa veebileht
 Date: 1873-02-06
-Image: http://oviir.eu/miuview-api?request=getimage&album=avalik&item=evald-ovir-2.jpg&size=600&mode=longest
-Thumbnail: http://oviir.eu/miuview-api?request=getimage&album=avalik&item=evald-ovir-2.jpg&size=600&mode=square
+Image: http://oviir.eu/miuview-api?request=getimage&album=wp-pildid-sisusse&item=evald-ovir-2.jpg&size=600&mode=longest
+Thumbnail: http://oviir.eu/miuview-api?request=getimage&album=wp-pildid-sisusse&item=evald-ovir-2.jpg&size=600&mode=square
 Template: profile
 Category: inimesed
 Edit: admins

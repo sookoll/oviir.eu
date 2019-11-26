@@ -13,8 +13,6 @@ Edit: admins
 
 Varasalves saab vaadata kolme videot. Mihkel Oviiri reisist Tansaaniasse pajatav videoklipp viib meid Evald Oviri radadele ja kaks videot Madis Oviir seeniori 100-nda sünniaastapäeva tähistamisest juulis 2008.
 
-<a title="Mihkel Oviir Tansaanias" href="/varasalv/mihkel-oviir-tansaanias">Mihkel Oviiri reisist Tansaaniasse</a>
-
-<a title="Madis Oviir seenior mälestusteenistus" href="/varasalv/madis-oviir-seenior-malestusteenistus">Madis Oviir seeniori mälestusteenistus</a>
-
-<a title="Meenutusi Madis Oviiri seeniorist" href="/varasalv/madis-oviir-seenior-meenutusi">Meenutusi Madis Oviirist</a>
+* <a title="Mihkel Oviir Tansaanias" href="%base_url%/varasalv/mihkel-oviir-tansaanias">Mihkel Oviiri reisist Tansaaniasse</a>
+* <a title="Madis Oviir seenior mälestusteenistus" href="%base_url%/varasalv/madis-oviir-seenior-malestusteenistus">Madis Oviir seeniori mälestusteenistus</a>
+* <a title="Meenutusi Madis Oviiri seeniorist" href="%base_url%/varasalv/madis-oviir-seenior-meenutusi">Meenutusi Madis Oviirist</a>

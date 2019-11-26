@@ -53,7 +53,7 @@
         </div>
       </div>
       <div class="row">
-        {% for page in pages if meta.tags_filter in page.meta.tags and page.meta.category == 'document' %}
+        {% for page in pages|reverse if meta.tags_filter in page.meta.tags and page.meta.category == 'document' %}
         {% include 'parts/document.twig' with { 'doc': page, grid: 'col-lg-3 col-md-4 col-sm-6' } %}
         {% endfor %}
       </div>
@@ -71,7 +71,7 @@
         </div>
       </div>
       <div class="row">
-        {% for page in pages if meta.tags_filter in page.meta.tags %}
+        {% for page in pages|reverse if meta.tags_filter in page.meta.tags %}
           {% if page.meta.category == 'video' %}
             {% include 'parts/document.twig' with { 'doc': page, grid: 'col-lg-3 col-md-4 col-sm-6', icon: 'ion-ios-videocam' } %}
           {% elseif page.meta.category == 'pildialbum' %}

@@ -1,8 +1,8 @@
 ---
 Title: Suguvõsa ajalugu
 Description: Oviir.eu suguvõsa veebileht
-Image: http://oviir.eu/miuview-api?request=getimage&album=avalik&item=1900-nurtus-noormaa-ues-1900.-suvel.jpg&size=1200&mode=longest
-Thumbnail: http://oviir.eu/miuview-api?request=getimage&album=avalik&item=1900-nurtus-noormaa-ues-1900.-suvel.jpg&size=600&mode=square
+Image: http://oviir.eu/miuview-api?request=getimage&album=kokkutulekud&item=1900-nurtus-noormaa-ues-1900.-suvel.jpg&size=1200&mode=longest
+Thumbnail: http://oviir.eu/miuview-api?request=getimage&album=kokkutulekud&item=1900-nurtus-noormaa-ues-1900.-suvel.jpg&size=600&mode=square
 Template: page
 Category: suguvõsa
 Edit: admins
@@ -10,10 +10,9 @@ Edit: admins
 
 ## Legend
 
-<blockquote>
-Lugu sellest, kuidas Oviiri suguvõsa alguse sai.
+> Lugu sellest, kuidas Oviiri suguvõsa alguse sai.
 Kirja pandud 2001. aastal Mare Peil’i poolt oma tädi Liisa Voore meenutuste põhjal.
-</blockquote>
+
 
 1703\. a. Põhjasõda.
 
@@ -32,7 +31,18 @@ Kaarli nimeks sai OVIR. Kui klaasivabrik lõpetas töö, anti Kaarlile metsavahi
 Kaarlil oli kuus last, kaks poega ja neli tütart. Poegade nimed olid MIHKEL ja KARL.
 Tütarde nimed: LEENU, LIISU, MAI ja ANU. Mihkel oli Mare vanaisa, SILLA MIHKLI isa.
 
+<figure class="figure">
+  <img src="http://oviir.eu/miuview-api?request=getimage&album=kokkutulekud&item=1900-nurtus-noormaa-ues-1900.-suvel.jpg&size=800&mode=longest&key=03b2856dcc1efbe74f79311fc804005c" class="figure-img img-fluid rounded" alt="Oviiride pere Nurtus, Noormaa õues 1900. aastal">
+  <figcaption class="figure-caption">Oviiride pere Nurtus, Noormaa õues 1900. aastal</figcaption>
+</figure>
+
+
 ## Kokkutulekud
 
 Esimene Oviiride suguvõsa kokkutulek toimus 1964. aastal Tallinnas.
 Sealtmaalt on suguvõsa suvisest kokkusaamisest kujunenud iga-aastane traditsioon.
+
+<figure class="figure">
+  <img src="http://oviir.eu/miuview-api?request=getimage&album=kokkutulekud&item=1964-1.-kokkutulek-tallinnas-linnu-teel-nurkade-juures-vol2.jpg&size=800&mode=longest&key=03b2856dcc1efbe74f79311fc804005c" class="figure-img img-fluid rounded" alt="Esimese kokkutuleku ühispilt. 1964.a Linnu tee, Tallinn">
+  <figcaption class="figure-caption">Esimese kokkutuleku ühispilt. 1964.a Linnu tee, Tallinn</figcaption>
+</figure>

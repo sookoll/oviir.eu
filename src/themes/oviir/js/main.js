@@ -156,13 +156,32 @@ $.fn.selectText = function(){
   $('[data-toggle="tooltip"]').tooltip()
   $('[data-toggle="popover"]').popover()
 
+  const register_info = $('#register .info').text()
+
+  const onError = (form, error) => {
+    form.find('button[type="submit"]')
+      .removeClass('btn-primary')
+      .addClass('btn-danger')
+    form.find('.info').text(error)
+    form.find('input').prop('disabled', true)
+    setTimeout(() => {
+      $('#register').modal('hide')
+    }, 5000)
+  }
+
+  $('#register').on('hide.bs.modal', e => {
+    const form = $(e.target).find('form')
+    form.find('button[type="submit"]').removeClass('btn-success btn-danger').addClass('btn-primary')
+    form.find('input').val('').prop('disabled', false)
+    form.find('.info').text(register_info)
+  })
+
   $('#register form').on('submit', e => {
     e.preventDefault()
     const form = $(e.target).closest('form')
     const url = form.attr('action')
     const data = form.serialize()
     const method = form.attr('method')
-    const info = form.find('.info').text()
     fetch(url, {
       method: method,
       body: data,
@@ -176,23 +195,16 @@ $.fn.selectText = function(){
             .removeClass('btn-primary')
             .addClass('btn-success')
           form.find('.info').text('Kasutaja lisamine õnnestus. Logi välja ja uue kasutajaga sisse.')
+          form.find('input').prop('disabled', true)
+          setTimeout(() => {
+            $('#register').modal('hide')
+          }, 5000)
+        } else {
+          onError(form, response)
         }
-        setTimeout(() => {
-          form.find('button[type="submit"]').removeClass('btn-success').addClass('btn-primary')
-          form.find('.info').text(info)
-          $('#register').modal('hide')
-        }, 5000)
       })
       .catch(error => {
-        form.find('button[type="submit"]')
-          .removeClass('btn-primary')
-          .addClass('btn-danger')
-        form.find('.info').text(error.toString())
-        setTimeout(() => {
-          form.find('button[type="submit"]').removeClass('btn-danger').addClass('btn-primary')
-          form.find('.info').text(info)
-          $('#register').modal('hide')
-        }, 5000)
+        onError(form, error.toString())
       })
   })
 

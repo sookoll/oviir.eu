@@ -27,6 +27,6 @@ Kui mõisas veski järgi vajadus tekkind, kutsund valitseja barun isa jõe äär
 “Tõnis, siia sinup tegema vesiveski”...
 </blockquote>
 
-Täisteksti sellest kirjast saab lugeda ja algupärast kirja vaadata [Varasalves](/varasalv/jaagu-jaani-kiri-madisele-1975).
+Täisteksti sellest kirjast saab lugeda ja algupärast kirja vaadata [Varasalves](%base_url%/varasalv/jaagu-jaani-kiri-madisele-1975).
 
 Head lugemist!

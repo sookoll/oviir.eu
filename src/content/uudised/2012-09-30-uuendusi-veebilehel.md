@@ -13,6 +13,6 @@ Edit: admins
 
 Täna sai lisatud suur hulk uut materjali:
 
-<a href="/pildid" title="Galerii">Galeriisse</a> tekkis hulk uusi albumeid
-Varasalve lisandus frgmente Aafrikat käsitlevast <a href="/varasalv/tsivilisatsioonide-kohtumine-aafrikas" title="Tsivilisatsioonide kohtumine aafrikas">teosest</a>, kus mainitud ka Evald Ovir.
-Varasalve lisandus ka <a href="/varasalv/leeno-oviiri-kiri-pojale-siberisse" title="Leeno Oviiri kiri oma pojale Siberisse">Leeno Oviiri kiri oma pojale Siberisse</a>, mis oli teel üle aasta ja seitsme kuu.
+<a href="%base_url%/pildid" title="Galerii">Galeriisse</a> tekkis hulk uusi albumeid
+Varasalve lisandus frgmente Aafrikat käsitlevast <a href="%base_url%/varasalv/tsivilisatsioonide-kohtumine-aafrikas" title="Tsivilisatsioonide kohtumine aafrikas">teosest</a>, kus mainitud ka Evald Ovir.
+Varasalve lisandus ka <a href="%base_url%/varasalv/leeno-oviiri-kiri-pojale-siberisse" title="Leeno Oviiri kiri oma pojale Siberisse">Leeno Oviiri kiri oma pojale Siberisse</a>, mis oli teel üle aasta ja seitsme kuu.

@@ -128,55 +128,6 @@
 
             </div>
           </div>
-
-          {% set prev_event = {} %}
-          {% set next_event = {} %}
-          {% set lastwascurrent = false %}
-          {% set lastpage = {} %}
-          {% for page in pages if page.meta.category == "kokkutulek" %}
-            {% if lastwascurrent %}
-              {% set next_event = page %}
-              {% set lastwascurrent = false %}
-            {% endif %}
-            {% if page.id == current_page.id %}
-              {% set lastwascurrent = true %}
-              {% set prev_event = lastpage %}
-            {% endif %}
-            {% set lastpage = page %}
-          {% endfor %}
-
-          <div class="row">
-            <div class="col-md-6 mb-3">
-              {% if next_event %}
-              <div class="work-box">
-                <a href="{{ next_event.url }}">
-                  <div class="work-img">
-                    <img src="{{ next_event.meta.thumbnail }}" alt="" class="img-fluid">
-                  </div>
-                  <div class="work-content">
-                    <h2 class="w-title">{{ next_event.meta.number }}. {{ next_event.meta.title }}</h2>
-                  </div>
-                  <span class="index">{{ next_event.meta.date|date('Y') }}</span>
-                </a>
-              </div>
-              {% endif %}
-            </div>
-            <div class="col-md-6 mb-3">
-              {% if prev_event and prev_event.meta.category == 'kokkutulek' %}
-              <div class="work-box">
-                <a href="{{ prev_event.url }}">
-                  <div class="work-img">
-                    <img src="{{ prev_event.meta.thumbnail }}" alt="" class="img-fluid">
-                  </div>
-                  <div class="work-content">
-                    <h2 class="w-title">{{ prev_event.meta.number }}. {{ prev_event.meta.title }}</h2>
-                  </div>
-                  <span class="index">{{ prev_event.meta.date|date('Y') }}</span>
-                </a>
-              </div>
-              {% endif %}
-            </div>
-          </div>
         </div>
         <div class="col-md-4">
 
@@ -210,6 +161,55 @@
           {% include 'parts/tags-widget.twig' %}
         </div>
       </div>
+      <!-- prev-next start -->
+      {% set prev_event = {} %}
+      {% set next_event = {} %}
+      {% set lastwascurrent = false %}
+      {% set lastpage = {} %}
+      {% for page in pages if page.meta.category == "kokkutulek" %}
+        {% if lastwascurrent %}
+          {% set next_event = page %}
+          {% set lastwascurrent = false %}
+        {% endif %}
+        {% if page.id == current_page.id %}
+          {% set lastwascurrent = true %}
+          {% set prev_event = lastpage %}
+        {% endif %}
+        {% set lastpage = page %}
+      {% endfor %}
+      <div class="row">
+        <div class="col-md-4 mb-3">
+          {% if next_event %}
+          <div class="work-box">
+            <a href="{{ next_event.url }}">
+              <div class="work-img">
+                <img src="{{ next_event.meta.thumbnail }}" alt="" class="img-fluid">
+              </div>
+              <div class="work-content">
+                <h2 class="w-title">{{ next_event.meta.number }}. {{ next_event.meta.title }}</h2>
+              </div>
+              <span class="index">{{ next_event.meta.date|date('Y') }}</span>
+            </a>
+          </div>
+          {% endif %}
+        </div>
+        <div class="col-md-4 mb-3">
+          {% if prev_event and prev_event.meta.category == 'kokkutulek' %}
+          <div class="work-box">
+            <a href="{{ prev_event.url }}">
+              <div class="work-img">
+                <img src="{{ prev_event.meta.thumbnail }}" alt="" class="img-fluid">
+              </div>
+              <div class="work-content">
+                <h2 class="w-title">{{ prev_event.meta.number }}. {{ prev_event.meta.title }}</h2>
+              </div>
+              <span class="index">{{ prev_event.meta.date|date('Y') }}</span>
+            </a>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+      <!-- prev-next end -->
     </div>
   </section>
   <!--/ Section Blog-Single End /-->

@@ -12,3 +12,5 @@ Edit: admins
 ---
 
 Varasalve on lisatud Liisa Voore elu ja põlvnemise lugu. Esialgu skanneeritud materjal, kuid hiljem paneme üles ka trükitud versiooni (vabatahtlikke?). Lisaks kolm albumitäit pilte Liisa elust on lisatud galeriisse.
+
+* [Liisa Voore lehekülg](%base_url%/sugupuu/liisa-voore)

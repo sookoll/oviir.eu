@@ -11,7 +11,7 @@ Tags: '2013'
 Edit: admins
 ---
 
-Head sugulased, <a href="/kokkutulekud/2013">siit leiate Oviiride 50-nda kokkutuleku pildid</a>. Oli ilus
+Head sugulased, <a href="%base_url%/kokkutulekud/2013">siit leiate Oviiride 50-nda kokkutuleku pildid</a>. Oli ilus
 kokkutulek, juubelikokkutuleku vääriline!
 
 Suur tänu Noormaa pererahvale!

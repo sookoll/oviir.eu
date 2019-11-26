@@ -2,14 +2,48 @@
 
 Title: <Sisesta siia pealkiri>
 Description: Oviir.eu suguvõsa veebileht
-Date: <sisesta siia tänane kuupäev>
-Image: http://oviir.eu/miuview-api?request=getimage&album=wp-pildid-sisusse&item=jaagu_jaani_kiri_madisele1_20.12.1975.jpg&size=1200&mode=longest
-Thumbnail: http://oviir.eu/miuview-api?request=getimage&album=wp-pildid-sisusse&item=jaagu_jaani_kiri_madisele1_20.12.1975.jpg&size=600&mode=square
+Date: {date}
+Image: http://oviir.eu/miuview-api?request=getimage&album=wp-pildid-sisusse&item=o-logo-white.png&size=800&mode=longest
+Thumbnail: http://oviir.eu/miuview-api?request=getimage&album=wp-pildid-sisusse&item=o-logo-white.png&size=800&mode=square
 Template: blog-single
-Category: <sisesta siia kategooria: uudis>
-Author: <sisesta siia enda nimi>
+Category: uudis
+Author: {user}
 Tags: <sisesta siia sildid>
 
 ---
 
-See on sisu
+Siia kirjuta sisu. Allpool mõned juhised:
+
+**This is bold text**
+
+*This is italic text*
+
+Links:
+
+[link text](http://oviir.eu)
+
+[link with title](http://oviir.eu "title text!")
+
+Autoconverted link https://oviir.eu
+
+Images:
+
+![Minion](https://octodex.github.com/images/minion.png)
+
+> Blockquotes
+
+Unordered list
+
++ Create a list by starting a line with `+`, `-`, or `*`
++ Sub-lists are made by indenting 2 spaces:
+  - Marker character change forces new list start:
+    * Ac tristique libero volutpat at
+    + Facilisis in pretium nisl aliquet
+    - Nulla volutpat aliquam velit
++ Very easy!
+
+Ordered list
+
+1. Lorem ipsum dolor sit amet
+2. Consectetur adipiscing elit
+3. Integer molestie lorem at massa

@@ -11,7 +11,7 @@ Tags: '2012'
 Edit: admins
 ---
 
-Perekond Suur võõrustas selle aasta sugulste kokkutulekut 8. juulil Männitukas, Põhja külas, Kuusalu vallas. Kokkutuleku pilte saab vaadata <a href="/kokkutulekud/2012">kokkutuleku lehelt</a>.
+Perekond Suur võõrustas selle aasta sugulste kokkutulekut 8. juulil Männitukas, Põhja külas, Kuusalu vallas. Kokkutuleku pilte saab vaadata <a href="%base_url%/kokkutulekud/2012">kokkutuleku lehelt</a>.
 
 Aitäh korraldajatele ja osavõtjatele!
 
