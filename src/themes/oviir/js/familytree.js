@@ -131,7 +131,11 @@ function initTree(data) {
     zoomSpeed: 0.02,
     zoomDoubleClickSpeed: 2,
     maxZoom: 1.5,
-    minZoom: 0.1
+    minZoom: 0.1,
+    onTouch: e => {
+      // `e` - is current touch event.
+      return false; // tells the library to not preventDefault.
+    }
   })
   pz.on('panend', e => {})
   $('#map .tree i.toggle').on('click', e => {
