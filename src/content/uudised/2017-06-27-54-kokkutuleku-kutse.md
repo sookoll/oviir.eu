@@ -4,7 +4,7 @@ Description: Oviir.eu suguvõsa veebileht
 Date: 2017-06-27
 Image: http://oviir.eu/miuview-api?request=getimage&album=wp-pildid-sisusse&item=2017-06-27-54-kokkutuleku-kutse.jpg&size=600&mode=longest
 Thumbnail: http://oviir.eu/miuview-api?request=getimage&album=wp-pildid-sisusse&item=2017-06-27-54-kokkutuleku-kutse.jpg&size=600&mode=square
-Template: blog-single
+Template: page
 Category: uudis
 Author: Liisa Oviir
 Tags: '2017'

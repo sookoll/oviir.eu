@@ -12,7 +12,7 @@
   <!--/ Nav End /-->
 
   <!--/ Intro Skew Star /-->
-  {% include 'parts/intro.twig' with { 'breadcrumbs': [{ url: base_url, title: 'Avaleht' }] } %}
+  {% include 'parts/intro.twig' with { 'breadcrumbs': true } %}
   <!--/ Intro Skew End /-->
 
   <!--/ Section Blog-Single Star /-->
@@ -20,6 +20,26 @@
     <div class="container">
       <div class="row">
         <div class="col-md-8">
+          {% if meta.category == 'uudis' %}
+          <div class="post-box">
+            <div class="post-thumb">
+              <img src="{{ meta.image }}" class="img-fluid" alt="">
+            </div>
+            <div class="post-meta">
+              <h1 class="article-title">{{ meta.title }}</h1>
+              <ul>
+                <li>
+                  <i class="icon ion-ios-person"></i>
+                  <a href="#">{{ meta.author ? meta.author : 'Kasutaja' }}</a>
+                </li>
+                <li>
+                  <i class="icon ion-md-time"></i>
+                  <a href="#">{{ meta.date_formatted }}</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+          {% endif %}
           <div class="article-content lead">
             {{ content }}
           </div>
@@ -28,15 +48,104 @@
 
           {% include 'parts/news-widget.twig' %}
 
+          {% include 'parts/tags-widget.twig' %}
+
         </div>
       </div>
+      {% if meta.category == 'uudis' %}
+      <!-- prev-next start -->
+      {% set prev_event = {} %}
+      {% set next_event = {} %}
+      {% set lastwascurrent = false %}
+      {% set lastpage = {} %}
+      {% for page in pages if page.meta.category == "uudis" %}
+        {% if lastwascurrent %}
+          {% set next_event = page %}
+          {% set lastwascurrent = false %}
+        {% endif %}
+        {% if page.id == current_page.id %}
+          {% set lastwascurrent = true %}
+          {% set prev_event = lastpage %}
+        {% endif %}
+        {% set lastpage = page %}
+      {% endfor %}
+      <div class="row">
+        <div class="col-md-4 mb-3">
+          {% if prev_event and prev_event.meta.category == 'uudis' %}
+          <div class="work-box">
+            <a href="{{ prev_event.url }}">
+              <div class="work-img">
+                <img src="{{ prev_event.meta.image }}" alt="" class="img-fluid">
+              </div>
+              <div class="work-content">
+                <div class="row">
+                  <div class="col-sm-10">
+                    <h2 class="w-title text-truncate">{{ prev_event.meta.title }}</h2>
+                    <div class="w-more">
+                      <span class="w-ctegory">
+                        <i class="icon ion-ios-person"></i>
+                        {{ prev_event.meta.author ? prev_event.meta.author : 'Kasutaja' }}
+                      </span> /
+                      <span class="w-date">
+                        <i class="icon ion-md-time"></i>
+                        {{ prev_event.meta.date_formatted }}
+                      </span>
+                    </div>
+                  </div>
+                  <div class="col-sm-2">
+                    <div class="w-like">
+                      <i class="icon ion-ios-arrow-round-back"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div>
+          {% endif %}
+        </div>
+        <div class="col-md-4 mb-3">
+          {% if next_event and next_event.meta.category == 'uudis' %}
+          <div class="work-box">
+            <a href="{{ next_event.url }}">
+              <div class="work-img">
+                <img src="{{ next_event.meta.image }}" alt="" class="img-fluid">
+              </div>
+              <div class="work-content">
+                <div class="row">
+                  <div class="col-sm-10">
+                    <h2 class="w-title text-truncate">{{ next_event.meta.title }}</h2>
+                    <div class="w-more">
+                      <span class="w-ctegory">
+                        <i class="icon ion-ios-person"></i>
+                        {{ next_event.meta.author ? next_event.meta.author : 'Kasutaja' }}
+                      </span> /
+                      <span class="w-date">
+                        <i class="icon ion-md-time"></i>
+                        {{ next_event.meta.date_formatted }}
+                      </span>
+                    </div>
+                  </div>
+                  <div class="col-sm-2">
+                    <div class="w-like">
+                      <i class="icon ion-ios-arrow-round-forward"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+      <!-- prev-next end -->
+      {% endif %}
     </div>
   </section>
   <!--/ Section Blog-Single End /-->
 
   {% set tools = [] %}
 
-  {% if user_has_right('editor/admin') %}
+  {% if (user_has_right('editor/edit') and meta.edit != 'admins' and meta.category == 'uudis') or user_has_right('editor/admin') %}
   {% set tools = tools|merge([
     { title: 'Muuda', type: 'edit', icon: 'icon ion-md-create', id: current_page.id }
   ]) %}

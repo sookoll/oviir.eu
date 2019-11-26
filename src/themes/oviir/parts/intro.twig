@@ -8,9 +8,14 @@
     </p>
     {% if breadcrumbs %}
     <ol class="breadcrumb d-flex justify-content-center">
-      {% for crumb in breadcrumbs %}
       <li class="breadcrumb-item">
-        <a href="{{ crumb.url }}">{{ crumb.title }}</a>
+        <a href="{{ base_url }}">{{ pages['index'].meta.title }}</a>
+      </li>
+      {% set pathComponents = current_page.id|split('/')|slice(0, -1) %}
+      {% for subPath in pathComponents %}
+      {% set category = pathComponents|slice(loop.index0)|join('/') %}
+      <li class="breadcrumb-item">
+        <a href="{{ category|link }}">{{ pages[category].title }}</a>
       </li>
       {% endfor %}
       <li class="breadcrumb-item active">{{ meta.title }}</li>

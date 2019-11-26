@@ -4,7 +4,7 @@ Description: Oviir.eu suguvõsa veebileht
 Date: 2013-08-17
 Image: http://oviir.eu/miuview-api?request=getimage&album=kokkutulekud&item=2013_50-kokkutulek-nurtus-noormal.jpg&size=600&mode=longest
 Thumbnail: http://oviir.eu/miuview-api?request=getimage&album=kokkutulekud&item=2013_50-kokkutulek-nurtus-noormal.jpg&size=600&mode=square
-Template: blog-single
+Template: page
 Category: uudis
 Author: Madis Oviir
 Tags: '2013'

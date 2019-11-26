@@ -4,7 +4,7 @@ Description: Oviir.eu suguvõsa veebileht
 Date: 2018-05-17
 Image: http://oviir.eu/miuview-api?request=getimage&album=wp-pildid-sisusse&item=o-logo-white.png&size=800&mode=longest
 Thumbnail: http://oviir.eu/miuview-api?request=getimage&album=wp-pildid-sisusse&item=o-logo-white.png&size=800&mode=square
-Template: blog-single
+Template: page
 Category: uudis
 Author: Karl Keldrima
 Tags: '2018'

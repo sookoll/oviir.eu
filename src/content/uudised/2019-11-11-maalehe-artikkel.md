@@ -5,7 +5,7 @@ Description: Oviir.eu suguvõsa veebileht
 Date: 2019-11-11
 Image: http://oviir.eu/miuview-api?request=getimage&album=wp-pildid-sisusse&item=2019-11-11-maalehe-artikkel.jpg&size=800&mode=longest
 Thumbnail: http://oviir.eu/miuview-api?request=getimage&album=wp-pildid-sisusse&item=2019-11-11-maalehe-artikkel.jpg&size=600&mode=square
-Template: blog-single
+Template: page
 Category: uudis
 Author: Mihkel Oviir
 Tags: Mihkel Oviir, Evald Oviir, Madis Oviir
