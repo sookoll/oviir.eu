@@ -329,24 +329,13 @@
 
   {% include 'parts/scripts.twig' %}
 
-  <script>
-
-    (function($) {
-      setTimeout(() => {
-        $('[data-url]').each((i, item) => {
-          const api = new Api({ endpoint: $(item).data('url'), hash: '{{ config.api.grant|base64_encode }}' })
-          api.load()
-            .then(data => {
-              $(item).text(data.length || 0)
-            })
-            .catch(e => {
-              console.error(e)
-            })
-        })
-      }, 200)
-    })(jQuery);
-
+  <script type="text/javascript">
+    const config = {
+      hash: '{{ config.api.grant|base64_encode }}'
+    };
   </script>
+
+  <script src="{{ theme_url }}/{{ jspath }}/index.js"></script>
 
 </body>
 </html>

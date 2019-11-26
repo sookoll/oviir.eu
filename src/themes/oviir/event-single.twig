@@ -228,18 +228,15 @@
 
   {% include 'parts/table-modal.twig' %}
 
-  <script src="{{ theme_url }}/js/imagetagger.js"></script>
-
   <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"
     integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="
     crossorigin=""></script>
   <script src="{{ theme_url }}/lib/Proj4Leaflet-1.0.2/lib/proj4-compressed.js"></script>
   <script src="{{ theme_url }}/lib/Proj4Leaflet-1.0.2/src/proj4leaflet.js"></script>
 
-  {% if meta.image %}
+  <script src="{{ theme_url }}/{{ jspath }}/imagetagger.js"></script>
 
   <script type="text/javascript">
-
     const config = {
       url: '{{ config.api.url }}/phototags',
       hash: '{{ config.api.grant|base64_encode }}',
@@ -253,173 +250,16 @@
       searchParams: `{{ pages['kontaktid'].meta.api.params }}`,
       search: {
         person: []
-      }
+      },
+      coords: '{{ meta.coordinates }}'
     }
-
-    const api = new Api({ endpoint: config.url, hash: config.hash })
-
-    function createTag (i, name) {
-      return `<button class="btn btn-link tag" data-target="${i}">${name}</button>`
-    }
-
-    function init(data) {
-      const infoText = $('#tags').html()
-      $('#tags').html(data.length ? data.map((tag, i) => createTag(i, tag.username)).join('') : infoText)
-      const it = new ImageTagger('#phototag', data)
-
-      it.on('activate', () => {
-        $('#activate').prop('disabled', true)
-        $('#tags').find('.tag').prop('disabled', true)
-        if (!config.search.person.length) {
-          const searchApi = new Api({ endpoint: config.searchUrl, hash: config.hash })
-          searchApi.load({ params: config.searchParams })
-            .then(response => {
-              config.search.person = response.map(row => {
-                return {
-                  data: row[config.primary],
-                  value: `${TableModal.nameFormat(row)}`
-                }
-              })
-            })
-            .catch(e => {
-              console.error(e)
-            })
-        }
-      })
-      it.on('deactivate', (tags) => {
-        $('#activate').prop('disabled', false)
-        $('#tags').find('.tag').prop('disabled', false)
-        $('#tags').html(tags.length ? tags.map((tag, i) => createTag(i, tag.username)).join('') : infoText)
-      })
-      it.on('save', (data) => {
-        api.insert(formatRow(Object.assign({}, data)))
-          .then(response => {
-            //console.log(response)
-          })
-          .catch(e => {
-            console.error(e)
-          })
-      })
-      it.on('remove', (data) =>{
-        $('#tags').find(`.tag[data-target='${data[0]}'] `).remove()
-        if (!$('#tags').find('.tag').length) {
-          $('#tags').html(infoText)
-        }
-        if (data[1] && data[1][config.primary]) {
-          const primary = data[1][config.primary]
-          data = {}
-          data[config.delete] = true
-          api.update(primary, data)
-            .then(response => {
-              //
-            })
-            .catch(e => {
-              console.error(e)
-            })
-        }
-      })
-      it.on('draw', (data) => {
-        data.pop.find('[autocomplete]').each((i, item) => {
-          const ac = TableModal.autoComplete($(item), {
-            lookup: config.search.person,
-            onSelect: suggestion => {
-              data.row.user = suggestion.data
-            },
-            onInvalidateSelection: () => {
-              data.row[config.primary] = null
-            }
-          })
-        })
-      })
-      it.on('select', (i) => {
-        $('#tags').find(`.tag`).removeClass('active')
-        $('#tags').find(`.tag[data-target=${i}]`).addClass('active')
-      })
-      it.on('deselect', (i) => {
-        $('#tags').find(`.tag`).removeClass('active')
-      })
-      // activate
-      $('#activate').on('click', e => {
-        it.activate()
-      })
-
-      $('#tags').on('mouseover', '.tag', e => {
-        it.getTagEl($(e.target).data('target')).mouseover()
-      }).on('mouseout', '.tag', e => {
-        it.getTagEl($(e.target).data('target')).mouseout()
-      }).on('click', '.tag', e => {
-        e.preventDefault()
-
-      });
-    }
-
-    function formatRow (row) {
-      delete row.id
-      row.category = config.category
-      row.item = config.item
-      row.author = config.user
-      return row
-    }
-
-    (function($) {
-
-      setTimeout(() => {
-        if (!config.url) {
-          return false;
-        }
-        api.load({ params: config.params })
-          .then(init)
-          .catch(e => {
-            console.error(e)
-          })
-      }, 200)
-
-    })(jQuery);
-
   </script>
 
+  {% if meta.image %}
+  <script src="{{ theme_url }}/{{ jspath }}/event-single-image.js"></script>
   {% endif %}
 
-  <script type="text/javascript">
-
-    if (typeof config === 'undefined') {
-      config = {}
-    }
-    config.coords = '{{ meta.coordinates }}';
-
-    (function($) {
-
-      if (config.coords) {
-        const coords = config.coords.split(',').map(c => Number(c.trim()))
-        const crs = new L.Proj.CRS(
-          'EPSG:3301',
-          '+proj=lcc +lat_1=59.33333333333334 +lat_2=58 +lat_0=57.51755393055556 +lon_0=24 +x_0=500000 +y_0=6375000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs',
-          {
-            origin: [40500, 5993000],
-            resolutions: [
-              4000.0, 2000.0, 1000.0, 500.0, 250.0, 125.0, 62.5, 31.25, 15.625, 7.8125, 3.90625,
-              1.953125, 0.9765625, 0.48828125, 0.244140625, 0.122070313, 0.061035157],
-            bounds: L.bounds([[40500, 5993000], [1064500, 7017000]])
-          }
-        )
-        const map = L.map('map', {
-          crs: crs
-        }).setView(coords, 6)
-
-        new L.tileLayer('http://tiles.maaamet.ee/tm/s/1.0.0/kaart/{z}/{x}/{y}.png', {
-            maxZoom: crs.options.resolutions.length,
-            minZoom: 2,
-            continuousWorld: true,
-            attribution: 'Aluskaart © <a href="http://maaamet.ee">Eesti Maa-amet</a>',
-            tms: true
-        }).addTo(map)
-
-        new L.marker(coords).addTo(map);
-      }
-
-    })(jQuery);
-
-  </script>
+  <script src="{{ theme_url }}/{{ jspath }}/event-single.js"></script>
 
 </body>
 </html>

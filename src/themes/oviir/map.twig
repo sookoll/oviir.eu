@@ -55,26 +55,22 @@
 {% include 'parts/table-modal.twig' %}
 
 <script src='{{ theme_url }}/lib/panzoom.min.js'></script>
-
-
 <script type="text/javascript">
-
-const config = {
-  url: '{{ config.api.url }}/{{ meta.api.source }}',
-  hash: '{{ config.api.grant|base64_encode }}',
-  params: '{{ meta.api.params }}',
-  primary: '{{ meta.api.primaryColumn }}',
-  delete: '{{ meta.api.deleteColumn }}',
-  col: {{ meta.table.columns|json_encode() }},
-  search: {
-    bound_with: []
-  }
-};
-
+  const config = {
+    url: '{{ config.api.url }}/{{ meta.api.source }}',
+    hash: '{{ config.api.grant|base64_encode }}',
+    params: '{{ meta.api.params }}',
+    primary: '{{ meta.api.primaryColumn }}',
+    delete: '{{ meta.api.deleteColumn }}',
+    col: {{ meta.table.columns|json_encode() }},
+    search: {
+      bound_with: []
+    }
+  };
 </script>
 
 {% if meta.script %}
-<script src="{{ theme_url }}/js/{{ meta.script }}"></script>
+<script src="{{ theme_url }}/{{ jspath }}/{{ meta.script }}"></script>
 {% endif %}
 </body>
 </html>

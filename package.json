@@ -1,0 +1,25 @@
+{
+  "name": "oviir.eu",
+  "version": "1.0.0",
+  "description": "Website",
+  "main": "index.js",
+  "scripts": {
+    "build": "babel src/themes/oviir/js -d src/themes/oviir/js-min"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sookoll/oviir.eu.git"
+  },
+  "author": "Mihkel Oviir",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sookoll/oviir.eu/issues"
+  },
+  "homepage": "https://github.com/sookoll/oviir.eu#readme",
+  "devDependencies": {
+    "@babel/cli": "^7.7.4",
+    "@babel/core": "^7.7.4",
+    "@babel/preset-env": "^7.7.4",
+    "babel-preset-minify": "^0.5.1"
+  }
+}

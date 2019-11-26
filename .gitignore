@@ -20,3 +20,6 @@ config.php
 *.ini
 
 src/content_deleted/*/*
+js-min
+
+node_modules
