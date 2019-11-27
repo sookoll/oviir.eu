@@ -20,9 +20,9 @@
     <div class="container">
       <div class="row">
         <div class="col-md-8">
-          {% if meta.category == 'uudis' %}
           <div class="post-box">
-            <div class="post-thumb">
+            {% if meta.category == 'uudis' %}
+            <div class="post-thumb text-center">
               <img src="{{ meta.image }}" class="img-fluid" alt="">
             </div>
             <div class="post-meta">
@@ -38,10 +38,10 @@
                 </li>
               </ul>
             </div>
-          </div>
-          {% endif %}
-          <div class="article-content lead">
-            {{ content }}
+            {% endif %}
+            <div class="article-content lead">
+              {{ content }}
+            </div>
           </div>
         </div>
         <div class="col-md-4">

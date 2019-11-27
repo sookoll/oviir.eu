@@ -112,7 +112,6 @@ class PicoUsers extends AbstractPicoPlugin
         if (session_status() == PHP_SESSION_NONE) {
             session_start();
         }
-        var_dump(session_id());
         $fp = $this->fingerprint();
 
         // logout action

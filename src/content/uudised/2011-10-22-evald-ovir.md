@@ -11,4 +11,4 @@ Tags: Evald Ovir
 Edit: admins
 ---
 
-Lisatud sai [lehekülg](%base_url%/sugupuu/evald-ovir) Evald Ovir'i kohta. Hetkel sai sinna üks tema reisikiri (nii originaal kui ümberkirjutatud tekst - suured tänud Toomas Petmansonile ümberkirjutuse eest), viiteid ühele pildikogule ja otselink teoste otsingule Evald Oviri kohta raamatukogude andmebaasist.
+Lisatud sai [lehekülg](%base_url%/oviirid/evald-ovir) Evald Ovir'i kohta. Hetkel sai sinna üks tema reisikiri (nii originaal kui ümberkirjutatud tekst - suured tänud Toomas Petmansonile ümberkirjutuse eest), viiteid ühele pildikogule ja otselink teoste otsingule Evald Oviri kohta raamatukogude andmebaasist.
