@@ -191,7 +191,7 @@ class PicoDraft extends AbstractPicoPlugin
   {
     $fp = $this->fingerprint();
     $user = $_SESSION[$fp]['path'];
-    return str_replace(['{user}', '{date}'], [basename($user), date('Y-m-d')], $content);
+    return str_replace(['<user>', '<date>'], [basename($user), date('Y-m-d')], $content);
   }
   /**
    * Return session fingerprint hash.

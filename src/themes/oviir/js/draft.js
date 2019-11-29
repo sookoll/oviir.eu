@@ -53,12 +53,15 @@ const Draft = {
     return this.editor.getValue().length > 100 &&
       $('#draft').find('.modal-title span').text().length > 0
   },
-  save() {
+  save(id) {
+    if (id !== this.id) {
+      this.id = id
+    }
     return new Promise((resolve, reject) => {
       fetch(this.url, {
         method: this.path ? 'POST' : 'PUT',
         body: JSON.stringify({
-          path: `${this.path}${this.id}`,
+          path: `${this.path}${id || this.id}`,
           content: this.editor.getValue()
         })
       }).then(response => response.text())
@@ -162,7 +165,8 @@ const Draft = {
     if (!Draft.validate()) {
       return false
     }
-    Draft.save()
+    const id = $('#draft').find('.modal-title span').text()
+    Draft.save(id)
       .then(response => {
         $('#draft').find('.save').toggleClass('btn-primary btn-success')
         if (Draft.path) {

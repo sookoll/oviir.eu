@@ -97,7 +97,9 @@
         {% for page in pages if page.meta.category == "uudis" %}
         {% if i < 4 %}
         <div class="card card-blog">
-          <img src="{{ page.meta.thumbnail }}" class="card-img-top" alt="...">
+          <a href="{{ page.url }}">
+            <img src="{{ page.meta.thumbnail }}" class="card-img-top" alt="{{ page.meta.title }}">
+          </a>
           <div class="card-body">
             <div class="card-category-box">
               <div class="card-category">
@@ -133,7 +135,7 @@
   <!--/ Section Blog End /-->
 
   <!--/ Stats Start /-->
-  <div class="section-counter paralax-mf bg-image" style="background-image: url(http://oviir.eu/miuview-api?request=getimage&album=avalik&item=1900-nurtus-noormaa-ues-1900.-suvel.jpg&size=600&mode=longest)">
+  <div class="section-counter paralax-mf bg-image" style="background-image: url(http://oviir.eu/miuview-api?request=getimage&album=kokkutulekud&item=1900-nurtus-noormaa-ues-1900.-suvel.jpg&size=600&mode=longest)">
     <div class="overlay-mf"></div>
     <div class="container">
       <div class="row">

@@ -14,7 +14,7 @@
     $('.tags a').not(e.currentTarget).removeClass('badge-primary').addClass('badge-secondary')
     $(e.currentTarget).toggleClass('badge-primary badge-secondary')
     if ($(e.currentTarget).hasClass('badge-primary')) {
-      value = $(e.currentTarget).text().toLowerCase()
+      const value = $(e.currentTarget).text().toLowerCase()
       $(e.target).closest('.container').find('.filter-items > *').filter(function(e) {
         $(this).toggle($(this).data('tags').split(',').map(tag => tag.trim().toLowerCase()).indexOf(value) > -1)
       })

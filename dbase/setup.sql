@@ -3,7 +3,7 @@ CREATE TABLE IF NOT EXISTS `phototags` (
   `id` INT AUTO_INCREMENT PRIMARY KEY,
   `category` varchar(25) NOT NULL,
   `item` varchar(100) NOT NULL,
-  `user` INT NOT NULL,
+  `user` INT DEFAULT NULL,
   `username` varchar(100) NOT NULL,
   `author` varchar(100) NOT NULL,
   `xi` float not null,
