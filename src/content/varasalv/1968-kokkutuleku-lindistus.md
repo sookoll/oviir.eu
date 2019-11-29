@@ -2,7 +2,6 @@
 Title: 5. kokkutuleku helisalvestised
 Description: Helisalvestis
 Date: 1968-07-01
-Template: video
 Category: video
 Tags: Marta Tamm, Noormaa, Antti Oviir, Evald Ovir, 1968
 Videos:

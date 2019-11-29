@@ -18,9 +18,12 @@
   <!--/ Section Blog-Single Star /-->
   <section class="blog-wrapper sect-pt4" id="blog">
     <div class="container">
-      <ul class="list-unstyled">
+
+      {% include 'parts/filter.twig' with { selector: 'uudised/' } %}
+
+      <ul class="list-unstyled filter-items">
         {% for page in pages if page.meta.category == "uudis" %}
-        <li class="media mb-2 row">
+        <li class="media mb-2 row" data-tags="{{ page.meta.tags }}">
           <a href="{{ page.url }}" class="col-sm-3 mb-3">
             <img class="img-fluid lazy mr-3"
               src="{{ theme_url }}/img/placeholder.png"
@@ -29,7 +32,7 @@
           </a>
           <div class="media-body col-sm-9 mb-3">
             <h5 class="mt-0 mb-1">
-              <a href="{{ page.url }}">{{ page.meta.title }}</a>
+              <a href="{{ page.url }}" class="filter-text">{{ page.meta.title }}</a>
             </h5>
             <div class="post-author my-3">
               <a href="#">
@@ -64,6 +67,8 @@
   {% include 'parts/footer.twig' with { tools: tools } %}
 
   {% include 'parts/scripts.twig' %}
+
+  <script src="{{ theme_url }}/{{ jspath }}/filter.js"></script>
 
 </body>
 </html>

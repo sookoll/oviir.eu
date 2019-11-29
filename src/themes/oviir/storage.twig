@@ -15,26 +15,14 @@
   {% include 'parts/intro.twig' with { 'breadcrumbs': true } %}
   <!--/ Intro Skew End /-->
 
-  {% set tags = [] %}
-  {% for page in pages if page.id starts with 'varasalv/'  %}
-    {% set page_tags = page.meta.tags|split(',') %}
-    {% for tag in page_tags if tag|trim not in tags %}
-      {% set tags = tags|merge([tag|trim]) %}
-    {% endfor %}
-  {% endfor %}
+
 
   <!--/ Section Blog-Single Star /-->
   <section class="sect-pt4">
     <div class="container">
-      <div class="filter mb-3">
-        <input class="form-control form-control-lg" id="filter" type="text" placeholder="Otsi...">
-      </div>
 
-      <h2 class="tags mb-5">
-      {% for tag in tags|sort() %}
-        <a href="#" class="badge badge-secondary">{{ tag }}</a>
-      {% endfor %}
-      </h2>
+      {% include 'parts/filter.twig' with { selector: 'varasalv/' } %}
+
       <div class="row filter-items">
         {% for page in pages if page.id starts with 'varasalv/' %}
           {% if page.meta.category == 'video' %}
@@ -66,7 +54,7 @@
 
   {% include 'parts/scripts.twig' %}
 
-  <script src="{{ theme_url }}/{{ jspath }}/storage.js"></script>
+  <script src="{{ theme_url }}/{{ jspath }}/filter.js"></script>
 
 </body>
 </html>

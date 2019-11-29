@@ -2,7 +2,6 @@
 Title: Jaagu Jaani kiri Madisele
 Description: PDF
 Date: 2007-07-01
-Template: document
 Category: document
 Tags: Jaagu Jaan, Madis Oviir
 Documents:

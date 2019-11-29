@@ -2,7 +2,6 @@
 Title: Liisa Voore elu ja põlvnemise lugu
 Description: PDF
 Date: 2007-07-01
-Template: document
 Category: document
 Tags: Liisa Voore
 Documents:

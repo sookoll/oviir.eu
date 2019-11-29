@@ -2,7 +2,6 @@
 Title: Madis Oviir seenior mälestusteenistus
 Description: Video
 Date: 2008-07-20
-Template: video
 Category: video
 Tags: Madis Oviir
 Videos:

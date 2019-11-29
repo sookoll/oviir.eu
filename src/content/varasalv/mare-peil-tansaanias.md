@@ -2,7 +2,6 @@
 Title: Mare Peil Tansaaanias
 Description: Video
 Date: 2013-03-23
-Template: video
 Category: video
 Tags: Mare Peil, Evald Ovir, Tansaania
 Videos:

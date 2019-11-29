@@ -4,7 +4,6 @@ Description: Oviir.eu suguvõsa veebileht
 Date: 2011-09-13
 Image: http://oviir.eu/miuview-api?request=getimage&album=wp-pildid-sisusse&item=madis-oviir-in-principo-erat-verbum.jpg&size=600&mode=longest
 Thumbnail: http://oviir.eu/miuview-api?request=getimage&album=wp-pildid-sisusse&item=madis-oviir-in-principo-erat-verbum.jpg&size=600&mode=square
-Template: page
 Category: uudis
 Author: Madis Oviir
 Tags: Madis Oviir

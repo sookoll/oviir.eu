@@ -4,7 +4,6 @@ Description: Oviir.eu suguvõsa veebileht
 Date: 2016-07-02
 Image: http://oviir.eu/miuview-api?request=getimage&album=wp-pildid-sisusse&item=2016-07-02-53-kokkutuleku-kutse.jpg&size=600&mode=longest
 Thumbnail: http://oviir.eu/miuview-api?request=getimage&album=wp-pildid-sisusse&item=2016-07-02-53-kokkutuleku-kutse.jpg&size=600&mode=square
-Template: page
 Category: uudis
 Author: Krista Vahenurm
 Tags: '2016'

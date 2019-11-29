@@ -4,7 +4,6 @@ Description: Oviir.eu suguvõsa veebileht
 Date: 2014-06-27
 Image: http://oviir.eu/miuview-api?request=getimage&album=wp-pildid-sisusse&item=o-logo-white.png&size=600&mode=longest
 Thumbnail: http://oviir.eu/miuview-api?request=getimage&album=wp-pildid-sisusse&item=o-logo-white.png&size=600&mode=square
-Template: page
 Category: uudis
 Author: Andro Oviir
 Tags: '2014'

@@ -2,7 +2,6 @@
 Title: 6. kokkutuleku helisalvestised
 Description: Helisalvestis
 Date: 1968-07-01
-Template: video
 Category: video
 Tags: Madis Oviir, Marta Tamm, Nurtu küla, Nurtu kool, 1969
 Videos:

@@ -2,7 +2,6 @@
 Title: In Principo Erat Verbum
 Description: PDF
 Date: 1995-01-15
-Template: document
 Category: document
 Tags: Madis Oviir
 Documents:

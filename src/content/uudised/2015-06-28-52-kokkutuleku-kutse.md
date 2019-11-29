@@ -4,7 +4,6 @@ Description: Oviir.eu suguvõsa veebileht
 Date: 2015-06-28
 Image: http://oviir.eu/miuview-api?request=getimage&album=wp-pildid-sisusse&item=2015-06-28-52-kokkutuleku-kutse.jpg&size=600&mode=longest
 Thumbnail: http://oviir.eu/miuview-api?request=getimage&album=wp-pildid-sisusse&item=2015-06-28-52-kokkutuleku-kutse.jpg&size=600&mode=square
-Template: page
 Category: uudis
 Author: Tanel Vahenurm
 Tags: '2015'

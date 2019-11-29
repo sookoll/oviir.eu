@@ -85,7 +85,8 @@
       </ul>
       <div class="tab-content">
         <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
-          <div class="row">
+          {% include 'parts/filter.twig' with { selector: 'kokkutulekud/' } %}
+          <div class="row filter-items">
             {% set locations = [] %}
             {% for page in pages|reverse if page.meta.category == "kokkutulek" %}
               {% if page.meta.coordinates %}
@@ -95,7 +96,7 @@
                   url: page.url
                 }]) %}
               {% endif %}
-            <div class="col-md-4">
+            <div class="col-md-4" data-tags="{{ page.meta.tags }}">
               <div class="work-box">
                 <a href="{{ page.url }}">
                   <div class="work-img">
@@ -105,7 +106,7 @@
                       alt="{{ page.meta.number }}. {{ page.meta.title }}">
                   </div>
                   <div class="work-content">
-                    <h2 class="w-title">{{ page.meta.number }}. {{ page.meta.title }}</h2>
+                    <h2 class="w-title filter-text">{{ page.meta.number }}. {{ page.meta.title }}</h2>
                   </div>
                   <span class="index">{{ page.meta.date|date('Y') }}</span>
                 </a>
@@ -150,5 +151,6 @@
     };
   </script>
   <script src="{{ theme_url }}/{{ jspath }}/event-list.js"></script>
+  <script src="{{ theme_url }}/{{ jspath }}/filter.js"></script>
 </body>
 </html>

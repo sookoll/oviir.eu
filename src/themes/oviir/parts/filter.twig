@@ -1,0 +1,27 @@
+{% set tags = [] %}
+{% for page in pages if page.id starts with selector  %}
+  {% set page_tags = page.meta.tags|split(',') %}
+  {% for tag in page_tags if tag|trim not in tags %}
+    {% set tags = tags|merge([tag|trim]) %}
+  {% endfor %}
+{% endfor %}
+
+<div class="mb-3" style="margin-top: -3rem">
+  <div class="text-right">
+    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#filter-collapse" aria-expanded="false" aria-controls="filter-collapse" style="color: inherit">
+      <i class="fas fa-filter"></i> Filter
+    </button>
+  </div>
+  <div class="collapse" id="filter-collapse">
+    <div class="filter mb-3">
+      <input class="form-control form-control-lg" id="filter" type="search" incremental="true" placeholder="Otsi...">
+    </div>
+    {% if tags|length > 1 %}
+    <h2 id="tags" class="mb-5">
+    {% for tag in tags|sort() %}
+      <a href="#" class="badge badge-secondary">{{ tag }}</a>
+    {% endfor %}
+    </h2>
+    {% endif %}
+  </div>
+</div>

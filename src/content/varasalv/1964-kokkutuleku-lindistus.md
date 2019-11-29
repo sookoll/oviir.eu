@@ -2,7 +2,6 @@
 Title: 1. kokkutuleku helisalvestised
 Description: Helisalvestis
 Date: 1964-07-01
-Template: video
 Category: video
 Tags: Marta Tamm, Antti Oviir, 1964
 Videos:

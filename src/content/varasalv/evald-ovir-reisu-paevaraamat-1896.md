@@ -2,7 +2,6 @@
 Title: Missionar E.Owir’i jalgsi reis Aafrika idarannast Kilimandsharo mäele
 Description: PDF
 Date: 2007-07-01
-Template: document
 Category: document
 Tags: Evald Ovir, Tansaania
 Documents:

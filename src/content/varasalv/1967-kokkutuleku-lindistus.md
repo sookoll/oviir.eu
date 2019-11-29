@@ -2,7 +2,6 @@
 Title: 4. kokkutuleku helisalvestised
 Description: Helisalvestis
 Date: 1967-07-01
-Template: video
 Category: video
 Tags: Madis Oviir, Marta Tamm, Jaagu Jaan, Jüri Oviir, Evald Ovir, 1967
 Videos:

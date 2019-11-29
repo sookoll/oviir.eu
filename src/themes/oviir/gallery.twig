@@ -18,7 +18,8 @@
   <!--/ Section Blog-Single Start /-->
   <section class="blog-wrapper sect-pt4" id="events">
     <div class="container">
-      <div class="row">
+      {% include 'parts/filter.twig' with { selector: 'pildid/' } %}
+      <div class="row filter-items">
         {% for page in pages if page.meta.category == "pildialbum" %}
         {% include 'parts/album.twig' %}
         {% endfor %}
@@ -45,6 +46,8 @@
   {% include 'parts/footer.twig' with { tools: tools } %}
 
   {% include 'parts/scripts.twig' %}
+
+  <script src="{{ theme_url }}/{{ jspath }}/filter.js"></script>
 
 </body>
 </html>
