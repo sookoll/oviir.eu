@@ -2,7 +2,6 @@
 Title: Marko Oviiri Genograafia
 Description: PDF
 Date: 2011-10-01
-Template: document
 Category: document
 Tags: Madis Oviir
 Documents:

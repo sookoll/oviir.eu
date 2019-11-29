@@ -4,7 +4,6 @@ Description: Oviir.eu suguvõsa veebileht
 Date: 2012-09-30
 Image: http://oviir.eu/miuview-api?request=getimage&album=wp-pildid-sisusse&item=2012-09-30-uuendusi-veebilehel.jpg&size=600&mode=longest
 Thumbnail: http://oviir.eu/miuview-api?request=getimage&album=wp-pildid-sisusse&item=2012-09-30-uuendusi-veebilehel.jpg&size=600&mode=square
-Template: page
 Category: uudis
 Author: Mihkel Oviir
 Tags: Evald Ovir, Leeno Oviir, Madis Oviir

@@ -2,7 +2,6 @@
 Title: Mihkel Oviir Tansaaanias
 Description: Video
 Date: 2007-07-01
-Template: video
 Category: video
 Tags: Mihkel Oviir, Evald Ovir, Tansaania
 Videos:

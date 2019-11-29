@@ -2,7 +2,6 @@
 Title: Tule mulle kellameheks
 Description: Video
 Date: 1992-01-01
-Template: video
 Category: video
 Tags: Madis Oviir
 Videos:

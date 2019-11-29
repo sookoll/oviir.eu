@@ -2,7 +2,6 @@
 Title: Meenutusi Madis Oviir seeniorist
 Description: Video
 Date: 2008-07-20
-Template: video
 Category: video
 Tags: Madis Oviir, Mare Peil
 Videos:

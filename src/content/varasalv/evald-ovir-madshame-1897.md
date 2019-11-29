@@ -2,7 +2,6 @@
 Title: E. Owir Madshames ja Nutukülv Uue-Guinea saares
 Description: PDF
 Date: 2007-07-01
-Template: document
 Category: document
 Tags: Evald Ovir, Tansaania, Madshame
 Documents:

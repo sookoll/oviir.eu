@@ -2,7 +2,6 @@
 Title: Missioni-Leht: Ewald Owiri mälestuseks
 Description: PDF
 Date: 2007-07-01
-Template: document
 Category: document
 Tags: Evald Ovir
 Documents:

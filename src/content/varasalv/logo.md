@@ -2,7 +2,6 @@
 Title: Oviiride logo ja lipp
 Description: Dokument
 Date: 2007-07-01
-Template: document
 Category: document
 Documents:
   -

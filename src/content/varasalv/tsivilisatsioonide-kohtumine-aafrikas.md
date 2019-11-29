@@ -2,7 +2,6 @@
 Title: Tsivilisatsioonide kohtumine Aafrikas
 Description: PDF
 Date: 2007-07-01
-Template: document
 Category: document
 Tags: Evald Ovir, Ofiiri maa
 Documents:

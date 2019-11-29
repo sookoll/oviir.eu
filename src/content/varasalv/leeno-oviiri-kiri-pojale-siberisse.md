@@ -2,7 +2,6 @@
 Title: Leeno Oviiri kiri oma pojale Siberisse
 Description: PDF
 Date: 2007-07-01
-Template: document
 Category: document
 Tags: Leeno Oviir, Madis Oviir
 Documents:

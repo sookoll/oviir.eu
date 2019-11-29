@@ -1,4 +1,4 @@
-<div class="{{ grid ? grid : 'col-md-4' }}">
+<div class="{{ grid ? grid : 'col-md-4' }}" data-tags="{{ page.meta.tags }}">
   <div class="work-box">
     <a href="{{ page.url }}">
       <div class="work-img">
@@ -8,7 +8,7 @@
           alt="{{ page.meta.title }}">
       </div>
       <div class="work-content">
-        <h2 class="w-title">{{ page.meta.title }}</h2>
+        <h2 class="w-title filter-text">{{ page.meta.title }}</h2>
       </div>
     </a>
   </div>

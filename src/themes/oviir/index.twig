@@ -6,320 +6,83 @@
 
 </head>
 
-<body id="page-top">
-
+<body>
   <!--/ Nav Start /-->
   {% include 'parts/menu.twig' %}
   <!--/ Nav End /-->
 
-  <!--/ Intro Skew Start /-->
-  <div id="home" class="intro route bg-image" style="background-image: url({{ meta.image }})">
-    <div class="overlay-itro"></div>
-    <div class="intro-content display-table">
-      <div class="table-cell">
-        <div class="container">
-          <span>
-            <img src="http://oviir.eu/miuview-api/?request=getimage&album=wp-pildid-sisusse&item=o-logo-transp.png&size=150&mode=longest">
-          </span>
-          <h1 class="intro-title mb-4">{{ site_title }}</h1>
-          <p class="intro-subtitle">
-            <span class="text-slider-items">
-              {% set titles = [] %}
-              {% for page in pages|sort_by("time") if page.meta.category == "kokkutulek" %}
-              {% set titles = titles|merge([page.meta.title]) %}
-              {% endfor %}
-              {{ titles|join(",") }}
-            </span>
-            <strong class="text-slider"></strong>
-          </p>
-          <p class="pt-3">
-            <a class="btn btn-primary js-scroll px-4" href="#about" role="button">Meie ajalugu...</a>
-            <a class="btn btn-link px-4 mr-3 white-link" href="{{ base_url }}/sugupuu" role="button">
-              <i class="icon ion-md-git-branch"></i>
-              Sugupuu
-            </a>
-          </p>
-        </div>
-      </div>
-    </div>
-  </div>
+  <!--/ Intro Skew Star /-->
+  {% include 'parts/intro.twig' with { 'breadcrumbs': true } %}
   <!--/ Intro Skew End /-->
 
-  <!--/ History Start /-->
-  <section id="about" class="about-mf sect-pt4 route">
+  <!--/ Section Blog-Single Star /-->
+  <section class="blog-wrapper sect-pt4" id="blog">
     <div class="container">
       <div class="row">
-        <div class="col-sm-12">
-          <div class="box-shadow-full">
-            <div class="row">
-              <div class="col-md-6">
-                <img src="{{ pages['ajalugu'].meta.thumbnail }}" class="img-fluid"/>
-              </div>
-              <div class="col-md-6">
-                <div class="about-me pt-4 pt-md-0">
-                  <div class="title-box-2">
-                    <h5 class="title-left">
-                      {{ pages['ajalugu'].title }}
-                    </h5>
-                  </div>
-                  {{ 'ajalugu'|content|slice(0, 660) }}
-                  <p class="pt-3">
-                    <a class="btn btn-primary js-scroll px-4" href="{{ pages['ajalugu'].url }}" role="button">Loe edasi...</a>
-                  </p>
-                </div>
-              </div>
+        <div class="col-md-8">
+          <div class="post-box">
+            {% if meta.category == 'uudis' %}
+            <div class="post-thumb text-center">
+              <img src="{{ meta.image }}" class="img-fluid" alt="">
             </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-  <!--/ History End /-->
-
-  <!--/ Section Blog Star /-->
-  <section id="posts" class="blog-mf sect-pt4 route">
-    <div class="container">
-      <div class="row">
-        <div class="col-sm-12">
-          <div class="title-box text-center">
-            <h3 class="title-a">
-              {{ pages['uudised'].title }}
-            </h3>
-            <p class="subtitle-a">
-              {{ pages['uudised'].description }}
-            </p>
-            <div class="line-mf"></div>
-          </div>
-        </div>
-      </div>
-      <div class="card-deck">
-        {% set i = 1 %}
-        {% for page in pages if page.meta.category == "uudis" %}
-        {% if i < 4 %}
-        <div class="card card-blog">
-          <img src="{{ page.meta.thumbnail }}" class="card-img-top" alt="...">
-          <div class="card-body">
-            <div class="card-category-box">
-              <div class="card-category">
-                <h6 class="category">{{ page.date_formatted }}</h6>
-              </div>
-            </div>
-            <h5 class="card-title">
-              <a href="{{ page.url }}">{{ page.meta.title }}</a>
-            </h5>
-            <p class="card-text">{{ page.excerpt|slice(0, 70) }}...</p>
-          </div>
-          <div class="card-footer">
-            <div class="post-author">
-              <a href="#">
-                <i class="icon ion-ios-person"></i>
-                <span class="author">{{ page.meta.author ? page.meta.author : 'Kasutaja' }}</span>
-              </a>
-            </div>
-            <div class="post-date">
-              <i class="icon ion-md-time"></i> {{ page.date_formatted }}
-            </div>
-          </div>
-        </div>
-        {% set i = i + 1 %}
-        {% endif %}
-        {% endfor %}
-      </div>
-      <div class="pb-3 center-btn">
-        <a class="btn btn-lg btn-primary btn-block" href="{{ pages['uudised'].url }}" role="button">Kõik uudised</a>
-      </div>
-    </div>
-  </section>
-  <!--/ Section Blog End /-->
-
-  <!--/ Stats Start /-->
-  <div class="section-counter paralax-mf bg-image" style="background-image: url(http://oviir.eu/miuview-api?request=getimage&album=avalik&item=1900-nurtus-noormaa-ues-1900.-suvel.jpg&size=600&mode=longest)">
-    <div class="overlay-mf"></div>
-    <div class="container">
-      <div class="row">
-        <div class="col-sm-4 col-lg-4">
-          <div class="counter-box counter-box pt-4 pt-md-0">
-            <div class="counter-ico">
-              <span class="ico-circle"><i class="icon ion-ios-calendar"></i></span>
-            </div>
-            <div class="counter-num">
-              <p class="counter">{{ 'now'|date('Y') - 1703 }}</p>
-              <span class="counter-text">AASTAT AJALUGU</span>
-            </div>
-          </div>
-        </div>
-        <div class="col-sm-4 col-lg-4">
-          <div class="counter-box pt-4 pt-md-0">
-            <div class="counter-ico">
-              <span class="ico-circle"><i class="icon ion-md-checkmark"></i></span>
-            </div>
-            <div class="counter-num">
-              <p class="counter">{{ titles|length }}</p>
-              <span class="counter-text">KOKKUTULEKUT</span>
-            </div>
-          </div>
-        </div>
-        <div class="col-sm-4 col-lg-4">
-          <div class="counter-box pt-4 pt-md-0">
-            <div class="counter-ico">
-              <span class="ico-circle"><i class="icon ion-ios-people"></i></span>
-            </div>
-            <div class="counter-num">
-              <p class="counter" data-url="{{ config.api.url }}/{{ pages['kontaktid'].meta.api.source}}?{{ pages['kontaktid'].meta.api.countParams }}">0</p>
-              <span class="counter-text">SUGULAST JA HÕIMLAST</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!--/ Stats End /-->
-
-  <!--/ Section Events Start /-->
-  <section id="work" class="portfolio-mf sect-pt4 route">
-    <div class="container">
-      <div class="row">
-        <div class="col-sm-12">
-          <div class="title-box text-center">
-            <h3 class="title-a">
-              {{ pages['kokkutulekud'].title }}
-            </h3>
-            <p class="subtitle-a">
-              {{ pages['kokkutulekud'].meta.description }}
-            </p>
-            <div class="line-mf"></div>
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        {% set i = 1 %}
-        {% for page in pages if page.meta.category == "kokkutulek" %}
-        {% if i < 4 %}
-        <div class="col-md-4">
-          <div class="work-box">
-            <a href="{{ page.url }}">
-              <div class="work-img">
-                <img src="{{ page.meta.thumbnail }}" alt="" class="img-fluid">
-              </div>
-              <div class="work-content">
-                <h2 class="w-title">{{ page.meta.number }}. {{ page.meta.title }}</h2>
-              </div>
-              <span class="index">{{ page.meta.date|date('Y') }}</span>
-            </a>
-          </div>
-        </div>
-        {% set i = i + 1 %}
-        {% endif %}
-        {% endfor %}
-      </div>
-      <div class="pb-3 center-btn">
-        <a class="btn btn-lg btn-primary btn-block" href="{{ pages['kokkutulekud'].url }}" role="button">Vaata lähemalt</a>
-      </div>
-    </div>
-  </section>
-  <!--/ Section Events End /-->
-
-  <!--/ Section Gallery Start /-->
-  <section id="work" class="portfolio-mf sect-pt4 route">
-    <div class="container">
-      <div class="row">
-        <div class="col-sm-12">
-          <div class="title-box text-center">
-            <h3 class="title-a">
-              {{ pages['pildid'].meta.title }}
-            </h3>
-            <p class="subtitle-a">
-              {{ pages['pildid'].meta.description }}
-            </p>
-            <div class="line-mf"></div>
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        {% set i = 1 %}
-        {% for page in pages if page.meta.category == "pildialbum" %}
-        {% if i < 4 %}
-        {% include 'parts/album.twig' %}
-        {% endif %}
-        {% set i = i + 1 %}
-        {% endfor %}
-      </div>
-      <div class="pb-3 center-btn">
-        <a class="btn btn-lg btn-primary btn-block" href="{{ pages['pildid'].url }}" role="button">Vaata kõiki albumeid</a>
-      </div>
-    </div>
-  </section>
-  <!--/ Section Gallery End /-->
-
-  <!--/ Section Testimonials Star /-->
-  <div class="testimonials paralax-mf bg-image" style="background-image: url(http://oviir.eu/miuview-api?request=getimage&album=kokkutulekud&item=2003-40.-kokkutulek-maarja-ja-indrek-neivelt.jpg&size=600&mode=longest&key=03b2856dcc1efbe74f79311fc804005c)">
-    <div class="overlay-mf"></div>
-    <div class="container">
-      <div class="row">
-        <div class="col-md-12">
-          <div id="testimonial-mf" class="owl-carousel owl-theme">
-            {% set i = 1 %}
-            {% for page in pages|reverse if page.meta.category == "inimesed" %}
-            {% if i < 4 %}
-            <div class="testimonial-box">
-              <div class="author-test">
-                <a href="{{ page.url }}">
-                  <img src="{{ page.meta.thumbnail }}" alt="" class="rounded-circle b-shadow-a" style="width: 200px">
-                  <span class="author">{{ page.meta.title }}</span>
-                </a>
-              </div>
-              <div class="content-test">
-                <p class="description lead line-clamp-3">
-                  {{ page.excerpt|slice(0, 250) }}
-                </p>
-                <span class="comit"><i class="fa fa-quote-right"></i></span>
-              </div>
+            <div class="post-meta">
+              <h1 class="article-title">{{ meta.title }}</h1>
+              <ul>
+                <li>
+                  <i class="icon ion-ios-person"></i>
+                  <a href="#">{{ meta.author ? meta.author : 'Kasutaja' }}</a>
+                </li>
+                <li>
+                  <i class="icon ion-md-time"></i>
+                  <a href="#">{{ meta.date_formatted }}</a>
+                </li>
+              </ul>
             </div>
             {% endif %}
+            {% for video in meta.videos %}
+            <figure>
+              <div class="embed-responsive embed-responsive-{{ video.aspect_ratio ? video.aspect_ratio : '16by9' }} mb-3">
+                <iframe class="embed-responsive-item"
+                  src="{{ video.url }}?wmode=transparent&amp;fs=1&amp;hl=en&amp;modestbranding=1&amp;iv_load_policy=3&amp;showsearch=0&amp;rel=0&amp;theme=dark"
+                  allowfullscreen
+                  frameborder="0">
+                </iframe>
+              </div>
+              <figcaption class="figure-caption">{{ video.title }}</figcaption>
+            </figure>
+            {% endfor %}
+            <div class="article-content lead">
+              {{ content }}
+            </div>
+          </div>
+          {% if meta.documents %}
+          <div class="row mt-3">
+            {% for doc in meta.documents %}
+            {% include 'parts/document.twig' %}
             {% endfor %}
           </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-
-  <!--/ Section Services Star /-->
-  <section id="service" class="services-mf sect-pt4 route">
-    <div class="container">
-      <div class="row">
-        <div class="col-sm-12">
-          <div class="title-box text-center">
-            <h3 class="title-a">
-              {{ pages['varasalv'].meta.title }}
-            </h3>
-            <p class="subtitle-a">
-              {{ pages['varasalv'].meta.description }}
-            </p>
-            <div class="line-mf"></div>
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        {% set i = 1 %}
-        {% for page in pages if page.id starts with 'varasalv/' %}
-        {% if i < 5 %}
-          {% if page.meta.category == 'video' %}
-            {% include 'parts/document.twig' with { 'doc': page, grid: 'col-lg-3 col-md-4 col-sm-6', icon: 'ion-ios-videocam' } %}
-          {% else %}
-            {% include 'parts/document.twig' with { 'doc': page, grid: 'col-lg-3 col-md-4 col-sm-6' } %}
           {% endif %}
-        {% endif %}
-        {% set i = i + 1 %}
-        {% endfor %}
+        </div>
+        <div class="col-md-4">
+
+          {% include 'parts/tags-widget.twig' %}
+          {% include 'parts/news-widget.twig' %}
+
+        </div>
       </div>
+      {% if meta.category == 'uudis' %}
+      <!-- prev-next start -->
+      {% include 'parts/prevnext.twig' with {
+        category: 'uudis', author: 'author', date: 'date_formatted' } %}
+      <!-- prev-next end -->
+      {% endif %}
     </div>
   </section>
-  <!--/ Section Services End /-->
+  <!--/ Section Blog-Single End /-->
 
   {% set tools = [] %}
 
-  {% if user_has_right('editor/admin') %}
+  {% if (user_has_right('editor/edit') and meta.edit != 'admins' and meta.category == 'uudis') or user_has_right('editor/admin') %}
   {% set tools = tools|merge([
     { title: 'Muuda', type: 'edit', icon: 'icon ion-md-create', id: current_page.id }
   ]) %}
@@ -328,14 +91,6 @@
   {% include 'parts/footer.twig' with { tools: tools } %}
 
   {% include 'parts/scripts.twig' %}
-
-  <script type="text/javascript">
-    const config = {
-      hash: '{{ config.api.grant|base64_encode }}'
-    };
-  </script>
-
-  <script src="{{ theme_url }}/{{ jspath }}/index.js"></script>
 
 </body>
 </html>

@@ -2,7 +2,6 @@
 Title: Oviiride Sugupuud
 Description: PDF
 Date: 2007-07-01
-Template: document
 Category: document
 Tags: Madis Oviir, sugupuu
 Documents:

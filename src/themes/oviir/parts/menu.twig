@@ -28,10 +28,12 @@
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
             <a class="dropdown-item {{ current_page.id == 'ajalugu' ? 'active' : '' }}" href="{{ pages['ajalugu'].url }}">Ajalugu</a>
             <a class="dropdown-item {{ current_page.id starts with 'kokkutulekud' ? 'active' : '' }}" href="{{ pages['kokkutulekud'].url }}">Kokkutulekud</a>
+            {% if user %}
             <a class="dropdown-item {{ current_page.id == 'oviirid' ? 'active' : '' }}" href="{{ pages['oviirid'].url }}">{{ pages['oviirid'].meta.title }}</a>
             <a class="dropdown-item {{ current_page.id == 'sugupuu' ? 'active' : '' }}" href="{{ pages['sugupuu'].url }}">Sugupuu kaart</a>
             <a class="dropdown-item {{ current_page.id starts with 'kontaktid' ? 'active' : '' }}" href="{{ pages['kontaktid'].url }}">Sugulaste kontaktid</a>
             <a class="dropdown-item {{ current_page.id starts with 'varasalv' ? 'active' : '' }}" href="{{ pages['varasalv'].url }}">Varasalv</a>
+            {% endif %}
             <div class="dropdown-divider"></div>
             <a class="dropdown-item {{ current_page.id == 'teave' ? 'active' : '' }}" href="{{ pages['teave'].url }}">Teave</a>
           </div>

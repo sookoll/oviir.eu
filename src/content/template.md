@@ -5,7 +5,6 @@ Description: Oviir.eu suguvõsa veebileht
 Date: {date}
 Image: http://oviir.eu/miuview-api?request=getimage&album=wp-pildid-sisusse&item=o-logo-white.png&size=800&mode=longest
 Thumbnail: http://oviir.eu/miuview-api?request=getimage&album=wp-pildid-sisusse&item=o-logo-white.png&size=800&mode=square
-Template: page
 Category: uudis
 Author: {user}
 Tags: <sisesta siia sildid>
