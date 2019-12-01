@@ -2,8 +2,8 @@
 Title: 51. suguvõsa kokkutulek toimub 20. juulil
 Description: Oviir.eu suguvõsa veebileht
 Date: 2014-06-27
-Image: http://oviir.eu/miuview-api?request=getimage&album=wp-pildid-sisusse&item=o-logo-white.png&size=600&mode=longest
-Thumbnail: http://oviir.eu/miuview-api?request=getimage&album=wp-pildid-sisusse&item=o-logo-white.png&size=600&mode=square
+Image: https://oviir.eu/miuview-api?request=getimage&album=wp-pildid-sisusse&item=o-logo-white.png&size=600&mode=longest
+Thumbnail: https://oviir.eu/miuview-api?request=getimage&album=wp-pildid-sisusse&item=o-logo-white.png&size=600&mode=square
 Category: uudis
 Author: Andro Oviir
 Tags: '2014'

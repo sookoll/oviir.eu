@@ -6,11 +6,11 @@ Category: document
 Tags: Madis Oviir
 Documents:
   -
-    path: http://oviir.eu/materjalid/2011/09/Document-20.pdf
+    path: https://oviir.eu/materjalid/2011/09/Document-20.pdf
     title: Tiitelleht
     description: PDF, skaneeritud originaal
   -
-    path: http://oviir.eu/materjalid/2011/09/In_Principio_-Erat_-Verbum_-vol_1.pdf
+    path: https://oviir.eu/materjalid/2011/09/In_Principio_-Erat_-Verbum_-vol_1.pdf
     title: I köide
     description: PDF, skaneeritud originaal
 ---

@@ -2,8 +2,8 @@
 Title: Mare Peil koos tütre perega külastas Tansaaniat
 Description: Oviir.eu suguvõsa veebileht
 Date: 2013-04-23
-Image: http://oviir.eu/miuview-api?request=getimage&album=mare-peil-tansaania&item=picture5.jpg&size=600&mode=longest
-Thumbnail: http://oviir.eu/miuview-api?request=getimage&album=mare-peil-tansaania&item=picture5.jpg&size=600&mode=square
+Image: https://oviir.eu/miuview-api?request=getimage&album=mare-peil-tansaania&item=picture5.jpg&size=600&mode=longest
+Thumbnail: https://oviir.eu/miuview-api?request=getimage&album=mare-peil-tansaania&item=picture5.jpg&size=600&mode=square
 Category: uudis
 Author: Mare Peil
 Tags: Mare Peil, Evald Ovir

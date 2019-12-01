@@ -6,7 +6,7 @@ Category: document
 Tags: Evald Ovir
 Documents:
   -
-    url: http://oviir.eu/materjalid/2013/08/Kahe_missionari_tapmine.pdf
+    url: https://oviir.eu/materjalid/2013/08/Kahe_missionari_tapmine.pdf
     title: Kahe missionari tapmine
     description: PDF, skaneeritud originaal
 ---

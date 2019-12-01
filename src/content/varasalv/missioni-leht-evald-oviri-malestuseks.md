@@ -6,7 +6,7 @@ Category: document
 Tags: Evald Ovir
 Documents:
   -
-    url: http://oviir.eu/materjalid/2013/08/Evald_Oviri_m2lestuseks.pdf
+    url: https://oviir.eu/materjalid/2013/08/Evald_Oviri_m2lestuseks.pdf
     title: Missioni-Leht: Ewald Owiri mälestuseks
     description: PDF, skaneeritud originaal
 ---

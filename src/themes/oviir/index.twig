@@ -19,7 +19,7 @@
   <section class="blog-wrapper sect-pt4" id="blog">
     <div class="container">
       <div class="row">
-        <div class="col-md-8">
+        <div class="col-lg-8">
           <div class="post-box">
             {% if meta.category == 'uudis' %}
             <div class="post-thumb text-center">
@@ -63,7 +63,7 @@
           </div>
           {% endif %}
         </div>
-        <div class="col-md-4">
+        <div class="col-lg-4">
 
           {% include 'parts/tags-widget.twig' %}
           {% include 'parts/news-widget.twig' %}
@@ -71,10 +71,12 @@
         </div>
       </div>
       {% if meta.category == 'uudis' %}
-      <!-- prev-next start -->
-      {% include 'parts/prevnext.twig' with {
-        category: 'uudis', author: 'author', date: 'date_formatted' } %}
-      <!-- prev-next end -->
+      <div class="row">
+        <!-- prev-next start -->
+        {% include 'parts/prevnext.twig' with {
+          category: 'uudis', author: 'author', date: 'date_formatted' } %}
+        <!-- prev-next end -->
+      </div>
       {% endif %}
     </div>
   </section>

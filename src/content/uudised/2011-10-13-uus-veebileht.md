@@ -2,8 +2,8 @@
 Title: Uus veebileht on valmis!
 Description: Oviir.eu suguvõsa veebileht
 Date: 2011-10-13
-Image: http://oviir.eu/miuview-api?request=getimage&album=wp-pildid-sisusse&item=2011-10-13-uus-veebileht.jpg&size=600&mode=longest
-Thumbnail: http://oviir.eu/miuview-api?request=getimage&album=wp-pildid-sisusse&item=2011-10-13-uus-veebileht.jpg&size=600&mode=square
+Image: https://oviir.eu/miuview-api?request=getimage&album=wp-pildid-sisusse&item=2011-10-13-uus-veebileht.jpg&size=600&mode=longest
+Thumbnail: https://oviir.eu/miuview-api?request=getimage&album=wp-pildid-sisusse&item=2011-10-13-uus-veebileht.jpg&size=600&mode=square
 Category: uudis
 Author: Madis Oviir
 Edit: admins
@@ -13,7 +13,7 @@ Tags: veebileht
 Head sugulased!
 
 Meie viimasel, 48-ndal kokkutulekul, 10.Juulil 2011 Põlvamaal, Krootusel, informeerisin Teid,
-et uus veebileht http://oviir.eu on loodud ja et selle aastanumbri sees loodame ka sellele sisu anda.
+et uus veebileht https://oviir.eu on loodud ja et selle aastanumbri sees loodame ka sellele sisu anda.
 Nüüd võime tõdeda, et see mõte on teoks saanud ja kõik sugulased on kutsutud sellele lehele ka ise lisa andma
 lisama materjale, fotosid, kirjutama omi ettepanekuid ja mõtteid, mismoodi teha nii,
 et meie iga-aastane kokkutulemine uut sisu ja hingust saaks, nii, et seal oleks huvitav olla nii noortel kui vanadel,

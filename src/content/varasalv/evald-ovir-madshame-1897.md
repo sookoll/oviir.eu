@@ -6,11 +6,11 @@ Category: document
 Tags: Evald Ovir, Tansaania, Madshame
 Documents:
   -
-    url: http://oviir.eu/materjalid/pdf/evald-ovir-madshame.pdf
+    url: https://oviir.eu/materjalid/pdf/evald-ovir-madshame.pdf
     title: E. Owir Madshames
     description: PDF, ümber kirjutatud
   -
-    url: http://oviir.eu/materjalid/pdf/evald-ovir-madshame-1897.pdf
+    url: https://oviir.eu/materjalid/pdf/evald-ovir-madshame-1897.pdf
     title: E. Owir Madshames
     description: PDF, skaneeritud originaal
 ---

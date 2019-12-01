@@ -97,7 +97,7 @@
       </div>
       {% endif %}
       <div class="row">
-        <div class="col-md-8">
+        <div class="col-lg-8">
           <div class="post-box">
             <h1 class="article-title mb-4">{{ meta.title }}</h1>
             <div class="article-content lead">
@@ -129,10 +129,10 @@
             </div>
           </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-lg-4">
 
           {% if meta.coordinates %}
-          <div id="map" class="mb-3"></div>
+          <div id="map" class="mb-5"></div>
           {% endif %}
 
           {% set videos = [] %}
@@ -152,19 +152,25 @@
           {% for page in videos %}
           {% include 'parts/document.twig' with { doc: page, grid: 'blah', icon: 'ion-md-videocam' } %}
           {% endfor %}
+
+          {% include 'parts/tags-widget.twig' %}
+        </div>
+      </div>
+      <div class="row">
+        <!-- prev-next start -->
+        {% include 'parts/prevnext.twig' with {
+          category: 'kokkutulek', reverse: true, author: 'organizer', date: 'event_date', index: 'date', format: 'Y' } %}
+        <!-- prev-next end -->
+        <div class="col-lg-4 mb-3">
           <div class="widget-sidebar">
             <h5 class="sidebar-title">Tulemas</h5>
             <div class="sidebar-content">
               {{ "kokkutulekud"|content }}
             </div>
           </div>
-          {% include 'parts/tags-widget.twig' %}
         </div>
       </div>
-      <!-- prev-next start -->
-      {% include 'parts/prevnext.twig' with {
-        category: 'kokkutulek', reverse: true, author: 'organizer', date: 'event_date', index: 'date', format: 'Y' } %}
-      <!-- prev-next end -->
+
     </div>
   </section>
   <!--/ Section Blog-Single End /-->
@@ -201,8 +207,8 @@
       item: {{ meta.date|date('Y') }},
       user: '{{ user }}',
       category: '{{ meta.category }}',
-      searchUrl: `{{ config.api.url }}/{{ pages['kontaktid'].meta.api.source }}`,
-      searchParams: `{{ pages['kontaktid'].meta.api.params }}`,
+      searchUrl: '{{ config.api.url }}/{{ pages["kontaktid"].meta.api.source }}',
+      searchParams: '{{ pages["kontaktid"].meta.api.params }}',
       search: {
         person: []
       },

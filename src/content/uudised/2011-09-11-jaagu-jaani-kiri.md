@@ -2,8 +2,8 @@
 Title: Jaagu Jaani Kiri Madisele
 Description: Oviir.eu suguvõsa veebileht
 Date: 2011-09-11
-Image: http://oviir.eu/miuview-api?request=getimage&album=wp-pildid-sisusse&item=jaagu_jaani_kiri_madisele1_20.12.1975.jpg&size=1200&mode=longest
-Thumbnail: http://oviir.eu/miuview-api?request=getimage&album=wp-pildid-sisusse&item=jaagu_jaani_kiri_madisele1_20.12.1975.jpg&size=600&mode=square
+Image: https://oviir.eu/miuview-api?request=getimage&album=wp-pildid-sisusse&item=jaagu_jaani_kiri_madisele1_20.12.1975.jpg&size=1200&mode=longest
+Thumbnail: https://oviir.eu/miuview-api?request=getimage&album=wp-pildid-sisusse&item=jaagu_jaani_kiri_madisele1_20.12.1975.jpg&size=600&mode=square
 Category: uudis
 Author: Madis Oviir
 Tags: Jaagu Jaan, Madis Oviir

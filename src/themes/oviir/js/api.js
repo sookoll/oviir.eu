@@ -7,7 +7,6 @@
 * dependencies:
 * 1. fetch
 */
-
 function Api (options) {
   if (!options.endpoint) {
     return false

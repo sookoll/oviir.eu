@@ -8,14 +8,16 @@
         </form>
       </div>
       <div class="modal-footer">
-        {% if meta.api.deleteColumn %}
-        <button type="button" class="btn btn-light mr-auto delete" data-action="confirm" disabled>
-          <i class="icon ion-md-trash"></i>
-          <span>Kustuta</span>
-        </button>
-        {% endif %}
-        <button type="button" class="btn btn-primary save"><i class="icon ion-ios-save"></i> Salvesta</button>
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Sulge</button>
+        <div class="w-100">
+          {% if meta.api.deleteColumn %}
+          <button type="button" class="btn btn-light mr-auto delete" data-action="confirm" disabled>
+            <i class="icon ion-md-trash"></i>
+            <span>Kustuta</span>
+          </button>
+          {% endif %}
+          <button type="button" class="btn btn-secondary float-right ml-2" data-dismiss="modal">Sulge</button>
+          <button type="button" class="btn btn-primary save float-right"><i class="icon ion-ios-save"></i> Salvesta</button>
+        </div>
       </div>
     </div>
   </div>

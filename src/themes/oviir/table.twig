@@ -10,9 +10,6 @@
     table.dataTable th:first-letter {
       text-transform: capitalize;
     }
-    table.dataTable span.highlight {
-      background-color: #FFFF88;
-    }
   </style>
 
 </head>
@@ -95,7 +92,6 @@
   {% include 'parts/table-modal.twig' %}
 
   <script src="{{ theme_url }}/lib/datatables/datatables.min.js"></script>
-  <script src="http://bartaz.github.io/sandbox.js/jquery.highlight.js"></script>
   <script type="text/javascript">
     const config = {
       url: '{{ config.api.url }}/{{ meta.api.source }}',

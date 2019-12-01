@@ -1450,3 +1450,6 @@ button.white-link, button.white-link:hover {
 .autocomplete-suggestion:hover {
   background: #fafafa
 }
+span.highlight {
+  background-color: #FFFF88;
+}

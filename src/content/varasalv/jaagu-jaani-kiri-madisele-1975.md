@@ -6,11 +6,11 @@ Category: document
 Tags: Jaagu Jaan, Madis Oviir
 Documents:
   -
-    url: http://oviir.eu/materjalid/pdf/jaagu-jaani-kiri-madisele.pdf
+    url: https://oviir.eu/materjalid/pdf/jaagu-jaani-kiri-madisele.pdf
     title: Jaagu Jaani kiri Madisele
     description: PDF, ümber kirjutatud
   -
-    url: http://oviir.eu/materjalid/pdf/jaagu-jaani-kiri-madisele-1975.pdf
+    url: https://oviir.eu/materjalid/pdf/jaagu-jaani-kiri-madisele-1975.pdf
     title: Jaagu Jaani kiri Madisele
     description: PDF, skaneeritud originaal
 ---

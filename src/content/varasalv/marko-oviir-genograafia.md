@@ -6,7 +6,7 @@ Category: document
 Tags: Madis Oviir
 Documents:
   -
-    url: http://oviir.eu/materjalid/pdf/marko-oviir-genetics-paternal.pdf
+    url: https://oviir.eu/materjalid/pdf/marko-oviir-genetics-paternal.pdf
     title: Sugupuu 14.03.1979
     description: PDF
 ---

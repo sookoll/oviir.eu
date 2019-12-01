@@ -59,13 +59,15 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-light mr-auto delete" data-action="confirm" disabled>
-          <i class="icon ion-md-trash"></i>
-          <span>Kustuta</span>
-        </button>
-        <em class="text-muted info">Ctrl-S</em>
-        <button type="button" class="btn btn-primary save"><i class="icon ion-ios-save"></i> Salvesta</button>
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Sulge</button>
+        <div class="w-100">
+          <button type="button" class="btn btn-light mr-auto delete" data-action="confirm" disabled>
+            <i class="icon ion-md-trash"></i>
+            <span>Kustuta</span>
+          </button>
+          <button type="button" class="btn btn-secondary float-right ml-2" data-dismiss="modal">Sulge</button>
+          <button type="button" class="btn btn-primary save float-right ml-2"><i class="icon ion-ios-save"></i> Salvesta</button>
+          <em class="btn text-muted info float-right">Ctrl-S</em>
+        </div>
       </div>
     </div>
   </div>
@@ -95,8 +97,8 @@
           </div>
           <div class="form-group">
             <button type="submit" class="btn btn-primary">Saada</button>
+            <em class="text-muted info btn">Lisa uus kasutaja, kui soovid enda nime alt siseneda</em>
           </div>
-          <em class="text-muted info">Lisa uus kasutaja, kui soovid enda nime alt siseneda</em>
         </form>
       </div>
     </div>

@@ -2,8 +2,8 @@
 Title: 54. kokkutuleku kutse ja juhised kohalejõudmiseks
 Description: Oviir.eu suguvõsa veebileht
 Date: 2017-06-27
-Image: http://oviir.eu/miuview-api?request=getimage&album=wp-pildid-sisusse&item=2017-06-27-54-kokkutuleku-kutse.jpg&size=600&mode=longest
-Thumbnail: http://oviir.eu/miuview-api?request=getimage&album=wp-pildid-sisusse&item=2017-06-27-54-kokkutuleku-kutse.jpg&size=600&mode=square
+Image: https://oviir.eu/miuview-api?request=getimage&album=wp-pildid-sisusse&item=2017-06-27-54-kokkutuleku-kutse.jpg&size=600&mode=longest
+Thumbnail: https://oviir.eu/miuview-api?request=getimage&album=wp-pildid-sisusse&item=2017-06-27-54-kokkutuleku-kutse.jpg&size=600&mode=square
 Category: uudis
 Author: Liisa Oviir
 Tags: '2017'
@@ -30,7 +30,7 @@ Liisa Oviir 5288613
 Mihkel Oviir 5044771
 
 
-<a href="http://oviir.eu/materjalid/2017/06/road.jpg"><img src="http://oviir.eu/materjalid/2017/06/road-294x300.jpg" alt="" width="294" height="300" class="alignleft size-medium wp-image-893" /></a>
+<a href="https://oviir.eu/materjalid/2017/06/road.jpg"><img src="https://oviir.eu/materjalid/2017/06/road-294x300.jpg" alt="" width="294" height="300" class="alignleft size-medium wp-image-893" /></a>
 
 
 <strong>Kohaletuleku õpetus:</strong>

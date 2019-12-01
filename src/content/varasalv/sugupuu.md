@@ -6,11 +6,11 @@ Category: document
 Tags: Madis Oviir, sugupuu
 Documents:
   -
-    url: http://oviir.eu/materjalid/pdf/sugupuu-1-madis-oviir-1979.pdf
+    url: https://oviir.eu/materjalid/pdf/sugupuu-1-madis-oviir-1979.pdf
     title: Sugupuu 14.03.1979
     description: PDF
   -
-    url: http://oviir.eu/materjalid/pdf/sugupuu-2-madis-oviir-1979.pdf
+    url: https://oviir.eu/materjalid/pdf/sugupuu-2-madis-oviir-1979.pdf
     title: Sugupuu 15.03.1979
     description: PDF
 ---

@@ -2,8 +2,8 @@
 Title: Liisa Voore
 Description: Oviir.eu suguvõsa veebileht
 Date: 1901-11-09
-Image: http://oviir.eu/miuview-api?request=getimage&album=liisa-voore-album1&item=dsc_1072.jpg&size=800&mode=longest
-Thumbnail: http://oviir.eu/miuview-api?request=getimage&album=liisa-voore-album1&item=dsc_1072.jpg&size=600&mode=square
+Image: https://oviir.eu/miuview-api?request=getimage&album=liisa-voore-album1&item=dsc_1072.jpg&size=800&mode=longest
+Thumbnail: https://oviir.eu/miuview-api?request=getimage&album=liisa-voore-album1&item=dsc_1072.jpg&size=600&mode=square
 Template: profile
 Category: inimesed
 Edit: admins

@@ -6,11 +6,11 @@ Category: document
 Tags: Liisa Voore
 Documents:
   -
-    url: http://oviir.eu/materjalid/pdf/liisa-voore-minu-elu-ja-polvnemise-lugu-orig.pdf
+    url: https://oviir.eu/materjalid/pdf/liisa-voore-minu-elu-ja-polvnemise-lugu-orig.pdf
     title: Liisa Voore elu ja põlvnemise lugu
     description: PDF, skaneeritud originaal
   -
-    url: http://oviir.eu/materjalid/pdf/liisa-voore-minu-elu-ja-polvnemise-lugu.pdf
+    url: https://oviir.eu/materjalid/pdf/liisa-voore-minu-elu-ja-polvnemise-lugu.pdf
     title: Liisa Voore elu ja põlvnemise lugu
     description: PDF, ümber kirjutatud
 ---

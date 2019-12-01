@@ -5,15 +5,15 @@ Date: 2007-07-01
 Category: document
 Documents:
   -
-    url: http://oviir.eu/miuview-api?request=download&album=wp-pildid-sisusse&item=o-logo-white.png
+    url: https://oviir.eu/miuview-api?request=download&album=wp-pildid-sisusse&item=o-logo-white.png
     title: Logo
     description: PNG, valge taust
   -
-    url: http://oviir.eu/miuview-api?request=download&album=wp-pildid-sisusse&item=o-logo-transp.png
+    url: https://oviir.eu/miuview-api?request=download&album=wp-pildid-sisusse&item=o-logo-transp.png
     title: Logo
     description: PNG, läbipaistev taust
   -
-    url: http://oviir.eu/materjalid/2011/08/o-logo.zip
+    url: https://oviir.eu/materjalid/2011/08/o-logo.zip
     title: Logo
     description: ZIP, Adobe Illustratori vormingus vektorgraafika
 ---

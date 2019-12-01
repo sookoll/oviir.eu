@@ -1,8 +1,8 @@
 ---
 Title: Suguvõsa ajalugu
 Description: Oviir.eu suguvõsa veebileht
-Image: http://oviir.eu/miuview-api?request=getimage&album=kokkutulekud&item=1900-nurtus-noormaa-ues-1900.-suvel.jpg&size=1200&mode=longest
-Thumbnail: http://oviir.eu/miuview-api?request=getimage&album=kokkutulekud&item=1900-nurtus-noormaa-ues-1900.-suvel.jpg&size=600&mode=square
+Image: https://oviir.eu/miuview-api?request=getimage&album=kokkutulekud&item=1900-nurtus-noormaa-ues-1900.-suvel.jpg&size=1200&mode=longest
+Thumbnail: https://oviir.eu/miuview-api?request=getimage&album=kokkutulekud&item=1900-nurtus-noormaa-ues-1900.-suvel.jpg&size=600&mode=square
 Category: suguvõsa
 Edit: admins
 ---
@@ -31,7 +31,7 @@ Kaarlil oli kuus last, kaks poega ja neli tütart. Poegade nimed olid MIHKEL ja 
 Tütarde nimed: LEENU, LIISU, MAI ja ANU. Mihkel oli Mare vanaisa, SILLA MIHKLI isa.
 
 <figure class="figure">
-  <img src="http://oviir.eu/miuview-api?request=getimage&album=kokkutulekud&item=1900-nurtus-noormaa-ues-1900.-suvel.jpg&size=800&mode=longest&key=03b2856dcc1efbe74f79311fc804005c" class="figure-img img-fluid rounded" alt="Oviiride pere Nurtus, Noormaa õues 1900. aastal">
+  <img src="https://oviir.eu/miuview-api?request=getimage&album=kokkutulekud&item=1900-nurtus-noormaa-ues-1900.-suvel.jpg&size=800&mode=longest&key=03b2856dcc1efbe74f79311fc804005c" class="figure-img img-fluid rounded" alt="Oviiride pere Nurtus, Noormaa õues 1900. aastal">
   <figcaption class="figure-caption">Oviiride pere Nurtus, Noormaa õues 1900. aastal</figcaption>
 </figure>
 
@@ -42,6 +42,6 @@ Esimene Oviiride suguvõsa kokkutulek toimus 1964. aastal Tallinnas.
 Sealtmaalt on suguvõsa suvisest kokkusaamisest kujunenud iga-aastane traditsioon.
 
 <figure class="figure">
-  <img src="http://oviir.eu/miuview-api?request=getimage&album=kokkutulekud&item=1964-1.-kokkutulek-tallinnas-linnu-teel-nurkade-juures-vol2.jpg&size=800&mode=longest&key=03b2856dcc1efbe74f79311fc804005c" class="figure-img img-fluid rounded" alt="Esimese kokkutuleku ühispilt. 1964.a Linnu tee, Tallinn">
+  <img src="https://oviir.eu/miuview-api?request=getimage&album=kokkutulekud&item=1964-1.-kokkutulek-tallinnas-linnu-teel-nurkade-juures-vol2.jpg&size=800&mode=longest&key=03b2856dcc1efbe74f79311fc804005c" class="figure-img img-fluid rounded" alt="Esimese kokkutuleku ühispilt. 1964.a Linnu tee, Tallinn">
   <figcaption class="figure-caption">Esimese kokkutuleku ühispilt. 1964.a Linnu tee, Tallinn</figcaption>
 </figure>

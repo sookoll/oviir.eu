@@ -6,7 +6,7 @@ Category: document
 Tags: Evald Ovir, Ofiiri maa
 Documents:
   -
-    path: http://oviir.eu/materjalid/2012/09/tsivilisatsioonide-kohtumine-aafrikas.pdf
+    path: https://oviir.eu/materjalid/2012/09/tsivilisatsioonide-kohtumine-aafrikas.pdf
     title: Tsivilisatsioonide kohtumine Aafrikas
     description: PDF, skaneeritud originaal
 ---
