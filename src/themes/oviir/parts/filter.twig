@@ -17,11 +17,11 @@
       <input class="form-control form-control-lg" id="filter" type="search" incremental="true" placeholder="Otsi...">
     </div>
     {% if tags|length > 1 %}
-    <h2 id="tags" class="mb-5">
+    <h3 id="tags" class="mb-5">
     {% for tag in tags|sort() %}
       <a href="#" class="badge badge-secondary">{{ tag }}</a>
     {% endfor %}
-    </h2>
+    </h3>
     {% endif %}
   </div>
 </div>
