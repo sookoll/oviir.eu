@@ -13,13 +13,9 @@ cd ..
 npm i
 ```
 ### Dev
+
 ```
-docker pull webdevops/php-apache
-docker run -v $(pwd)/src:/app -p 127.0.0.1:8000:80/tcp -it webdevops/php-apache
-```
-or
-```
-php -S localhost:8000 -t src/
+npm start
 ```
 
 Debugging IE on Safari
@@ -36,4 +32,11 @@ Update config file (miuview-api url, dev_mode)
 ```
 npm run build
 ```
-Copy content to server
+Deploy to server (NB! all content will be cleared, so be careful not to lose configs in server!!!)
+```
+npm run deploy
+```
+Deploy partial content
+```
+npm run deploy -- content/**/* themes/**/*
+```

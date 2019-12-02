@@ -180,7 +180,12 @@ function updateRow (primary, data) {
   if (config.copy) {
     $('#copy').on('show.bs.modal', e => {
       const data = table.rows({ search: 'applied' }).data()
-        .filter(row => row[config.copy] && row[config.copy].length > 5)
+        .filter(row => {
+          return row[config.copy] &&
+            row[config.copy].length > 5 &&
+            !row.death &&
+            row.active
+        })
         .map(row => row[config.copy])
       $(e.target).find('label span').text(`(${data.length})`)
       $(e.target).find('textarea').text(data.join(', '))

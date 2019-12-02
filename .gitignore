@@ -18,6 +18,7 @@ api/*
 *.yml
 config.php
 *.ini
+.env
 
 src/content_deleted/*/*
 js-min

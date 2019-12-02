@@ -5,7 +5,8 @@ html, body, #map {
 .fullscreen nav {
   box-shadow: 0 0 6px #aaa;
   background: #0078ff;
-  padding: 3px 0 0 0
+  padding-top: 6px;
+  padding-bottom: 6px;
 }
 #toolbar {
   position: fixed;

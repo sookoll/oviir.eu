@@ -24,7 +24,14 @@
             {{ content }}
           </div>
         </div>
+        <!-- Sidebar -->
         <div class="col-md-4">
+          {% if meta.profile %}
+          {% include 'parts/document.twig' with { 'doc': {
+            url: pages['sugupuu'].url ~ '#' ~ meta.profile,
+            title: meta.title ~ ' sugupuu kaardil'
+          }, 'icon': 'ion-md-git-branch', 'grid': 'fake' } %}
+          {% endif %}
           <div class="widget-sidebar">
             <h5 class="sidebar-title">Viited</h5>
             <div class="sidebar-content">
@@ -38,6 +45,7 @@
             </div>
           </div>
         </div>
+        <!-- Sidebar end -->
       </div>
       <div class="row">
         <div class="col-sm-12">

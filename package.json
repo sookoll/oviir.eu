@@ -4,7 +4,9 @@
   "description": "Website",
   "main": "index.js",
   "scripts": {
-    "build": "babel src/themes/oviir/js -d src/themes/oviir/js-min"
+    "build": "babel src/themes/oviir/js -d src/themes/oviir/js-min",
+    "start": "php -S localhost:8000 -t src/",
+    "deploy": "node scripts/deploy.js"
   },
   "repository": {
     "type": "git",
@@ -21,7 +23,9 @@
     "@babel/core": "^7.7.4",
     "@babel/plugin-transform-template-literals": "^7.7.4",
     "@babel/preset-env": "^7.7.4",
-    "babel-preset-minify": "^0.5.1"
+    "babel-preset-minify": "^0.5.1",
+    "dotenv": "^8.2.0",
+    "ftp-deploy": "^2.3.6"
   },
   "dependencies": {}
 }

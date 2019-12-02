@@ -6,6 +6,7 @@ Image: https://oviir.eu/miuview-api?request=getimage&album=wp-pildid-sisusse&ite
 Thumbnail: https://oviir.eu/miuview-api?request=getimage&album=wp-pildid-sisusse&item=evald-ovir-2.jpg&size=600&mode=square
 Template: profile
 Category: inimesed
+Profile: 289
 Edit: admins
 tags_filter: Evald Ovir
 Links:

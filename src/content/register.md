@@ -1,6 +1,6 @@
 ---
-Title: Kontaktid
-Description: Oviir.eu suguvõsa veebileht
+Title: Register
+Description: Sugulaste register
 Date: 1964-07-01
 Image: https://oviir.eu/miuview-api?request=getimage&album=kokkutulekud&item=1964-1.-kokkutulek-tallinnas-linnu-teel-nurkade-juures-vol2.jpg&size=800&mode=longest
 Thumbnail: https://oviir.eu/miuview-api?request=getimage&album=kokkutulekud&item=1964-1.-kokkutulek-tallinnas-linnu-teel-nurkade-juures-vol2.jpg&size=600&mode=square
@@ -9,7 +9,7 @@ Category: suguvõsa
 Edit: admins
 Api:
   source: persons
-  params: exclude=deleted,modified&filter=deleted,eq,0&filter=death,is,null&order=firstname
+  params: exclude=deleted,modified&filter=deleted,eq,0&order=firstname
   countParams: include=id&filter=deleted,eq,0
   primaryColumn: id
   deleteColumn: deleted
@@ -31,6 +31,8 @@ Table:
       visible: true
     death:
       title: Surm
+      visible: true
+      orderable: false
     bound_with:
       title: Seotud sugulane
       dataType: 'search'
@@ -58,6 +60,7 @@ Table:
     active:
       title: Kutse
       searchable: false
+      orderable: false
       dataType: boolean
       visible: true
   editable: true

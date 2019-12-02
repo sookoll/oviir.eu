@@ -19,6 +19,7 @@
   <section class="sect-pt4">
     <div class="container">
       <div class="row">
+        {% include 'parts/document.twig' with { 'doc': pages['register'], 'icon': 'ion-md-contacts', 'grid': 'col-md-4 col-sm-6' } %}
         {% include 'parts/document.twig' with { 'doc': pages['sugupuu'], 'icon': 'ion-md-git-branch', 'grid': 'col-md-4 col-sm-6' } %}
         {% include 'parts/document.twig' with { 'doc': pages['varasalv/sugupuu'], 'grid': 'col-md-4 col-sm-6' } %}
       </div>
