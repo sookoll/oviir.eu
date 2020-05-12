@@ -1446,6 +1446,8 @@ button.white-link, button.white-link:hover {
 .autocomplete-suggestion {
   padding: 2px 0;
   cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
 }
 .autocomplete-suggestion:hover {
   background: #fafafa
