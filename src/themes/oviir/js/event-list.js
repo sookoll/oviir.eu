@@ -17,7 +17,7 @@
       crs: crs
     }).setView([58.67212, 25.64129], 3)
 
-    new L.tileLayer('http://tiles.maaamet.ee/tm/s/1.0.0/kaart/{z}/{x}/{y}.png', {
+    new L.tileLayer('http://tiles.maaamet.ee/tm/tms/1.0.0/kaart/{z}/{x}/{y}.png', {
         maxZoom: crs.options.resolutions.length,
         minZoom: 2,
         continuousWorld: true,

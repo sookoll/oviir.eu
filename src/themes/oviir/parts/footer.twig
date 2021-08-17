@@ -23,6 +23,13 @@
   </a>
   {% endif %}
   {% for tool in tools %}
+  {% if tool.type == 'link' %}
+  <b data-toggle="tooltip" title="{{ tool.title }}">
+    <a href="{{ tool.href }}" target="_blank">
+      <i class="{{ tool.icon }}"></i>
+    </a>
+  </b>
+  {% else %}
   <b data-toggle="tooltip" title="{{ tool.title }}">
     <a href="#"
       data-draft-type="{{ tool.type }}"
@@ -35,6 +42,7 @@
       <i class="{{ tool.icon }}"></i>
     </a>
   </b>
+  {% endif %}
   {% endfor %}
 </div>
 

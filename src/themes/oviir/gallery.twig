@@ -43,6 +43,12 @@
   ]) %}
   {% endif %}
 
+  {% if user_has_right('editor/admin') %}
+  {% set tools = tools|merge([
+    { title: 'Halda pilte', type: 'link', icon: 'icon ion-ios-build', href: '/miuview-api/admin.php' }
+  ]) %}
+  {% endif %}
+
   {% include 'parts/footer.twig' with { tools: tools } %}
 
   {% include 'parts/scripts.twig' %}
