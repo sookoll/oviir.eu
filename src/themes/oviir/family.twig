@@ -44,7 +44,8 @@
               <a href="{{ page.url }}" class="ico-circle">
                 <img class="img-fluid rounded-circle b-shadow-a"
                   src="{{ page.meta.thumbnail }}"
-                  alt="{{ page.meta.title }}">
+                  alt="{{ page.meta.title }}"
+                  onError="this.onerror=null;this.src='{{ theme_url }}/img/placeholder.png';">
               </a>
             </div>
             <div class="service-content">
