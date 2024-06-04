@@ -9,6 +9,7 @@
 class TwigFilters extends AbstractPicoPlugin
 {
   const API_VERSION = 2;
+  protected $devMode = false;
 
   /**
    * Triggered after Pico has read its configuration

@@ -18,15 +18,7 @@ npm i
 npm start
 ```
 
-Debugging IE on Safari
-
-Develop -> User Agent -> Other
-
-```
-Internet Explorer 8 Windows XPMozilla/4.0 (compatible; MSIE 8.0; Windows NT 5.1; Trident/4.0)
-```
-
-Deploy
+### Deploy
 
 Update config file (miuview-api url, dev_mode)
 ```

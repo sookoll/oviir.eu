@@ -29,6 +29,8 @@ class PicoDraft extends AbstractPicoPlugin
   protected $canAdmin = false;
   protected $hash = null;
   protected $info = 'Unknown error';
+  protected $template;
+  protected $deleteDir;
 
   /**
    * Triggered after Pico has read its configuration

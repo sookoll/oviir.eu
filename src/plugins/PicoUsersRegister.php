@@ -39,7 +39,7 @@ class PicoUsersRegister extends AbstractPicoPlugin
   public function onConfigLoaded(array &$config)
   {
     $this->users = @$config['users'];
-    $this->configFile = CONFIG_DIR . @$config['register']['users'];
+    $this->configFile = @$config['register']['users'];
     $this->hash = @$config['register']['hash'];
     $this->group = @$config['register']['group'];
   }

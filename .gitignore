@@ -19,6 +19,11 @@ api/*
 config.php
 *.ini
 .env
+.htpasswd
+
+# Idea
+*.iml
+.idea
 
 src/content_deleted/*/*
 js-min
