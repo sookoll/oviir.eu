@@ -1,29 +1,30 @@
 function createAlbumDOM (data) {
-  data.items.forEach((item, i) => {
+  data.forEach((item, i) => {
     $('#gallery').append(`
       <figure class="col-lg-3 col-md-4 col-6 thumb p-1">
         <div class="work-box">
           <a href="#${ i + 1 }" class="work-img">
-            <img class="img-fluid lazy" src="${ THEME_URL }/img/placeholder.png" data-src="${ item.thumb_url }" alt="${ item.title || item.id}">
+            <img class="img-fluid lazy" 
+                src="${ THEME_URL }/img/placeholder.png" 
+                data-src="${ item.thumb_url }" alt="${ item.title || item.id}"
+                onerror="imgerror(this)" />
           </a>
         </div>
       </figure>
     `)
   })
-  //yall()
 }
 
 function createSlides (data) {
   const pswpElement = document.querySelectorAll('.pswp')[0]
-  const items = data.items.map(item => {
+  const items = data.map(item => {
     return {
       src: item.img_url,
-      w: item.metadata.FILE.Width,
-      h: item.metadata.FILE.Height,
-      //msrc: item.thumb_url,
+      w: item.img_width,
+      h: item.img_height,
       title: item.title || item.id,
       description: item.description,
-      datetime: item.metadata.EXIF ? item.metadata.EXIF.DateTimeOriginal : item.created
+      datetime: item.datetaken,
     }
   })
   const options = {
@@ -61,17 +62,27 @@ function parseHash () {
   return {}
 }
 
-(function($) {
-  var mv = new MiuView({
+function imgerror(e)
+{
+  setTimeout(reloadImg, 1000, e);
+}
+
+function reloadImg(e)
+{
+  const source = e.src;
+  e.removeAttribute('onerror');
+  e.src = source;
+}
+
+
+(function($, Picu) {
+  const picu = new Picu({
     url: config.url,
-    album: config.album,
-    request: 'getitem',
-    thsize: 360,
-    size: 1200,
-    key: config.key
+    thumbSize: 'SQ320',
+    imgSize: 'L1600',
   });
   setTimeout(() => {
-    mv.load()
+    picu.load()
       .then(data => {
         createAlbumDOM(data)
         createSlides(data)
@@ -81,4 +92,4 @@ function parseHash () {
       })
   }, 200)
 
-})(jQuery);
+})(jQuery, Picu);
