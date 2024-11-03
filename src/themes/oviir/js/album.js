@@ -4,7 +4,7 @@ function createAlbumDOM (data) {
       <figure class="col-lg-3 col-md-4 col-6 thumb p-1">
         <div class="work-box">
           <a href="#${ i + 1 }" class="work-img">
-            <img class="img-fluid lazy" 
+            <img class="img-fluid lazy"
                 src="${ THEME_URL }/img/placeholder.png" 
                 data-src="${ item.thumb_url }" alt="${ item.title || item.id}"
                 onerror="imgerror(this)" />
